@@ -280,5 +280,39 @@ const countryScale = d3.scaleOrdinal()
 
 While these changes don't make a large change in the visualization behind the scenes they make big differences in how our code operates! 
 
+### Extents
 
+Earlier you found the minimum and maximum values from a a set of values. These the extents. Since this is such a common operation D3 provides a helper method that does just this! 
+
+Like everything else the extents emthod takes a callback! The extents method returns an array containing the minimum and maximum values. 
+
+Try it out:
+
+```JS
+// Replace this: 
+const minX = d3.min(data, d => parseFloat(d.x))
+const maxX = d3.max(data, d => parseFloat(d.x))
+// With: 
+const x_extent = d3.extent(data, d => parseFloat(d.x))
+```
+
+Now define your `xScale` using the `x_extent` for the domain. 
+
+```JS
+const xScale = d3.scaleLinear()
+	.domain(x_extent) // Use x_extent here! 
+	.range([700, 100])
+```
+
+**Challenge**
+
+Use `d3.extent()` to to find the min and max valuse for y. 
+
+Then use this to define the `yScale`.
+
+**Challenge**
+
+Use extent to find the min and map population. 
+
+Then use the population extent to set the population domain. 
 
