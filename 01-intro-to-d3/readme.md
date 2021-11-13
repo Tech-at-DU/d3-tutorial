@@ -216,4 +216,3 @@ Try setting a property using the data value. The values should be in the range o
 - Set the size of the text. Use the property `font-size`. Second argument should be a function that receives `d` and returns ``${d * 5}px``.
 - Setting the opacity based on the data value. You can use a formula like: `d / 10`
 - Try changing the color of the gradient based on the data value.
-
