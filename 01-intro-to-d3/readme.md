@@ -12,10 +12,10 @@ Start by making a new web page. create: `index.html`. Add the boilerplate HTML c
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
 	
@@ -30,10 +30,10 @@ Link to the library from the CDN. Add the script tag to the bottom of the body t
 ```HTML
 <body>
 
-	<script src="https://d3js.org/d3.v7.min.js"></script>
-	<script>
-		// Your script here! 
-	</script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    // Your script here! 
+  </script>
 </body>
 ```
 
@@ -53,7 +53,7 @@ Next select the elements you want to modify or create. In this case we are selec
 
 ```JS
 d3.select('body')
-	.selectAll('div')
+  .selectAll('div')
 ```
 
 *It doesn't matter that there no existing divs.* They will exist later D3 will make them!
@@ -62,27 +62,27 @@ Next add some data. Data can be an array containing any type of data. For this e
 
 ```JS
 d3.select('body')
-	.selectAll('div')
-	.data([5,6,2,8,4,9,1])
+  .selectAll('div')
+  .data([5,6,2,8,4,9,1])
 ```
 
 Next call `enter()`. Calling enter tells D3 to "enter" the data. Imagine at this point D3 is looping over your data. 
 
 ```JS
 d3.select('body')
-	.selectAll('div')
-	.data([5,6,2,8,4,9,1])
-	.enter()
+  .selectAll('div')
+  .data([5,6,2,8,4,9,1])
+  .enter()
 ```
 
 Use `append()` to tell D3 what type of element to append. 
 
 ```JS
 d3.select('body')
-	.selectAll('div')
-	.data([5,6,2,8,4,9,1])
-	.enter()
-	.append('div')
+  .selectAll('div')
+  .data([5,6,2,8,4,9,1])
+  .enter()
+  .append('div')
 ```
 
 Here D3 creates elements if they don't exist. We need one div for each of the values in our data. 
@@ -97,10 +97,10 @@ Let's review what just happened. Here's the forumula for getting started with D3
 
 ```JS
 d3.select('body')        // select() an element to host 
-	.selectAll('div')			 // selectAll() the elements you want to work with
-	.data([5,6,2,8,4,9,1]) // define your data()
-	.enter()               // enter() your data 
-	.append('div')         // append() elements
+  .selectAll('div')			 // selectAll() the elements you want to work with
+  .data([5,6,2,8,4,9,1]) // define your data()
+  .enter()               // enter() your data 
+  .append('div')         // append() elements
 ```
 
 - `d3.select('#someId')` - Select an element to host the elements you will create. This element will contain all of the elements d3 creates. This element should exist and you will probably want identify it with an id. 
@@ -117,11 +117,11 @@ Set the text of each new node. This method takes a function which receives one o
 
 ```JS
 d3.select('body')
-	.selectAll('div')
-	.data([5,6,2,8,4,9,1])
-	.enter()
-	.append('div')
-	.text((d) => d)
+  .selectAll('div')
+  .data([5,6,2,8,4,9,1])
+  .enter()
+  .append('div')
+  .text((d) => d)
 ```
 
 What happened here? You starrted D3. Pointed D3 to the body tag to work with as a container for dynamically generated elements. 
@@ -138,8 +138,8 @@ Try this, make the change below to format the numbers:
 
 ```JS
 d3.select('body')
-	...
-	.text(d => `$${d.toFixed(2)}`)
+  ...
+  .text(d => `$${d.toFixed(2)}`)
 ```
 
 Here you took the data element and converted to a string, added a "$" and a decimal and some 0s. 
@@ -152,10 +152,10 @@ The `style()` method takes two arguments. First is the style attribute to set, a
 
 ```JS
 d3.select('body')
-	...
-	.style('padding', '1em')
-	.style('background-color', 'red')
-	.style('margin', '1px')
+  ...
+  .style('padding', '1em')
+  .style('background-color', 'red')
+  .style('margin', '1px')
 ```
 
 Use the `.style()` method to apply styles to each element. Style takes two parameters. The first is the style property name. The second is the value for that property. 
@@ -168,8 +168,8 @@ With these properties in place each row should have padding of 1em, a background
 
 ```JS
 d3.select('body')
-	...
-	.style('width', (d) => `${d / 10 * 100}%`)
+  ...
+  .style('width', (d) => `${d / 10 * 100}%`)
 ```
 
 Here the you've added a callback. The callback takes the data as a parameter, and returns the value for the width property. 
