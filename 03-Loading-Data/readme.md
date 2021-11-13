@@ -40,7 +40,7 @@ Load a JSON Object:
 
 ```JS
 d3.json('metal.json')
-	.then(json => console.log(json))
+  .then(json => console.log(json))
 ```
 
 Load a CSV object.
@@ -48,7 +48,7 @@ Load a CSV object.
 ```JS
 // CSV
 d3.csv('metal_bands_2017.csv')
-	.then(csv => console.log(csv))
+  .then(csv => console.log(csv))
 ```
 
 Notice that both of these use a Promise! In other words: `d3.json()` and `d3.csv()` both return a promise.
@@ -57,7 +57,7 @@ A Promise is an object used by JS to handle async tasks. let's break the example
 
 ```JS
 d3.json('titanic-passengers.json')
-	.then(json => console.log(json))
+  .then(json => console.log(json))
 ```
 
 What happened here? You called `d3.json('titanic-passengers.json')` which returned a Promise. A Promise is an object something like: `{...}`. Let's put it in a variable: 
@@ -82,19 +82,19 @@ To get started with this example create a new HTML file and add your boilerplate
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
 
-	<svg id="svg" width="500" height="500"></svg>
-	
-	<script src="https://d3js.org/d3.v7.min.js"></script>
-	<script>
-		// Your Script here...
-	</script>
+  <svg id="svg" width="500" height="500"></svg>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    // Your Script here...
+  </script>
 </body>
 </html>
 ```
@@ -107,9 +107,9 @@ Add the following to your page:
 
 ```JS
 d3.csv('cities.csv')
-	.then(data => {
-		console.log(data)
-	})
+  .then(data => {
+    console.log(data)
+  })
 ```
 
 Load your page in the browser and check the console. You should see something like: 
@@ -144,14 +144,14 @@ The Boilerplate code will go inside the Promise callback since it needs to acces
 
 ```JS
 d3.csv('cities.csv')
-	.then(data => {
-		// console.log(data)
-		d3.select('#svg')
-			.style('border', '1px solid')
-			.selectAll('circle')
-			.data(data)
-			.enter()
-			.append('circle')
+  .then(data => {
+    // console.log(data)
+    d3.select('#svg')
+      .style('border', '1px solid')
+      .selectAll('circle')
+      .data(data)
+      .enter()
+      .append('circle')
 ```
 
 We will cover more sophisticated methods to handle some of the issues here for now let's try and tackle the Cities data with the things that we already know. 
@@ -164,17 +164,17 @@ Try this:
 
 ```JS
 d3.select('#svg')
-	.style('border', '1px solid')
-	// select all <circle>s in #svg
-	.selectAll('circle')
-	.data(data)
-	.enter()
-	.append('circle')
-	.attr('cx', d => parseFloat(d.x) * 2 + 250)
-	.attr('cy', d => parseFloat(d.y) * 2 + 250)
-	.attr('r', 20)
-	.attr('fill', `red`)
-	.attr('opacity', 0.25)
+  .style('border', '1px solid')
+  // select all <circle>s in #svg
+  .selectAll('circle')
+  .data(data)
+  .enter()
+  .append('circle')
+  .attr('cx', d => parseFloat(d.x) * 2 + 250)
+  .attr('cy', d => parseFloat(d.y) * 2 + 250)
+  .attr('r', 20)
+  .attr('fill', `red`)
+  .attr('opacity', 0.25)
 ```
 
 NOTE! I had to `parseFloat(d.x)` since the values from the CSV file are imported as strings!
@@ -195,15 +195,15 @@ Let's set the color based on the country. There are four counrties represented: 
 
 ```JS
 .attr('fill', d => {
-	if (d.country === 'USA') {
-		return 'cornflowerblue'
-	} else if (d.country === 'Pakistan') {
-		return 'gold'
-	} else if (d.country === 'Italy') {
-		return 'green'
-	} else if (d.country === 'Brazil') {
-		return 'tomato'
-	}
+  if (d.country === 'USA') {
+    return 'cornflowerblue'
+  } else if (d.country === 'Pakistan') {
+    return 'gold'
+  } else if (d.country === 'Italy') {
+    return 'green'
+  } else if (d.country === 'Brazil') {
+    return 'tomato'
+  }
 })
 ```
 
@@ -221,58 +221,3 @@ NOTE! Setting the color for each country was a little awkward.
 
 While we could solve these problems on our own, you did this earlier in class, D3 is a library that was built to solve these problems! It has all of the tools we need to handle these problems. 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-**Challenge**
-
-Load the Titanic data! 
-
-```JS
-d3.json('titanic-passengers.json')
-	.then(json => {
-		// Inside the callback!
-		d3.select('body')
-			.selectAll('div')
-			.data(json)
-			.enter()
-			.append('div')
-			.text(d => d.fields.name)
-	})
-```
-
-Notice here you're taking the D3 example from earlier and putting into the callback in `d3.json().then()`. When the data is loaded you're using that data in place of the array that was used in the original example. 
-
-The code above displays all of the name of the passengers in the Titanic data. 
-
-**Challenge**
-
-The next challenge is to style each of the names. 
-
-- Add some padding to each name: 0.5em
-- Add some margin to each name: 1px
-
-**Challenge**
-
-Set the background color based on the survived property. Passengers that has survived of 'Yes' should have a background color of `cornflowerblue` (yes, that's a color) and causalities should have a background color of `tomato`.
-
-To do this use a callback in the second style parameter! Remember this callback recieves a piece of the data. 

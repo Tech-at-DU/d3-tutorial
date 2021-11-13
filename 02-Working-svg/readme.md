@@ -32,17 +32,17 @@ Create a new HTML document with the boilerplate code:
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
 	
-	<script src="https://d3js.org/d3.v7.min.js"></script>
-	<script>
-		// Your code here
-	</script>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    // Your code here
+  </script>
 </body>
 </html>
 ```
@@ -53,9 +53,9 @@ Make an svg tag:
 
 ```HTML
 <body>
-	<svg id="svg" width="500" height="500"></svg>
+  <svg id="svg" width="500" height="500"></svg>
 
-	...
+  ...
 </body>
 ```
 
@@ -65,7 +65,7 @@ SVG elements have their own attributes also. Try it yourself, make a circle.
 
 ```HTML
 <svg id="svg" width="500" height="500">
-	<circle cx="250" cy="250" r="123" fill="#0ff"/>
+  <circle cx="250" cy="250" r="123" fill="#0ff"/>
 </svg>
 ```
 
@@ -75,7 +75,6 @@ This should make a cyan circle in the center of the SVG document.
 - `cy` - center y
 - `r` - radius
 - `fill` - fill color
-
 
 **Challenge** 
 
@@ -93,11 +92,11 @@ Add the function below to your script.
 
 ```JS
 function makeRandomData(n) {
-	const array = []
-	for (let i = 0; i < n; i += 1) {
-		array.push({ a: Math.random(), b: Math.random(), c: Math.random() })
-	}
-	return array
+  const array = []
+  for (let i = 0; i < n; i += 1) {
+    array.push({ a: Math.random(), b: Math.random(), c: Math.random() })
+  }
+  return array
 }
 ```
 
@@ -116,8 +115,8 @@ Select the SVG element by its id name and give it a CSS style.
 ```JS
 // Select #svg
 d3.select('#svg')
-	// Style #svg
-	.style('border', '1px solid #000')
+  // Style #svg
+  .style('border', '1px solid #000')
 ```
 
 Adding a border will help idenitfy where SVG is in the window. If you don't see the border check your work. 
@@ -126,28 +125,28 @@ Select all of the `circle` elements. None exist yet D3 will make them inside the
 
 ```JS
 d3.select('#svg')
-	.style('border', '1px solid')
-	// select all <circle>s in #svg
-	.selectAll('circle')
-	.data(data)
-	.enter()
+  .style('border', '1px solid')
+  // select all <circle>s in #svg
+  .selectAll('circle')
+  .data(data)
+  .enter()
 ```
 
 Set attributes on SVG `circle`. Below we've set the `cx`, `cy`, `r`, and `fill` to the values in the data.
 
 ```JS
 d3.select('#svg')
-	.style('border', '1px solid')
-	.selectAll('rect')
-	.data(data)
-	.enter()
-	// Style all <circle>s in #svg
-	.append('circle')
-	.attr('cx', (d, i) => i * 500 / data.length)
+  .style('border', '1px solid')
+  .selectAll('rect')
+  .data(data)
+  .enter()
+  // Style all <circle>s in #svg
+  .append('circle')
+  .attr('cx', (d, i) => i * 500 / data.length)
   .attr('cy', d => d.a * 500)
-	.attr('r', d => d.c * 100)
-	.attr('fill', d => 'green')
-	.attr('opacity', () => 0.5)
+  .attr('r', d => d.c * 100)
+  .attr('fill', d => 'green')
+  .attr('opacity', () => 0.5)
 ```
 
 Notice that the `.attr()` method takes two parameters. The first is a string and should the name of the attribute. The second is a callback function that receives one data value and returns the value you want assigned to that attribute. 
@@ -156,7 +155,7 @@ The callback also receives the index of the data element in it's array. The exam
 
 Notice I've used an arrow function here, written on a single line the return is implicit. 
 
-![example-1](example-1.png)
+![example-1](images/example-1.png)
 
 Here is a list of attributes you can use with svg elements: 
 
@@ -191,10 +190,10 @@ Inspect the elements in the browser:
 
 ```HTML
 <svg id="svg" width="500" height="500" style="border: 1px solid;">
-	<circle cx="250" cy="250" r="123" fill="#0ff"></circle>
-	<circle cx="16.129032258064516" cy="222.25708822052192" r="47.88209465530098" fill="hsl(160.02510351877578, 100%, 50%)" opacity="0.5" stroke="hsl(94.4703439376888, 100%, 50%)" stroke-width="2.6241762204913552"></circle>
-	<circle cx="32.25806451612903" cy="98.42029526539491" r="14.51146371457872" fill="hsl(70.86261259108434, 100%, 50%)" opacity="0.5" stroke="hsl(294.6841152013748, 100%, 50%)" stroke-width="8.185669866704856"></circle>
-	...
+  <circle cx="250" cy="250" r="123" fill="#0ff"></circle>
+  <circle cx="16.129032258064516" cy="222.25708822052192" r="47.88209465530098" fill="hsl(160.02510351877578, 100%, 50%)" opacity="0.5" stroke="hsl(94.4703439376888, 100%, 50%)" stroke-width="2.6241762204913552"></circle>
+  <circle cx="32.25806451612903" cy="98.42029526539491" r="14.51146371457872" fill="hsl(70.86261259108434, 100%, 50%)" opacity="0.5" stroke="hsl(294.6841152013748, 100%, 50%)" stroke-width="8.185669866704856"></circle>
+  ...
 ```
 
 Notice the attributes. These are all of the values you assigned with your d3 script! 
