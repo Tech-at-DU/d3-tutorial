@@ -76,7 +76,6 @@ This should make a cyan circle in the center of the SVG document.
 - `r` - radius
 - `fill` - fill color
 
-
 **Challenge** 
 
 Make a couple more circles for fun. Change the `fill` color, `r` (radius), `cx` and `cy`.
@@ -156,7 +155,7 @@ The callback also receives the index of the data element in it's array. The exam
 
 Notice I've used an arrow function here, written on a single line the return is implicit. 
 
-![example-1](example-1.png)
+![example-1](images/example-1.png)
 
 Here is a list of attributes you can use with svg elements: 
 
