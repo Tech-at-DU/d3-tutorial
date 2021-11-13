@@ -316,3 +316,5 @@ Use extent to find the min and map population.
 
 Then use the population extent to set the population domain. 
 
+![example](images/example-1.png)
+
