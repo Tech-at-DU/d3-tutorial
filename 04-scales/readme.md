@@ -8,44 +8,44 @@ For this example continue with the code from the previouse example. You should h
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
 </head>
 <body>
-	<svg id="svg" width="500" height="500"></svg>
-	
-	<script src="https://d3js.org/d3.v7.min.js"></script>
-	<script>
-		d3.csv('cities.csv')
-			.then(data => {
-				console.log(data)
-				d3.select('#svg')
-					.style('border', '1px solid')
-					// select all <circle>s in #svg
-					.selectAll('circle')
-					.data(data)
-					.enter()
-					.append('circle')
-					.attr('cx', d => parseFloat(d.x) * 2 + 250)
-					.attr('cy', d => parseFloat(d.y) * 2 + 250)
-					.attr('r', d => parseInt(d.population) * 0.00001)
-					.attr('fill', `red`)
-					.attr('opacity', 0.25)
-					.attr('fill', d => {
-						if (d.country === 'USA') {
-							return 'cornflowerblue'
-						} else if (d.country === 'Pakistan') {
-							return 'gold'
-						} else if (d.country === 'Italy') {
-							return 'green'
-						} else if (d.country === 'Brazil') {
-							return 'tomato'
-						}
-					})
-			})
-	</script>
+  <svg id="svg" width="500" height="500"></svg>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+    d3.csv('cities.csv')
+      .then(data => {
+        console.log(data)
+        d3.select('#svg')
+          .style('border', '1px solid')
+          // select all <circle>s in #svg
+          .selectAll('circle')
+          .data(data)
+          .enter()
+          .append('circle')
+          .attr('cx', d => parseFloat(d.x) * 2 + 250)
+          .attr('cy', d => parseFloat(d.y) * 2 + 250)
+          .attr('r', d => parseInt(d.population) * 0.00001)
+          .attr('fill', `red`)
+          .attr('opacity', 0.25)
+          .attr('fill', d => {
+            if (d.country === 'USA') {
+              return 'cornflowerblue'
+            } else if (d.country === 'Pakistan') {
+              return 'gold'
+            } else if (d.country === 'Italy') {
+              return 'green'
+            } else if (d.country === 'Brazil') {
+              return 'tomato'
+            }
+          })
+      })
+  </script>
 </body>
 </html>
 ```
@@ -84,24 +84,24 @@ Create a linear scale.
 
 ```JS
 d3.csv('cities.csv')
-	.then(data => {
-		// Create a linear scale
-		const xScale = d3.scaleLinear()
-			.domain([-150, 150]) // Set the domain
-			.range([0, 500])     // Set the range
+  .then(data => {
+    // Create a linear scale
+    const xScale = d3.scaleLinear()
+      .domain([-150, 150]) // Set the domain
+      .range([0, 500])     // Set the range
 
-		d3.select('#svg')
-			.style('border', '1px solid')
-			// select all <circle>s in #svg
-			...
+    d3.select('#svg')
+      .style('border', '1px solid')
+      // select all <circle>s in #svg
+      ...
 ```
 
 What happened here: 
 
 ```JS
 const xScale = d3.scaleLinear()
-	.domain([-150, 150]) // Set the domain
-	.range([0, 500])     // Set the range
+  .domain([-150, 150]) // Set the domain
+  .range([0, 500])     // Set the range
 ```
 Here you are creating a function `xScale` that is a linear scale function. 
 
@@ -137,8 +137,8 @@ Fix the scale to match the new width. To do this you'll change the range of the 
 
 ```JS
 const xScale = d3.scaleLinear()
-	.domain([-150, 150])
-	.range([0, 800]) // Change the range!
+  .domain([-150, 150])
+  .range([0, 800]) // Change the range!
 ```
 
 **Challenge**
@@ -155,8 +155,8 @@ Define a new oridinal scale:
 
 ```JS
 const countryScale = d3.scaleOrdinal()
-	.domain(['USA', 'Pakistan', 'Italy', 'Brazil'])
-	.range(['cornflowerblue', 'gold', 'gold', 'tomato'])
+  .domain(['USA', 'Pakistan', 'Italy', 'Brazil'])
+  .range(['cornflowerblue', 'gold', 'gold', 'tomato'])
 ```
 
 Then use this new scale to set the color: 
@@ -175,8 +175,8 @@ Make a new scale:
 
 ```JS
 const popScale = d3.scaleLinear()
-	.domain([525010, 14910352])
-	.range([10, 100])
+  .domain([525010, 14910352])
+  .range([10, 100])
 ```
 
 Here I found the largest and smallest population values and used these for the domain. 
@@ -213,8 +213,8 @@ Edit the `popScale`:
 
 ```JS
 const popScale = d3.scaleSqrt()
-	.domain([525010, 14910352])
-	.range([10, 200])
+  .domain([525010, 14910352])
+  .range([10, 200])
 ```
 
 Notice the change. It may appear to be subtle. The sizes should be more accurately related now. 
@@ -240,8 +240,8 @@ You can use these values in place of the hard coded numbers:
 
 ```JS
 const xScale = d3.scaleLinear()
-	.domain([minX, maxX]) // Use the min and max here
-	.range([700, 100])
+  .domain([minX, maxX]) // Use the min and max here
+  .range([700, 100])
 ```
 
 **Challenge**
@@ -274,8 +274,8 @@ Use this to define the domain for your `countryScale`.
 
 ```JS
 const countryScale = d3.scaleOrdinal()
-	.domain(countries) // Use the list counties here
-	.range(['cornflowerblue', 'gold', 'gold', 'tomato'])
+  .domain(countries) // Use the list counties here
+  .range(['cornflowerblue', 'gold', 'gold', 'tomato'])
 ```
 
 While these changes don't make a large change in the visualization behind the scenes they make big differences in how our code operates! 
@@ -300,8 +300,8 @@ Now define your `xScale` using the `x_extent` for the domain.
 
 ```JS
 const xScale = d3.scaleLinear()
-	.domain(x_extent) // Use x_extent here! 
-	.range([700, 100])
+  .domain(x_extent) // Use x_extent here! 
+  .range([700, 100])
 ```
 
 **Challenge**
@@ -315,4 +315,6 @@ Then use this to define the `yScale`.
 Use extent to find the min and map population. 
 
 Then use the population extent to set the population domain. 
+
+![example](images/example-1.png)
 
