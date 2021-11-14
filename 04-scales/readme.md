@@ -1,6 +1,6 @@
 # D3 Scales
 
-Scales are used to scale and normalize values. You can use a scale to convert a value from one range to another. Convert a value to a color, Convert strings to other values like colors or numbers. 
+Scales are used to scale and normalize values. You can use a scale to convert a value from one range to another. Convert a value to color, Convert strings to other values like colors or numbers. 
 
 For this example continue with the code from the previouse example. You should have something like this: 
 
@@ -58,7 +58,7 @@ A scale needs a domain and a range. The domain is the input and the range is the
 
 A scale needs to know the domain, this is where the values come from. The domain can be a range like a minimum and maximum value. 
 
-For example in our cities data the x value is roughly in the range of -46 to +122. 
+For example, in our cities data, the x value is roughly in the range of -46 to +122. 
 
 The domain for the countries might be an array of all available country names: `['USA', 'Pakistan', 'Italy', 'Brazil']`. 
 
@@ -66,19 +66,19 @@ The domain of population is crazy large numbers nuf said.
 
 **Ranges**
 
-Ranges can be numbers or other values and can be expressed as a min and max values or a list of possible choices. 
+Ranges can be numbers or other values and can be expressed as min and max values or a list of possible choices. 
 
-For example if we are positing something on the screen and out SVG canvas is 500 pixels wide the range is 500. 
+For example, if we are posting something on the screen and our SVG canvas is 500 pixels wide the range is 500. 
 
-If we have a list of colors to match our countries against the rnage might be: `['cornflowerblue', 'gold', 'gold', 'tomato']` a list of colors! 
+If we have a list of colors to match our countries against the range might be: `['cornflowerblue', 'gold', 'gold', 'tomato']` a list of colors! 
 
-When it comes to the population we might know that we want the largest circle to be 300px and and smallest to be 10px. 
+When it comes to the population we might know that we want the largest circle to be 300px and the smallest to be 10px. 
 
 D3 has several functions that return a scale function that you configure for your use. 
 
 ## Scale Linear
 
-A linear scale scales a value proporationaly from the domain to the range. 
+A linear scale scales a value proportionally from the domain to the range. 
 
 Create a linear scale. 
 
@@ -107,7 +107,7 @@ Here you are creating a function `xScale` that is a linear scale function.
 
 You set the domain to `[-150, 150]`. This says this function will translate numbers from -150 to +150. 
 
-Last you set the range to `[0, 500]`. This says your scale function will return valuse from 0 to 500. 
+Last you set the range to `[0, 500]`. This says your scale function will return values from 0 to 500. 
 
 All together the `xScale` function expects to take in numbers from -150 to 150 and return valuse from 0 to 500. You should expect:
 
@@ -125,7 +125,7 @@ Use `xScale` to set the `cx` attribute:
 
 This is a big improvement over the last method! 
 
-Change the size if your SVG. make it 800 wide. 
+Changing the size of your SVG. makes it 800 wide. 
 
 ```HTML
 ...
@@ -147,7 +147,7 @@ Create a new linear scale for the y value.
 
 ### Scale Ordinal
 
-An ordinal scale maps arbitrary values likes strings and dates to other arbitrary values like strings and colors. 
+An ordinal scale maps arbitrary values like strings and dates to other arbitrary values like strings and colors. 
 
 The country names would use an ordinal scale. 
 
@@ -181,7 +181,7 @@ const popScale = d3.scaleLinear()
 
 Here I found the largest and smallest population values and used these for the domain. 
 
-Then I decided on largest and smallest circles diameter I wanted. I chose: 10 and 100. 
+Then I decided on the largest and smallest circles diameter I wanted. I chose: 10 and 100. 
 
 Now use the scale: 
 
@@ -197,11 +197,11 @@ This is a lot better than the previous solution.
 
 Edit the domain until the largest and smallest circles are sizes that you like: 
 
-Wait! These circle are not display the populations as accurately as they could be. Currently we're showing the diameter as the population but the circle really expresses itself as area. 
+Wait! These circles do not display the populations as accurately as they could be. Currently, we're showing the diameter as the population but the circle expresses itself as an area. 
 
-You can think of this as drawing a line where each pixel represents a person. If you had a 10 pixel line and a 20 pixel line the second would represent twice as many people. 
+You can think of this as drawing a line where each pixel represents a person. If you had a 10-pixel line and a 20-pixel line the second would represent twice as many people. 
 
-If you drew a 10px radius circle it would contain 78 pixels. A 20 pixel diameter circle would contain 314 pixels. The difference there about 4 to 1. Remember were trying to express a 2 to 1 relation. 
+If you drew a 10px radius circle it would contain 78 pixels. A 20-pixel diameter circle would contain 314 pixels. The difference there is about 4 to 1. Remember were trying to express a 2 to 1 relation. 
 
 D3 can help us with a scale! 
 
@@ -221,7 +221,7 @@ Notice the change. It may appear to be subtle. The sizes should be more accurate
 
 ## Finding min and max 
 
-This is getting better all the time. There are still a couple places where our code is awkward. 
+This is getting better all the time. There are still a couple of places where our code is awkward. 
 
 Notice the population scale. To get the range we needed to look at the cities.csv and find the largest and smallest values. This would not work with more than 10 items. It's not going to work if something changes. 
 
@@ -256,11 +256,11 @@ Find the min and max population values.
 
 Use these values in the domain of the population scale function. 
 
-### Makeing a set
+### Making a set
 
-The last area where things are not wokring well is in country names. We had to add all of these names manually. If there had been more than four this would not have been easy, and as it is it's not scalable. 
+The last area where things are not working well is in country names. We had to add all of these names manually. If there had been more than four this would not have been easy, and as it is it's not scalable. 
 
-There is probbably a strictly D3 method for this. I had a hard time figuring this since the methods seem to change over different versions of d3. We are using d3 v7 which didn't have obvious answer.
+There is probably a strictly D3 method for this. I had a hard time figuring this since the methods seem to change over different versions of d3. We are using d3 v7 which didn't have an obvious answer.
 
 I used vanilla JS for this. Try this: 
 
@@ -282,9 +282,9 @@ While these changes don't make a large change in the visualization behind the sc
 
 ### Extents
 
-Earlier you found the minimum and maximum values from a a set of values. These the extents. Since this is such a common operation D3 provides a helper method that does just this! 
+Earlier you found the minimum and maximum values from a set of values. These are the extents. Since this is such a common operation D3 provides a helper method that does just this! 
 
-Like everything else the extents emthod takes a callback! The extents method returns an array containing the minimum and maximum values. 
+Like everything else, the extents method takes a callback! The extents method returns an array containing the minimum and maximum values. 
 
 Try it out:
 
@@ -306,7 +306,7 @@ const xScale = d3.scaleLinear()
 
 **Challenge**
 
-Use `d3.extent()` to to find the min and max valuse for y. 
+Use `d3.extent()` to find the min and max values for y. 
 
 Then use this to define the `yScale`.
 
