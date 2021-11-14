@@ -1,8 +1,8 @@
 ## D3 Loaders
 
-D3 has its own data loaders built in. D3 works with: JSON, CSV, and a few other data types. Read more [here](https://github.com/d3/d3/blob/master/API.md#fetches-d3-fetch).
+D3 has its data loaders built-in. D3 works with JSON, CSV, and a few other data types. Read more [here](https://github.com/d3/d3/blob/master/API.md#fetches-d3-fetch).
 
-You're probably familiar with JSON lets take a look at CSV. CSV stands for Comma, Spearated, Values. 
+You're probably familiar with JSON let's take a look at CSV. CSV stands for Comma, Separated, Values. 
 
 Here is a sample CSV file: 
 
@@ -18,7 +18,7 @@ Here is a sample CSV file:
 "Sao Paolo",12300000,"Brazil",-46,-23
 ```
 
-Each line is one recored. 
+Each line is one record. 
 
 Take a look at the first row, the first row is special: 
 
@@ -28,13 +28,13 @@ Take a look at the first row, the first row is special:
 
 This row defines the fields for all of the other rows. Each field is separated by a comma. The first line names the values in each of the following rows. 
 
-The same data in JSON format would be longer but also have the possibility to have nested values. CSV is a flat. There is just one level of data stored. 
+The same data in JSON format would be longer but also can have nested values. CSV is flat. There is just one level of data stored. 
 
-CSV is more compact than JSON it takes less characters to store it's contents. 
+CSV is more compact than JSON it takes fewer characters to store its contents. 
 
 ## Loading Data
 
-D3 has a couple different loaders built in. You can use these to easily load data from JSON or CSV. 
+D3 has a couple of different loaders built-in. You can use these to easily load data from JSON or CSV. 
 
 Load a JSON Object:
 
@@ -68,7 +68,7 @@ const p = d3.json('titanic-passengers.json')
 p.then(json => console.log(json))
 ```
 
-Here you put the promise in the variable `p` and then called the `.then()` method. The `.then()` takes a callback function which executed when the promise resolves. In this example the promise will resolve when the JSON data is loaded. 
+Here you put the promise in the variable `p` and then call the `.then()` method. The `.then()` takes a callback function which is executed when the promise resolves. In this example, the promise will resolve when the JSON data is loaded. 
 
 The `then()` callback receives the data you are loading. 
 
@@ -112,7 +112,7 @@ d3.csv('cities.csv')
   })
 ```
 
-Load your page in the browser and check the console. You should see something like: 
+Load your page to the browser and check the console. You should see something like: 
 
 ```
 [Log] Array (8) (index-loading.html, line 16)
@@ -128,7 +128,7 @@ Load your page in the browser and check the console. You should see something li
 Array Prototype
 ```
 
-What happened here? You loaded the cities.csv with D3 and D3 coverted this into an array of objects. 
+What happened here? You loaded the cities.csv with D3 and D3 converted this into an array of objects. 
 
 This will be our data! 
 
@@ -156,9 +156,9 @@ d3.csv('cities.csv')
 
 We will cover more sophisticated methods to handle some of the issues here for now let's try and tackle the Cities data with the things that we already know. 
 
-The Cities data contains an x and y field which is geo coordinate latitude and longitude of the city. These numbers range from x of 122 (San Francisco) to -46 (Sao Paolo), and y of -37 (San Francisco) to 74 (Lahore). 
+The Cities data contains an x and y field which is the geocoordinate latitude and longitude of the city. These numbers range from x of 122 (San Francisco) to -46 (Sao Paolo), and y of -37 (San Francisco) to 74 (Lahore). 
 
-If we use these values to position our shapes in the SVG document we need to place them in the coordinate space of 0 to 500. The width and height of the SVG element is 500. 
+If we use these values to position our shapes in the SVG document we need to place them in the coordinate space of 0 to 500. The width and height of the SVG element are 500. 
 
 Try this: 
 
@@ -179,9 +179,9 @@ d3.select('#svg')
 
 NOTE! I had to `parseFloat(d.x)` since the values from the CSV file are imported as strings!
 
-I scaled and offset the values. This places the 0,0 corredinate in the center of the document. 
+I scaled and offset the values. This places the 0,0 coordinate in the center of the document. 
 
-Let's set the size of the circles based om the populations. These population numbers are really big some are in millions! We need to scale these values. 
+Let's set the size of the circles based on the populations. These population numbers are really big some are in millions! We need to scale these values. 
 
 Try this: 
 
@@ -191,7 +191,7 @@ Try this:
 
 You can try different numbers here and see what happens. 
 
-Let's set the color based on the country. There are four counrties represented: USA, Pakistan, Italy, and Brazil. 
+Let's set the color based on the country. There are four countries represented: USA, Pakistan, Italy, and Brazil. 
 
 ```JS
 .attr('fill', d => {
@@ -211,11 +211,11 @@ Should look like this so far:
 
 ![example-1.png](images/example-1.png)
 
-Wow San Francisco and Fresno are pretty small compared to those other sities! 
+Wow, San Francisco and Fresno are pretty small compared to those other cities! 
 
-Note! The areas represented by the circle's radius is also not accurately representing the population since the area of a circle is πr^2. Where our drawing represnts the diameter as population. 
+Note! The areas represented by the circle's radius do not accurately represent the population since the area of a circle is πr^2. Where our drawing represents the diameter of the population. 
 
-NOTE! to really scale and position our elements we need to know the max values and minimum values represented in our data. 
+NOTE! to scale and position our elements we need to know the max values and minimum values represented in our data. 
 
 NOTE! Setting the color for each country was a little awkward. 
 
