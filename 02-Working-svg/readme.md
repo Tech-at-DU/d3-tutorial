@@ -1,6 +1,6 @@
 ## SVG
 
-SVG is Scalable, Vector, Graphics. It's a language related to HTML but used to draw things. Rather than display text and pictures SVG is used to draw lines and shapes.
+SVG is Scalable, Vector, Graphics. It's a language related to HTML but used to draw things. Rather than display text and pictures, SVG is used to draw lines and shapes.
 
 SVG and HTML are closely related. Both languages share the same parent language and are written in much the same way with the same syntax. You can use SVG within an HTML document. 
 
@@ -22,7 +22,7 @@ Here is a list of some of the SVG tags.
 
 ### Making SVG happen
 
-D3 writes SVG for us! While you can write your own SVG documents using D3 you will use D3 to write the SVG content for you. 
+D3 writes SVG for us! While you can write your SVG documents using D3 you will use D3 to write the SVG content for you. 
 
 SVG tags have different names and many new and different attributes!
 
@@ -47,7 +47,7 @@ Create a new HTML document with the boilerplate code:
 </html>
 ```
 
-Make an SVG element. You can write SVG into your HTML documents just like you would write a div or other tag. Think of the `<svg>` element as a the root element for the SVG drawing/document.
+Make an SVG element. You can write SVG into your HTML documents just like you would write a div or other tag. Think of the `<svg>` element as the root element for the SVG drawing/document.
 
 Make an svg tag:
 
@@ -59,9 +59,9 @@ Make an svg tag:
 </body>
 ```
 
-Inside an SVG tag you can add other tags but these need to be SVG elements. SVG has it's own tags/elements that are different from HTML tags/elements. 
+Inside an SVG tag, you can add other tags but these need to be SVG elements. SVG has its own tags/elements that are different from HTML tags/elements. 
 
-SVG elements have their own attributes also. Try it yourself, make a circle. 
+SVG elements have their attributes also. Try it yourself, make a circle. 
 
 ```HTML
 <svg id="svg" width="500" height="500">
@@ -84,7 +84,7 @@ Make a couple more circles for fun. Change the `fill` color, `r` (radius), `cx` 
 
 Time to make some SVG elements with D3.
 
-For this example we will use an array of objects each with three properties: `a`, `b`, and `c`. The data will be generated randomly. 
+For this example, we will use an array of objects each with three properties: `a`, `b`, and `c`. The data will be generated randomly. 
 
 This function takes a parameter `n` and returns an array of n objects. Each object properties a, b, and c with random values from 0 - 1. 
 
@@ -100,7 +100,7 @@ function makeRandomData(n) {
 }
 ```
 
-Use this function to generate random data for testing. Here you're calloing the function and storing the returned value in the variable `data`.
+Use this function to generate random data for testing. Here you're calling the function and storing the returned value in the variable `data`.
 
 ```JS
 const data = makeRandomData(11)
@@ -108,7 +108,7 @@ const data = makeRandomData(11)
 
 ### Setup D3
 
-Start using D3. In this step you will follow the d3 boilerplate code. 
+Start using D3. In this step, you will follow the d3 boilerplate code. 
 
 Select the SVG element by its id name and give it a CSS style.
 
@@ -119,7 +119,7 @@ d3.select('#svg')
   .style('border', '1px solid #000')
 ```
 
-Adding a border will help idenitfy where SVG is in the window. If you don't see the border check your work. 
+Adding a border will help identify where SVG is in the window. If you don't see the border check your work. 
 
 Select all of the `circle` elements. None exist yet D3 will make them inside the `#svg` element. Add `data`. Then call `enter()` to start creating elements from the data.
 
@@ -149,15 +149,15 @@ d3.select('#svg')
   .attr('opacity', () => 0.5)
 ```
 
-Notice that the `.attr()` method takes two parameters. The first is a string and should the name of the attribute. The second is a callback function that receives one data value and returns the value you want assigned to that attribute. 
+Notice that the `.attr()` method takes two parameters. The first is a string and should be the name of the attribute. The second is a callback function that receives one data value and returns the value you want to be assigned to that attribute. 
 
-The callback also receives the index of the data element in it's array. The example above uses this to set the `cx` attribute to spread the circles evenly across the width of the svg container. 
+The callback also receives the index of the data element in its array. The example above uses this to set the `cx` attribute to spread the circles evenly across the width of the SVG container. 
 
 Notice I've used an arrow function here, written on a single line the return is implicit. 
 
 ![example-1](images/example-1.png)
 
-Here is a list of attributes you can use with svg elements: 
+Here is a list of attributes you can use with SVG elements: 
 
 - `stroke` color of a stroke
 - `stroke-width` size of the stroke in px
@@ -167,9 +167,9 @@ Here is a list of attributes you can use with svg elements:
 - `fill` the fill color of the element 
 - `opacity` the transparency/opacity of the element
 
-There are lots and lost of attributes. Some apply to some elements and not to others while some attributes apply to all elements. 
+There are lots and lots of attributes. Some apply to some elements and not to others while some attributes apply to all elements. 
 
-For example `r`/radius only applies to circles. To know which attribues apply you need to look up the element in the documentation. 
+For example `r`/radius only applies to circles. To know which attributes apply you need to look up the element in the documentation. 
 
 https://developer.mozilla.org/en-US/docs/Web/SVG/Element
 
@@ -178,7 +178,7 @@ https://developer.mozilla.org/en-US/docs/Web/SVG/Element
 - Set the stroke. Set the property: `stroke`. Make the value the color of the stroke. For example: `.attr('stroke', '#000')` would add a black stroke.
 - Use the data b property to set the stroke width. Something like: `.attr('stroke-width', d => 10 * d.b)`
 - Change the stroke color. Since the data values are in the range of 0 to 1. You can use an HSL color and multiply the value by 360 to get the hue. For example: ``hsl(${360 * d.b}, 100%, 50%)``.
-- Add more data. Remember the function at the top will generate a number of random values based on the argument provided. 
+- Add more data. Remember the function at the top will generate some random values based on the argument provided. 
 - Make all of the circles smaller by changing the `r` attribute.
 - Set the fill color based on the `data.a` property. 
 
@@ -215,7 +215,7 @@ SVG use elements to define shapes:
 - `rect`
 - `polygon`
 
-SVG uses attributes to describe these shapes. Attribues might be: 
+SVG uses attributes to describe these shapes. Attributes might be: 
 
 - `cx`
 - `cy`
