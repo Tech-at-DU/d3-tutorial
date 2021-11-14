@@ -204,7 +204,7 @@ x + (Math.cos(angle) + (radius + 10))
 
 In the picture below I added 10 to the radius for the line and 15 to to the radius for the text.
 
-![challenge-1](challenge-1.png)
+![challenge-1](images/challenge-1.png)
 
 ## Draw a Path
 
