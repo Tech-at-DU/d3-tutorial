@@ -1,6 +1,6 @@
 # D3 Tutorial
 
-This tutorial wil;l get you started learning D3. D3 is deep! This tutorial covers the fundamental comncepts. Later tutorials will delve into features and and systems in D3. 
+This tutorial will get you started learning D3. D3 is deep! This tutorial covers the fundamental concepts. Later tutorials will delve into features and systems in D3. 
 
 ## Getting started
 
@@ -23,7 +23,7 @@ Start by making a new web page. create: `index.html`. Add the boilerplate HTML c
 </html>
 ```
 
-To use D3.js you need to link to the library. You can download from the website or link to it from a CDN. We'll choose the second method. 
+To use D3.js you need to link to the library. You can download it from the website or link to it from a CDN. We'll choose the second method. 
 
 Link to the library from the CDN. Add the script tag to the bottom of the body tag: 
 
@@ -49,16 +49,16 @@ Select an element to work with. You will be adding or modifying elements within 
 d3.select('body')
 ```
 
-Next select the elements you want to modify or create. In this case we are selecting divs.
+Next, select the elements you want to modify or create. In this case, we are selecting divs.
 
 ```JS
 d3.select('body')
   .selectAll('div')
 ```
 
-*It doesn't matter that there no existing divs.* They will exist later D3 will make them!
+*It doesn't matter that there are no existing divs.* They will exist later D3 will make them!
 
-Next add some data. Data can be an array containing any type of data. For this example I've used an array of numbers. 
+Next, add some data. Data can be an array containing any type of data. For this example, I've used an array of numbers. 
 
 ```JS
 d3.select('body')
@@ -93,7 +93,7 @@ The code you have written so far is sort of boilerplate for D3 and is a starting
 
 ### D3 Cheatsheet
 
-Let's review what just happened. Here's the forumula for getting started with D3. 
+Let's review what just happened. Here's the formula for getting started with D3. 
 
 ```JS
 d3.select('body')        // select() an element to host 
@@ -103,7 +103,7 @@ d3.select('body')        // select() an element to host
   .append('div')         // append() elements
 ```
 
-- `d3.select('#someId')` - Select an element to host the elements you will create. This element will contain all of the elements d3 creates. This element should exist and you will probably want identify it with an id. 
+- `d3.select('#someId')` - Select an element to host the elements you will create. This element will contain all of the elements d3 creates. This element should exist and you will probably want to identify it with an id. 
 - `.selectAll('someElement')` - Select all elements you will be working with. These elements don't need to exist and will be created if they don't exist. 
 - `.data(someArray)` - Add an array of data
 - `enter()` - Begins looping over the data. 
@@ -113,7 +113,7 @@ Time to draw something!
 
 ## D3 Working with elements and data
 
-Set the text of each new node. This method takes a function which receives one of the data values and should return the text to display in the node.
+Set the text of each new node. This method takes a function that receives one of the data values and should return the text to display in the node.
 
 ```JS
 d3.select('body')
@@ -124,15 +124,15 @@ d3.select('body')
   .text((d) => d)
 ```
 
-What happened here? You starrted D3. Pointed D3 to the body tag to work with as a container for dynamically generated elements. 
+What happened here? You started D3. Pointed D3 to the body tag to work with as a container for dynamically generated elements. 
 
 You selected all of the div tags (there are none at the moment.) You gave D3 an array of numbers to work with. 
 
-Next you called `.enter()` this method identifies DOM elements that need to be added to a selection. Currently there are no divs but you have 7 numbers in your array, so we need to `.append()` some new divs. 
+Next, you called `.enter()` this method identifies DOM elements that need to be added to a selection. Currently, there are no divs but you have 7 numbers in your array, so we need to `.append()` some new divs. 
 
-Last, for each div you set the text of that div. Here text takes a callback that receives a piece of data from the array and is expected to return the value that you'd like to see. 
+Last, for each div, you set the text of that div. Here text takes a callback that receives a piece of data from the array and is expected to return the value that you'd like to see. 
 
-The end result is a list of divs each displaying one of the elements from the array. 
+The result is a list of divs each displaying one of the elements from the array. 
 
 Try this, make the change below to format the numbers: 
 
@@ -142,7 +142,7 @@ d3.select('body')
   .text(d => `$${d.toFixed(2)}`)
 ```
 
-Here you took the data element and converted to a string, added a "$" and a decimal and some 0s. 
+Here you took the data element and converted it to a string, added a "$" and a decimal and some 0s. 
 
 Stop a moment and imagine the piece of data (`d`) was a passenger object from the Titanic. 🤔 You could print the name or the fare...
 
@@ -158,13 +158,13 @@ d3.select('body')
   .style('margin', '1px')
 ```
 
-Use the `.style()` method to apply styles to each element. Style takes two parameters. The first is the style property name. The second is the value for that property. 
+Use the `.style()` method to apply styles to each element. Style takes two parameters. The first is the style property name. The second is the value of that property. 
 
 `.style('padding', '1em')` is equivalent to `padding: 1em`
 
-This is good but in some cases you'll want the styles to be related to the dated value. In this case you can replace the second argument with a callback! 
+This is good but in some cases, you'll want the styles to be related to the dated value. In this case, you can replace the second argument with a callback! 
 
-With these properties in place each row should have padding of 1em, a background color of red, and 1px margin. Things are starting to looking interesting. 
+With these properties in place, each row should have a padding of 1em, a background color of red, and a 1px margin. Things are starting to look interesting. 
 
 ```JS
 d3.select('body')
@@ -172,9 +172,9 @@ d3.select('body')
   .style('width', (d) => `${d / 10 * 100}%`)
 ```
 
-Here the you've added a callback. The callback takes the data as a parameter, and returns the value for the width property. 
+Here you've added a callback. The callback takes the data as a parameter and returns the value for the width property. 
 
-With this in place the width of each bar is a percentage of the width of the screen.
+With this in place, the width of each bar is a percentage of the width of the screen.
 
 ### D3 HTML Review 
 
@@ -194,7 +194,7 @@ D3 generated a list of standard div tags and assigned some inline styles. You co
 
 **Challenge 1**
 
-Add some more data to the data array. Add as many number to the array as you like. 
+Add some more data to the data array. Add as many numbers to the array as you like. 
 
 NOTE! Since you have written the width style as: `d / 10 * 100` numbers greater than 10 will go off the screen!
 
@@ -213,6 +213,6 @@ Add some new styles. Try these ideas.
 
 Try setting a property using the data value. The values should be in the range of 0 to 10.
 
-- Set the size of the text. Use the property `font-size`. Second argument should be a function that receives `d` and returns ``${d * 5}px``.
+- Set the size of the text. Use the property `font-size`. The second argument should be a function that receives `d` and returns ``${d * 5}px``.
 - Setting the opacity based on the data value. You can use a formula like: `d / 10`
-- Try changing the color of the gradient based on the data value.
+- Try changing the color of the gradient-based on the data value.
