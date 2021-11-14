@@ -29,15 +29,15 @@ The goal is to have D3 structure out svg like this:
 
 ```HTML
 <svg>
-	<g>
-		<circle></circle>
-		<text></text>
-	</g>
-	<g>
-		<circle></circle>
-		<text></text>
-	</g>
-	...
+  <g>
+    <circle></circle>
+    <text></text>
+  </g>
+  <g>
+    <circle></circle>
+    <text></text>
+  </g>
+  ...
 </svg>
 ```
 
@@ -45,11 +45,11 @@ To do this we are going to rewrie some of the D3 code we used previously. Start 
 
 ```JS
 const node = d3.select('#svg')
-	.style('border', '1px solid')
-	.selectAll('g') // Select all groups
-	.data(data)
-	.enter()
-	// Do not chain any more methods here!
+  .style('border', '1px solid')
+  .selectAll('g') // Select all groups
+  .data(data)
+  .enter()
+  // Do not chain any more methods here!
 ```
 
 Notice here we are storing the value returned from `d3.select()`. 
@@ -65,7 +65,7 @@ Remember the node wants to select `g` groups. So make some groups:
 ```JS
 // Append some groups
 const groups = node
-	.append('g')
+  .append('g')
 ```
 
 Here you appended a group element for each piece of data.
@@ -78,13 +78,13 @@ Add a circle to each group:
 // For each of those groups 
 // add a circle
 groups
-	.append('circle')
-	.attr('cx', d => xScale(d.x))
-	.attr('cy', d => yScale(d.y))
-	.attr('r', d => popScale(d.population))
-	.attr('fill', `red`)
-	.attr('opacity', 0.25)
-	.attr('fill', d => countryScale(d.country))
+  .append('circle')
+  .attr('cx', d => xScale(d.x))
+  .attr('cy', d => yScale(d.y))
+  .attr('r', d => popScale(d.population))
+  .attr('fill', `red`)
+  .attr('opacity', 0.25)
+  .attr('fill', d => countryScale(d.country))
 ```
 
 Here we added a circle element to the groups. This should next one circle inside of each group. 
@@ -95,12 +95,12 @@ Now add a text element to each group. Use `groups` to append a `text` element.
 
 ```JS
 groups
-	.append('text')
-	.text(d => d.name) // set the text
-	.attr('x', d => xScale(d.x))
-	.attr('y', d => yScale(d.y))
-	.style('font-family', 'Helvetica')
-	.style('font-size', '18px')
+  .append('text')
+  .text(d => d.name) // set the text
+  .attr('x', d => xScale(d.x))
+  .attr('y', d => yScale(d.y))
+  .style('font-family', 'Helvetica')
+  .style('font-size', '18px')
 ```
 
 Here there are some new ideas. First we set the text of the text element with `.text()`. This texts the text that is displayed. 
@@ -166,12 +166,12 @@ Start by appending lines.
 const angle = Math.PI * 1.75
 // append some lines
 groups
-	.append('line')
-	.attr('x1', d => xScale(d.x))
-	.attr('y1', d => yScale(d.y))
-	.attr('x2', d => xScale(d.x) + (Math.cos(angle) * popScale(d.population)))
-	.attr('y2', d => yScale(d.y) + (Math.sin(angle) * popScale(d.population)))
-	.attr('stroke', '#000')
+  .append('line')
+  .attr('x1', d => xScale(d.x))
+  .attr('y1', d => yScale(d.y))
+  .attr('x2', d => xScale(d.x) + (Math.cos(angle) * popScale(d.population)))
+  .attr('y2', d => yScale(d.y) + (Math.sin(angle) * popScale(d.population)))
+  .attr('stroke', '#000')
 ```
 
 First append a line element. 
@@ -204,7 +204,7 @@ x + (Math.cos(angle) + (radius + 10))
 
 In the picture below I added 10 to the radius for the line and 15 to to the radius for the text.
 
-![challenge-1](challenge-1.png)
+![challenge-1](images/challenge-1.png)
 
 ## Draw a Path
 
@@ -214,10 +214,10 @@ The path element works a little different other elements. Let's look at what the
 
 ```svg
 <path d="M 10,30
-	A 20,20 0,0,1 50,30
-	A 20,20 0,0,1 90,30
-	Q 90,60 50,90
-	Q 10,60 10,30 z"/>
+  A 20,20 0,0,1 50,30
+  A 20,20 0,0,1 90,30
+  Q 90,60 50,90
+  Q 10,60 10,30 z"/>
 ```
 
 This is a picture of a heart ♡. Hard to tell I know. A path element has a `d` attribute that contains a series of number pairs that represent an x and y position. Sometimes there will be a letter. This is a modifer that describes what type of point something is or how to get to that point. M is move to, A is an arc, Q is a quadratic curve, Z means close the path. Seriously.
@@ -242,18 +242,18 @@ Now let's do it!
 
 ```JS
 groups
-	.append('path')
-	.attr('d', d => {
-		const x1 = xScale(d.x)
-		const y1 = yScale(d.y)
-		const x2 = xScale(d.x) + (Math.cos(angle) * (popScale(d.population) + 10))
-		const y2 = yScale(d.y) + (Math.sin(angle) * (popScale(d.population) + 10))
-		const x3 = x2 + 100
-		const y3 = y2
-		return d3.line()([[x1, y1], [x2, y2], [x3, y3]])
-	})
-	.attr('stroke', '#000')
-	.attr('fill', 'none')
+  .append('path')
+  .attr('d', d => {
+    const x1 = xScale(d.x)
+    const y1 = yScale(d.y)
+    const x2 = xScale(d.x) + (Math.cos(angle) * (popScale(d.population) + 10))
+    const y2 = yScale(d.y) + (Math.sin(angle) * (popScale(d.population) + 10))
+    const x3 = x2 + 100
+    const y3 = y2
+    return d3.line()([[x1, y1], [x2, y2], [x3, y3]])
+  })
+  .attr('stroke', '#000')
+  .attr('fill', 'none')
 ```
 
 Here you appended some `path` elements to the groups. 
