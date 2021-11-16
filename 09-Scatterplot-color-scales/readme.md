@@ -17,14 +17,14 @@ At the bottom of the drawing, the code adds the following.
 ```JS
 // Scatter plot
 svg
-	.append('g')
-	.selectAll('circle')
-	.data(baData)
-	.enter()
-	.append('circle')
-	.attr('cx', d => xscale(d.date))
-	.attr('cy', d => yscale(d.precipitation))
-	.attr('r', 3)
+  .append('g')
+  .selectAll('circle')
+  .data(baData)
+  .enter()
+  .append('circle')
+  .attr('cx', d => xscale(d.date))
+  .attr('cy', d => yscale(d.precipitation))
+  .attr('r', 3)
 ```
 
 This should put a circle at each data point. It might look like this: 
@@ -39,8 +39,8 @@ Notice you did the following:
 - Entered the data
 - Appended a circle for each point of data
 - Set the attributes of the circles. 
-	- You used the `xscale()` function here to get the `cx`
-	- And the `yscale()` function to plot the `cy`
+  - You used the `xscale()` function here to get the `cx`
+  - And the `yscale()` function to plot the `cy`
 
 Stop and think about that for a minute. 🤔
 
@@ -80,16 +80,16 @@ Use `d3.scaleOrdinal()`. This maps values in the domain through a list of values
 
 ```JS
 const colorScale = d3.scaleOrdinal()
-	.domain(dateExtent)
-	.range(['tomato', 'gold', 'lime', 'cornflowerblue'])
+  .domain(dateExtent)
+  .range(['tomato', 'gold', 'lime', 'cornflowerblue'])
 ```
 
 To display the colors you might do this: 
 
 ```js
-	...
-	.attr('fill', d => colorScale(d.date))
-	...
+  ...
+  .attr('fill', d => colorScale(d.date))
+  ...
 ```
 
 Here values of `d.date` will be assigned one of the four values in the range above. The values will repeat in order if they run out. 
@@ -110,8 +110,8 @@ Swap the last color scale for this one:
 
 ```JS
 const colorScale = d3.scaleSequential()
-	.domain(dateExtent)
-	.interpolator(d3.interpolateViridis)
+  .domain(dateExtent)
+  .interpolator(d3.interpolateViridis)
 ```
 
 Here you are using `d3.scaleSequential()`. Notice the extent is the same but the range has been swapped for `.interpolator()`. This interpolator calculates the from a provided interpolator. D3 has many built-in interpolators some specific to colors. 
