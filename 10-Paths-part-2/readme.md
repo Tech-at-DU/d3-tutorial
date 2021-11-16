@@ -90,7 +90,7 @@ function convertToArray(obj) {
   })			
 }
 ```
-<code></pre>
+</code></pre>
 </details>
 
 
