@@ -9,3 +9,5 @@ This tutorial provides and introduction to D3.js!
 - [04 Scales](04-scales)
 - [05 Groups](05-Groups)
 - [06 Challenges](06-challenges)
+- [07 Paths](07-paths)
+- [08 Axis](07-axis)
