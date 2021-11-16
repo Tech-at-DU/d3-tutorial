@@ -11,3 +11,4 @@ This tutorial provides and introduction to D3.js!
 - [06 Challenges](06-challenges)
 - [07 Paths](07-paths)
 - [08 Axis](07-axis)
+- [09 Scatterplots and color scales](09-Scatterplot-color-scales)
