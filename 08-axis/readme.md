@@ -47,11 +47,13 @@ function handleData(data) {
 	...
 ```
 
-We will use these numbers later in the code to determine the size and position of the elements we draw. 
+We will use these numbers later in the code to determine the size and position of the elements we draw.
 
 ## Time Scale
 
-The horizontal axis in the previous example used a linear scale with a range of 40 to 560. D3 provides `d3.scaleTime()` to convert a domain of dates into a range. 
+The horizontal axis in the previous example used a linear scale: `d3.scaleLinear()`, with a range of 40 to 560. D3 provides `d3.scaleTime()` to convert a domain of dates into a range. 
+
+### Parsing dates
 
 For this to work we need to provide D3 with date objects. Currently our data has dates in string format. 
 
@@ -74,22 +76,159 @@ baData.forEach(d => d.date = parseTime(d.date))
 
 You provide a formatting string when you create your `parseTime` function. The characters `%d` represent the day, `%m` represents the month, and `%y` the year. This matches the situation in our date strings.
 
-The second line loops over all of the objects in our data and replaces the existing date string with a date object. 
+The second line loops over all of the objects in our data and replaces the existing date string with a date object.
+
+### d3.scaleTime()
 
 Now we can use a time scale for the xscale. Replace the existing xscale with: 
 
 ```JS
-// Make a time scale for the horizontal axis
-const xscale = d3.scaleTime()
-	// Get the extents for the date
-	.domain(d3.extent(stateData, d => d.date))
-	// Range takes into account the width and margin
-	.range([0, width - margin * 2])
-	.nice() // rounds the scale off and makes it look nicer
+// Find the extents of the dates
+const dateExtent = d3.extent(baData, d => d.date)
+// x scale 
+const xscale = d3.scaleTime() // Make a time scale!
+	.domain(dateExtent)
+	.range([margin, width - margin]) // Use the width and margin!
+	.nice() // Rounds the scale "nicely"
 ```
 
+This should look the same as before. The difference here is we're using dates to scale the x axis and we have some variables to calculate the width and margin. 
 
+### Adjust the yscale
 
+Use your variables on the yscale. 
+
+```JS
+const yscale = d3.scaleLinear()
+	.domain(percipitationExtents)
+	.range([height - margin, margin])
+```
+
+### LineGen with dates 
+
+Since we used the date to set the x scale we need to calculate the x position for each point on the linr using dates. 
+
+Adjust the `linegen` function. 
+
+```JS
+// line generator
+const linegen = d3.line()
+	.x(d => xscale(d.date)) // Use date here! 
+	.y(d => yscale(d.precipitation))
+	.curve(d3.curveLinear)
+```
+
+## Drawing the axis
+
+In order to draw the axis we need to consider the structure of our SVG document. 
+
+Currently the document is structured like this:
+
+```SVG
+<svg>
+	<path d="..."></path>
+</svg>
+```
+
+You can check this by inspecting the elements in the browser. 
+
+The code that generates that is: 
+
+```JS
+const svg = d3
+	.select('#svg')
+	.append('path')
+	...
+```
+
+Here you selected the `#svg` element and then appended a `path`. 
+
+We want to add some more elements. The new elements will draw the axis showing dates along the bottom, and inches of ranfall along the left. For this to be possible you need to create an SVG structured like this:  
+
+```SVG
+<svg>
+	<g><path d="..."></path></g>
+	<g>...</g><!-- date axis-->
+	<g>...</g><!-- rainfall axis-->
+</svg>
+```
+
+You want three groups!
+
+In the next step you will be rearranging the existing code and adding some new code. 
+
+Start by selecting the SVG and storing it in a variable. 
+
+```JS
+// Draw something on our svg
+const svg = d3
+	.select('#svg')
+	// ends here nothing after .select()!
+```
+
+Make a group for the graph/path:
+
+```JS
+// Make a group for the graph
+const graph = svg
+	.append('g')
+	
+// Use the group to append the path and generate a line.
+graph
+	.append('path')
+	.attr('d', linegen(baData))
+	.attr('stroke-width', 1)
+	.attr('stroke', 'cornflowerblue')
+	.attr('fill', 'none')
+```
+
+### Generating an axis
+
+Now we generate and axis! Luckily D3 has us covered with `d3.axisBottom()` and `d3.axisLeft()`. 
+
+Add the following: 
+
+```JS
+// This makes generator.
+const bottomAxis = d3.axisBottom(xscale)
+const leftAxis = d3.axisLeft(yscale)
+```
+
+Notice you are providing the xscale for the horizontal axis and yscale for the vertical axis. The scales are used to generate the axis! 
+
+Now append a group to the SVG and add generate the bottom axis. 
+
+```JS
+// Append a group and add the bottom axis 
+svg
+	.append('g')
+	// Position the group
+	.attr('transform', `translate(0, ${height - margin})`)
+	// generate the axis in the group
+	.call(bottomAxis)
+```
+
+Note! Group does not have `x` or `y` attributes but you can use transform translate. This is works the same as CSS! 
+
+Notice you used the `height` and `margin` variables here! 
+
+The last line uses the `call()` method to call the provided function. 
+
+Now make the left axis. 
+
+Add the following:
+
+```JS
+// Append the group and add the left axis
+svg
+	.append('g')
+	.attr('transform', `translate(${margin}, 0)`)
+	.call(leftAxis)
+```
+
+At this point you should have something like this: 
+
+![example-2](images/example-2.png)
 
 
 
