@@ -79,7 +79,10 @@ const arr = convertToArray(obj)
 // [{ month:'JAN', temp: 17.99 }, { month: 'FEB', temp: 19.43 }, { month: 'MAR', temp: 23.49 }, ...]
 ```
 
-<details><summary>**Solution**</summary>
+<details>
+  <summary>
+    **Solution**
+  </summary>
   
 ```js
 function convertToArray(obj) {
