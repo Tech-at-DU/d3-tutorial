@@ -1,6 +1,6 @@
 ## Drawing an Axis
 
-This next section will continue from the percipitation graph in [07-Paths](../07-Paths).
+This next section will continue from the precipitation graph in [07-Paths](../07-Paths).
 
 The current graph is looking good but it would be hard for people to intuit what we were expressing with this image. 
 
@@ -10,13 +10,13 @@ Which asks the question: What is this image expressing?
 
 Time is running left to right on the horizontal axis. What is the time? The graph shows 1998 to 2017. 
 
-A the vertical axis the graph is showing how much rain fell for each month. 
+The vertical axis of the graph is showing how much rain fell each month. 
 
 There should be a month for each peak but it's hard to tell where 2005 might be? Or any other month or year. 
 
-The higher peaks show more rain fall but I can't tell how many inches of rain fall that represents?
+The higher peaks show more rainfall but I can't tell how many inches of rainfall that represents?
 
-Some labels on the horizontal and vertical axis of the graph whould help!
+Some labels on the horizontal and vertical axis of the graph would help!
 
 What if our graph looked like this: 
 
@@ -26,7 +26,7 @@ An axis is a series of labels that run along the horizontal and vertical axis of
 
 ## Setting size and margins
 
-In the last example we set the size by using hard numbers. This works but will create a lot of work for us if we need to change the size of our graph. 
+In the last example, we set the size by using hard numbers. This works but will create a lot of work for us if we need to change the size of our graph. 
 
 Our SVG viewport is 600 by 400 pixels and moved the graph inside these dimensions by 40 pixels on each side. 
 
@@ -55,13 +55,13 @@ The horizontal axis in the previous example used a linear scale: `d3.scaleLinear
 
 ### Parsing dates
 
-For this to work we need to provide D3 with date objects. Currently our data has dates in string format. 
+For this, to work we need to provide D3 with date objects. Currently, our data has dates in string format. 
 
 ```
 30/11/2016
 ```
 
-That's `day/month/year`. This must european? Maybe that's why the state codes are weird? 
+That's `day/month/year`. This must be European? Maybe that's why the state codes are weird? 
 
 Luckily D3 has `d3.timeParse()` a function we can use to format a string into a date object. 
 
@@ -74,7 +74,7 @@ const parseTime = d3.timeParse('%d/%m/%Y')
 baData.forEach(d => d.date = parseTime(d.date))
 ```
 
-You provide a formatting string when you create your `parseTime` function. The characters `%d` represent the day, `%m` represents the month, and `%y` the year. This matches the situation in our date strings.
+You provide a formatting string when you create your `parseTime` function. The characters `%d` represent the day, `%m` represent the month, and `%y` the year. This matches the situation in our date strings.
 
 The second line loops over all of the objects in our data and replaces the existing date string with a date object.
 
@@ -92,7 +92,7 @@ const xscale = d3.scaleTime() // Make a time scale!
 	.nice() // Rounds the scale "nicely"
 ```
 
-This should look the same as before. The difference here is we're using dates to scale the x axis and we have some variables to calculate the width and margin. 
+This should look the same as before. The difference here is we're using dates to scale the x-axis and we have some variables to calculate the width and margin. 
 
 ### Adjust the yscale
 
@@ -106,7 +106,7 @@ const yscale = d3.scaleLinear()
 
 ### LineGen with dates 
 
-Since we used the date to set the x scale we need to calculate the x position for each point on the linr using dates. 
+Since we used the date to set the x scale we need to calculate the x position for each point on the line using dates. 
 
 Adjust the `linegen` function. 
 
@@ -120,7 +120,7 @@ const linegen = d3.line()
 
 ## Drawing the axis
 
-In order to draw the axis we need to consider the structure of our SVG document. 
+To draw the axis we need to consider the structure of our SVG document. 
 
 Currently the document is structured like this:
 
@@ -143,7 +143,7 @@ const svg = d3
 
 Here you selected the `#svg` element and then appended a `path`. 
 
-We want to add some more elements. The new elements will draw the axis showing dates along the bottom, and inches of ranfall along the left. For this to be possible you need to create an SVG structured like this:  
+We want to add some more elements. The new elements will draw the axis showing dates along the bottom, and inches of ranfall along the left. For this to be possible you need to create an SVG structured like this: 
 
 ```SVG
 <svg>
@@ -155,7 +155,7 @@ We want to add some more elements. The new elements will draw the axis showing d
 
 You want three groups!
 
-In the next step you will be rearranging the existing code and adding some new code. 
+In the next step, you will be rearranging the existing code and adding some new code. 
 
 Start by selecting the SVG and storing it in a variable. 
 
@@ -172,7 +172,7 @@ Make a group for the graph/path:
 // Make a group for the graph
 const graph = svg
 	.append('g')
-	
+ 
 // Use the group to append the path and generate a line.
 graph
 	.append('path')
@@ -230,5 +230,91 @@ At this point you should have something like this:
 
 ![example-2](images/example-2.png)
 
+## Complete solution for reference
 
+```JS
+function getDataForState(data, state) {
+	const arr = data
+		.filter(d => d.state === state)
+		.filter(d => !isNaN(d.precipitation))
+		.map(d => {
+			d.precipitation = parseFloat(d.precipitation)
+			return d
+		})
+	return arr
+}
+
+function handleData(data) {
+	const width = 600
+	const height = 400
+	const margin = 40
+	// draw stuff here
+ 
+	const baData = getDataForState(data, 'BA')
+
+	// Parse the dates in the data
+	// Dates are formatted: 30/11/2017
+	const parseTime = d3.timeParse('%d/%m/%Y')
+	// parse the dates for d3
+	baData.forEach(d => d.date = parseTime(d.date))
+	console.log(baData)
+
+	// x scale 
+	const dateExtent = d3.extent(baData, d => d.date)
+	const xscale = d3
+		.scaleTime()
+		.domain(dateExtent)
+		.range([margin, width - margin])
+		.nice()
+
+	// y scale 
+	// d3.extent(caData, d => d.precipitation)
+	const percipitationExtents = d3.extent(baData, d => d.precipitation)
+
+	const yscale = d3.scaleLinear()
+		.domain(percipitationExtents)
+		.range([height - margin, margin])
+
+	// line generator
+	const linegen = d3.line()
+		.x(d => xscale(d.date))
+		.y(d => yscale(d.precipitation))
+		.curve(d3.curveLinear)
+
+	// Draw something on our svg
+	const svg = d3
+		.select('#svg')
+ 
+	// Make a group for the graph
+	const graph = svg
+		.append('g')
+ 
+	graph
+		.append('path')
+		.attr('d', linegen(baData))
+		.attr('stroke-width', 1)
+		.attr('stroke', 'cornflowerblue')
+		.attr('fill', 'none')
+ 
+	// This makes generator.
+	const bottomAxis = d3.axisBottom(xscale)
+	const leftAxis = d3.axisLeft(yscale)
+
+	svg
+		.append('g')
+		// Position the group
+		.attr('transform', `translate(0, ${height - margin})`)
+		// generate the axis in the group
+		.call(bottomAxis)
+
+	// Append the group, transform, and add the axis
+	svg
+		.append('g')
+		.attr('transform', `translate(${margin}, 0)`)
+		.call(leftAxis)
+}
+
+d3.csv('precipitation.csv')
+	.then(handleData)
+```
 
