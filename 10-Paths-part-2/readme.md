@@ -80,6 +80,7 @@ const arr = convertToArray(obj)
 ```
 
 <details><summary>**Solution**</summary>
+  
 ```js
 function convertToArray(obj) {
   const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
@@ -89,6 +90,7 @@ function convertToArray(obj) {
   })			
 }
 ```
+
 </details>
 
 
