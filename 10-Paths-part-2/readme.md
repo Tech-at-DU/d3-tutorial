@@ -10,4 +10,4 @@ In the last example we created a graph with straight lines. This used the SVG pa
   Q 10,60 10,30 z"/>
 ```
 
-![heart](images/heart)
+![heart](images/heart.svg)
