@@ -11,18 +11,18 @@ Start a new HTML document.
 ```HTML
 <!DOCTYPE html>
 <html>
- <head>
-	<title>Using Paths</title>
- </head>
- <body>
+  <head>
+  <title>Using Paths</title>
+  </head>
+  <body>
 
-	<svg id="svg" width="600" height="400"></svg>
+  <svg id="svg" width="600" height="400"></svg>
 
-	<script src="https://d3js.org/d3.v7.min.js"></script>
-	<script>
-	// Your code here
-	</script>
- </body>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script>
+  // Your code here
+  </script>
+  </body>
 </html>
 ```
 
@@ -32,7 +32,7 @@ Add these styles to the head of the document.
 
 ```HTML
 <style>
-	/* Put the box in the center of the page */
+  /* Put the box in the center of the page */
   body, html {
     height: 100%;
     display: flex;
