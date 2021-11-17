@@ -4,7 +4,7 @@ Pie charts are circles that have been divided into pizza slices. It has been arg
 
 https://www.data-to-viz.com/caveat/pie.html
 
-With this in mind in the right place they can be useful. 
+With this in mind in the right place, they can be useful. 
 
 As you probably guessed D3 has these covered! Let's build a pie chart. 
 
@@ -31,12 +31,12 @@ In your script add the code to load the `cities.csv` data. Choose your favorite 
     ** Solution **
   </summary>
 
-  I chose to use `async` and `await`.
+ I chose to use `async` and `await`.
 
 ```JS
 async function handleData() {
   const data = await d3.csv('cities.csv')
-  
+
   // Draw stuff ...
 }
 
@@ -91,7 +91,7 @@ const height = 600
 const margin = 40
 ```
 
-Note! It's probably best if width and height here match the sizes used on the svg element.
+Note! It's probably best if the width and height here match the sizes used on the SVG element.
 
 ### Make a Scale 
 
@@ -103,7 +103,7 @@ Set up a color scale.
 
 The scale can be sequential. The rainbow interpolator might be a good choice here. 
 
-The domain should be the list of objects so the extent can be 0 to length of the list. 
+The domain should be the list of objects so the extent can be 0 to the length of the list. 
 
 <details>
   <summary>
@@ -123,7 +123,7 @@ const colorScale = d3.scaleSequential()
 
 D3 provides a `d3.pie()` method that helps us make pie charts. This method takes in an array of data and calculates the starting and ending angles for each of the slices. 
 
-Think about the pie chart. It's made up of slices. All of the slices together make up the entire circle. To draw the pie you need know the starting and ending angle for each slice. 
+Think about the pie chart. It's made up of slices. All of the slices together make up the entire circle. To draw the pie you need to know the starting and ending angle for each slice. 
 
 Define a piegenerator, add the following: 
 
@@ -131,7 +131,7 @@ Define a piegenerator, add the following:
 const pieGen = d3.pie()
 ```
 
-The piegenerator doesn't draw the pie directly. We need to calculate the arcs from some data. 
+The pie generator doesn't draw the pie directly. We need to calculate the arcs from some data. 
 
 Define some arc data. Add the following: 
 
@@ -147,9 +147,9 @@ Define an arc generator. Add the following:
 
 ```JS
 const arcGen = d3.arc() // Make an arc generator
-  .innerRadius(40)      // Set the inner radius
-  .outerRadius(200)     // Set the outer radius
-  .padAngle(0.01)       // Set the gap between arcs
+  .innerRadius(40) // Set the inner radius
+  .outerRadius(200) // Set the outer radius
+  .padAngle(0.01) // Set the gap between arcs
 ```
 
 `d3.arc()` has a few methods we can use to configure the shape of the arc/pie-wedge/slice shapes. 
@@ -190,7 +190,7 @@ const pieGroup = svg
   .attr('transform', `translate(${width / 2}, ${height / 2})`)
 ```
 
-Here we transformed the `pieGroup` to move it into the center of the SVG viewport. The the arcs will draw around the center of the group. 
+Here we transformed the `pieGroup` to move it into the center of the SVG viewport. The arcs will draw around the center of the group. 
 
 Now draw the arcs. Here we need to make some paths. There will be one for each arc/slice.
 
@@ -208,7 +208,7 @@ const piePath = pieGroup
 
 The pattern here is very similar to the pattern we used at the very beginning. The difference here is that the path data comes from the `arcGen`. 
 
-Notice we set the fill for each arc and used the `colorScale()` to to set the colors. 
+Notice we set the fill for each arc and used the `colorScale()` to set the colors. 
 
 At this stage you should have something like: 
 
@@ -216,8 +216,91 @@ At this stage you should have something like:
 
 ## Adding a legend
 
-This chart is looking good but I can't tell what each slice represents. If we knew that the colors were we would know how big Fresno is vs San Francisco!
+This chart is looking good but I can't tell what each slice represents. If we knew what the colors were we would know how big Fresno is vs San Francisco!
 
 Imagine that our chart looked like this: 
 
 ![example-2](images/example-2.png)
+
+You might be able to do this with one of the axis functions. In this example, you'll make the legend manually using all of the same D3 features you used in the previous steps of the tutorial. 
+
+**Challenge**
+
+Make this a challenge if you feel up to it. You can follow the solution below. or compare your work to the solution. 
+
+### Making the Legend
+
+We have the pie chart in its group. The legend will be made up of SVG circles and text elements. It would be good to keep them all in a group. This will allow us to access these elements and move them all together. 
+
+Create a new group for the legend, add the following: 
+
+```JS
+const labels = svg
+  .append('g')
+```
+
+Now add a circle to the labels group for each element in your data. We can follow the same pattern from the very first tutorial here. 
+
+Add the following: 
+
+```JS
+labels
+  .selectAll('circle')
+  .data(data)
+  .enter()
+  .append('circle')
+  .attr('r', '5')
+  .attr('cx', 10)
+  .attr('cy', (d, i) => (i * 20) + 15)
+  .attr('fill', (d, i) => colorScale(i))
+```
+
+Here you selected all of the circles, added your data, and entered your data. 
+
+Next, we appended a circle for each data element. 
+
+Last you set the attributes to draw the circles. Notice we set the `cy` based on the index and set the fill color using the `colorSCale()`. 
+
+**Challenge** 
+
+Adjust the radius, cy, and cx to make this look good. 
+
+Now add the text. We can follow all of the steps again but this time append `text` elements. 
+
+```JS
+labels
+  .selectAll('text')
+  .data(data)
+  .enter()
+  .append('text')
+  .text(d => d.name)
+  .attr('x', 20)
+  .attr('y', (d, i) => (i * 20) + 20)
+```
+
+Again you are targeting the `labels` group. This time you select all `text` elements, add your data, enter the data, and append a text element for each data element. 
+
+Next set the attributes of the text element. Adjust the x and y to position the text next to each circle. 
+
+## Challenge 
+
+Here are some final challenges for this project. 
+
+**Challenge**
+
+The cities data also has a country name. Show the country name in the legend. 
+
+**Challenge**
+
+The cities data shows the country name for each city. Build an array of unique country names and show a pie chart showing countries. Use the total population for all cities in that country for the value. 
+
+This won't show country population accurately but it will be proportional to the city size we already have. 
+
+Draw another smaller pie chart in one of the corners. 
+
+Or, stretch goal, draw a doughnut around the existing piechart showing the coutries. 
+
+**Challenge**
+
+Draw the city names around the main pie chart and draw a line from the text to their arc/slice.
+
