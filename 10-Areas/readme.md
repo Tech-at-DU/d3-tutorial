@@ -1,6 +1,6 @@
 # Areas
 
-In this section we will make a new graph and follow all of the steps we used in the previous graph for review and make a few changes along the way. 
+In this section, we will make a new graph and follow all of the steps we used in the previous graph for review and make a few changes along the way. 
 
 ## The Data
 
@@ -23,8 +23,8 @@ It's the year and each month. The first column is unlabeled and appears to have 
 There are a few ways we can look at this data. 
 
 1. All months and all years. This would be a lot of information but might show a trend over time. 
-2. All months for a single year. This would be twelve numbers. It might show the change of temperature over the course of a year. 
-3. One month for all years. For example Jan 1901, Jan 1902, Jan 1903 etc. This could show a trend of temperature changes over time. 
+2. All months for a single year. This would be twelve numbers. It might show the change in temperature over a year. 
+3. One month for all years. For example Jan 1901, Jan 1902, Jan 1903, etc. This could show a trend of temperature changes over time. 
 
 ## Getting started
 
@@ -41,7 +41,7 @@ Add the following script. Here we take the idea from the last examples but this 
 async function handleData() {
   const data = await d3.csv('Weather Data in India from 1901 to 2017.csv')
   console.log(data)
-
+  // draw things here later...
 }
 
 handleData()
@@ -49,7 +49,7 @@ handleData()
 
 Note! `handleData()` in this example is `async`. That means we can `await` any promise to resolve inside this function. `d3.csv()` returns a promise. So we use `await` on line 2.
 
-Using console to see the data we get: 
+Using the console to see the data we get: 
 
 ```JS
 [
@@ -83,14 +83,14 @@ const arr = convertToArray(obj)
   <summary>
     ** Solution **
   </summary>
-  
+ 
 ```js
 function convertToArray(obj) {
   const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC']
   return months.map(month => {
-    const temp = parseFloat(obj[month])
+  const temp = parseFloat(obj[month])
     return { month: month, temp }
-  })			
+  }) 
 }
 ```
 
@@ -111,7 +111,7 @@ async function handleData() {
 }
 ```
 
-I got the data for 1901 and saved to a variable. 
+I got the data for 1901 and saved it to a variable. 
 
 ## Drawing a path
 
@@ -125,7 +125,7 @@ const height = 300
 const margin = 40
 ```
 
-We need a scale for the x and y axis. The x axis is time but we don't have a full date, just the month, so we can use the index here. 
+We need a scale for the x and y-axis. The x-axis is time but we don't have a full date, just the month, so we can use the index here. 
 
 The y scale will be based on the temp data. 
 
@@ -145,9 +145,9 @@ const yscale = d3.scaleLinear()
   .range([height - margin, margin])
 ```
 
-This time we'll plan ahead by and make a group for the path. 
+This time we'll plan by and make a group for the path. 
 
-Add the following to set up the svg elements with D3. 
+Add the following to set up the SVG elements with D3. 
 
 ```JS
 // Select the SVG
@@ -169,9 +169,9 @@ const linegen = d3.line()
   .curve(d3.curveLinear)
 ```
 
-Notice you used the index of the data for the x axis to space things evenly left to right. You used the temp value for the y scale. 
+Notice you used the index of the data for the x-axis to space things evenly left to right. You used the temp value for the y scale. 
 
-Now let's draw the line. You'll draw a simple linear/straight lines for now. Later we you will try some new ideas with this. 
+Now let's draw the line. You'll draw simple linear/straight lines for now. Later you will try some new ideas with this. 
 
 Add the following to draw a line in the "graph" group. 
 
@@ -191,12 +191,11 @@ At this point you should have something like this:
 
 ### Curved path
 
-This looks good but what if we wanted a smooth curved path. Currently D3 is draw stright line segments from point to point. 
+This looks good but what if we wanted a smooth curved path. Currently, D3 is draw straight line segments from point to point. 
 
+In the last example, we created a graph with straight lines. This used the SVG path. If you recall I showed this example: 
 
-In the last example we created a graph with straight lines. This used the SVG path. If you recall I showed this example: 
-
-```svg
+```SVG
 <path d="M 10,30
   A 20,20 0,0,1 50,30
   A 20,20 0,0,1 90,30
@@ -208,7 +207,7 @@ In the last example we created a graph with straight lines. This used the SVG pa
 
 Check the course code for this image it's the code from above wrapped in an SVG document! 
 
-The code above is hard for us to write. It is not human readable. Luckily D3 has a function to help us out.  
+The code above is hard for us to write. It is not human-readable. Luckily D3 has a function to help us out. 
 
 Take a look at the `linegen` function: 
 
@@ -231,7 +230,7 @@ It's the last line here that defines the curvetype used. D3 has several built in
 - `curveMonotoneX`
 - `curveCatmullRom`
 
-It's hard to put these into words try them out for yourself. Some of these will have a sublt differences and this graph may not make those differences obvious. 
+It's hard to put these into words try them out for yourself. Some of these will have subtle differences and this graph may not make those differences obvious. 
 
 Try these:
 
@@ -245,7 +244,7 @@ Try these:
 .curve(d3.curveBasis)
 ```
 
-The different between these two and linear is noticable. 
+The difference between these two and linear is noticeable. 
 
 ### Adding a fill 
 
@@ -278,7 +277,7 @@ const linegen = d3.area() // change line to area
   .curve(d3.curveBasis)
 ```
 
-Here you are swapping `d3.line()` for `d3.area()`. This is going to draw a filled shape. Rather than ending the line at the end points. The `area()` function will close the shape by drawing a line from the last point down to a baseline then across to the starting point and up to the first point. 
+Here you are swapping `d3.line()` for `d3.area()`. This is going to draw a filled shape. Rather than ending the line at the endpoints. The `area()` function will close the shape by drawing a line from the last point down to a baseline then across to the starting point and up to the first point. 
 
 The `y0()` method maps each point along the top of the chart. You used the temp values run through the `yscale()` function. 
 
@@ -298,7 +297,7 @@ Might look like this at this stage:
 
 **Challenge**
 
-This is review! Give it a try on your own. Here are a few tips. 
+This is a review! Give it a try on your own. Here are a few tips. 
 
 It will be awkward to get the dates from this data since we have an object that represents the year, and then an array months that just given as an abreviation. Just hack this together by making an extent of 12 months. Something like this: 
 
@@ -309,13 +308,13 @@ const monthsScale = d3.scaleTime()
   .nice()
 ```
 
-Rather than trying to get the dates from our data we can just declare the extent with two date objects. 
+Rather than trying to get the dates from our data, we can just declare the extent with two date objects. 
 
 ```JS
 [ new Date('1901-01-01'), new Date('1901-12-01') ]
 ```
 
-First date is: `Jan 1, 1901` the last date is: `Dec 1, 1901`. 
+The first date is: `Jan 1, 1901` the last date is: `Dec 1, 1901`. 
 
 Set the range to: 
 
@@ -327,9 +326,9 @@ So the left edge should be margin/40px from the left and the right should be 40p
 
 <details>
   <summary>
-    ** Solution **
+  ** Solution **
   </summary>
-  
+ 
 ```js
 // Define the axis generators
 const bottomAxis = d3.axisBottom(monthsScale)
