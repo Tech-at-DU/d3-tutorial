@@ -351,3 +351,16 @@ Might look like this when you're done.
 
 ![example 4](images/example-4.png)
 
+**Challenge** 
+
+Draw another area using another year of data. For example draw the temperature for all 12 months of both 1901 and 1902. 
+
+Superimpose these one on top of the other. Give them a transparent fill. 
+
+Bonus points for using a function...
+
+Might look like this when you're done: 
+
+![example-5](images/example-5.png)
+
+
