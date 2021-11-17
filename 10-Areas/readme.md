@@ -363,4 +363,7 @@ Might look like this when you're done:
 
 ![example-5](images/example-5.png)
 
+**Stretch Challenge**
+
+This graph shows the mean temperature each month of a year. It might be good if we could show the temperature for the same month of all yeasr represented in the data. 
 
