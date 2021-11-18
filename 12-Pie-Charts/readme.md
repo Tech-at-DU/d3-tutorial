@@ -346,7 +346,7 @@ rLabels
   .append('text')
   .text(d => d.name)
   // Place labels around circle ?
-  .attr("transform", d => `translate(${arcLabels.centroid(arcData[i])})`)
+  .attr("transform", (d, i) => `translate(${arcLabels.centroid(arcData[i])})`)
   .attr('text-anchor', 'middle')
 ```
 
