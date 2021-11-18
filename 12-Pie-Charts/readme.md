@@ -351,3 +351,15 @@ rLabels
 ```
 
 </details>
+
+**Challenge**
+
+Draw a ring around the current chart that shows a pie chart of the total population for countries. 
+
+To do this you'll need to creat an array of countries and total the population from each of the cities in the original array. 
+
+Then follow all of the same steps to make a new pie and arc. Set the inner radius to something a little larger than the outer radius of the first pie. 
+
+It might look something like this: 
+
+![example 4](images/example-4.png)
