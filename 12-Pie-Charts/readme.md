@@ -302,6 +302,52 @@ Or, stretch goal, draw a doughnut around the existing piechart showing the coutr
 
 **Challenge**
 
-Draw the city names around the main pie chart and draw a line from the text to their arc/slice.
+Draw the city names on the arc/slices.
 
+It might look like this: 
 
+![example-3](images/example-3.png)
+
+This image is imperfect since the labels overlap but it working. 
+
+To do this follow these steps: 
+
+- Creat a new group to hold the labels. 
+- Creat a new `d3.arc()` you'll use this to caluclate the position of each label along the arc. 
+  - On this new arc call `.outerRadius(160)` and `.innerRadius(160)` to set the radius for the arc. 
+- Now create the labels on your new group
+  - Select all 
+  - Set data to your city data
+  - append a text element
+  - Set the text of the text element
+  - Transform the text element to position. You can use this: 
+    - `.attr("transform", d => `translate(${arcLabels.centroid(arcData[i])})`)`
+
+The `arcLabels.centroid(arcData[i])` uses the arc data you created ealier. Remember this data had a start angle and end angle. The `.centroid()` method finds the center between the start and end angle. 
+
+<details>
+<summary>
+** Solution **
+</summary>
+
+```JS
+const rLabels = svg
+  .append('g')
+  .attr('transform', `translate(${width / 2}, ${height / 2})`)
+
+const arcLabels = d3.arc()
+  .outerRadius(160)
+  .innerRadius(160)
+
+rLabels
+  .selectAll('text')
+  .data(data)
+  .enter()
+  .append('text')
+  .text(d => d.name)
+  // Place labels around circle ?
+  .attr("transform", d => `translate(${arcLabels.centroid(arcData[i])})`)
+  .attr('text-anchor', 'middle')
+```
+
+</details>
