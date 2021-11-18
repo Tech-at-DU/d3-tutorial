@@ -96,7 +96,7 @@ Now add a text element to each group. Use `groups` to append a `text` element.
 ```JS
 groups
   .append('text')
-  .text(d => d.name) // set the text
+  .text(d => d.label) // set the text
   .attr('x', d => xScale(d.x))
   .attr('y', d => yScale(d.y))
   .style('font-family', 'Helvetica')
