@@ -273,7 +273,7 @@ Try it out. Change the `linegen` function to look like:
 const linegen = d3.area() // change line to area
   .x((d, i) => xscale(i))
   .y0(d => yscale(d.temp)) // change y to y0
-  .y1(height - margins) // add this line
+  .y1(height - margin) // add this line
   .curve(d3.curveBasis)
 ```
 
