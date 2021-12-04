@@ -16,3 +16,7 @@ This tutorial provides and introduction to D3.js!
 - [10 Areas](10-Areas)
 - [11 Interaction](11-Interaction)
 - [12 Pie Charts](11-Pie-Charts)
+- [13 Pack](13-Pack)
+- [14 Hierarchy](14-Hierarchy)
+- [15 D3 React](15-D3-React)
+
