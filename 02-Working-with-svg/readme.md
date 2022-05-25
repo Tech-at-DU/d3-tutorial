@@ -238,3 +238,7 @@ SVG uses attributes to describe these shapes. Attributes might be:
 - `r`
 - `stroke`
 - `stroke-width`
+
+## Conclusion 
+
+In this tutorial you learned about SVG and some it's elements and attributes. 

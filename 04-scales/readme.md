@@ -319,3 +319,6 @@ Then use the population extent to set the population domain.
 
 ![example](images/example-1.png)
 
+## Conclusion 
+
+In this tutorial you learned to use D3 scales. You used extents to find the min and max values. You defined the domain as the range of values your data comes from and converted these a range of values that were displayed with a scale. 

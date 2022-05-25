@@ -8,7 +8,7 @@ Add some more cities to cities.csv. Be sure to format these carefully! Each reco
 
 Add your favorite cities. Hometown, places you've visited. Look up the geo-coordinates and population.
 
-test your work. Adding new cities should generate a new circle, paths, and text. 
+Test your work. Adding new cities should generate a new circle, paths, and text. 
 
 **Challenge**
 
@@ -63,10 +63,20 @@ node
   // set attributes for this new node here...
 ```
 
-You need to set the x and y properties to position your text elements in the SVG viewport!
+You need to set the `x` and `y` properties to position your text elements in the SVG viewport!
 
-Starting with `node` D3 should create a new element for each data value on the SVG element. 
+x should be a fixed number like 10. This will make all of the text sit 10 pixels right of the left edge of the document. 
 
-Notice above this we used `groups` which created a new element in each of the groups that were created when the groups were created on the SVG node!
+The y attribute needs to space all of the text elements out vertically. Try starting from 500 and subtracting the index times the height of text element. You can guestimate the height as 20. 
 
+Remember! the index of each data element is the second parameter to any of the callbacks! For example: 
 
+```JS
+...
+.attr('y', (d, i) => 490 - i * 20) // i is the index of the data! 
+...
+```
+
+## Conclusion
+
+In this tutorial you learned to create groups, lines, and paths. 

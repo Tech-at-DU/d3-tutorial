@@ -243,3 +243,7 @@ For the x and y values you can use anything. Depending on the values you use it'
 **Challenge 2:** 
 
 Style the SVG document. Give it a background color. 
+
+## Conclusion 
+
+In this tutorial you learned to load JSON and CSV data into D3. 

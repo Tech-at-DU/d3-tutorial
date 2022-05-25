@@ -263,3 +263,7 @@ The set the `d` attribute. This is a long one since we have to calculate the 6 n
 Look at the last line: `return d3.line()([[x1, y1], [x2, y2], [x3, y3]])`. This line is using D3's `line()` function to generate the funky value required for `d`. 
 
 Notice `d3.line()` returns a function! You are calling this function and passing to it an array of arrays. Each sub-array contains an x and y value. The value returned from this function we return as the value for d.
+
+## Conclusion 
+
+In this tutorial you learned to create and use SVG groups.
