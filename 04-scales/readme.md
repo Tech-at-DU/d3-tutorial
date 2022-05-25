@@ -1,8 +1,8 @@
 # D3 Scales
 
-Scales are used to scale and normalize values. You can use a scale to convert a value from one range to another. Convert a value to color, Convert strings to other values like colors or numbers. 
+Scales are used to scale and normalize values. You can use a scale to convert a value from one range to another range, convert a value to color, Convert strings to other values like colors or numbers. 
 
-For this example continue with the code from the previouse example. You should have something like this: 
+For this example continue with the code from the previous example. You should have something like this: 
 
 ```HTML
 <!DOCTYPE html>
@@ -56,9 +56,9 @@ A scale needs a domain and a range. The domain is the input and the range is the
 
 **Domains**
 
-A scale needs to know the domain, this is where the values come from. The domain can be a range like a minimum and maximum value. 
+A scale needs to know the extents of the domain. The extent is the minimum and maximum values of the domain. Think of it like the borders. 
 
-For example, in our cities data, the x value is roughly in the range of -46 to +122. 
+For example, in our cities data, the x value is roughly in the range of -46 to +122. Those are the extents!
 
 The domain for the countries might be an array of all available country names: `['USA', 'Pakistan', 'Italy', 'Brazil']`. 
 
@@ -68,7 +68,7 @@ The domain of population is crazy large numbers nuf said.
 
 Ranges can be numbers or other values and can be expressed as min and max values or a list of possible choices. 
 
-For example, if we are posting something on the screen and our SVG canvas is 500 pixels wide the range is 500. 
+For example, if we are posting something on the screen and our SVG canvas is 500 pixels wide the range is 0 to 500. 
 
 If we have a list of colors to match our countries against the range might be: `['cornflowerblue', 'gold', 'gold', 'tomato']` a list of colors! 
 
@@ -90,6 +90,7 @@ d3.csv('cities.csv')
       .domain([-150, 150]) // Set the domain
       .range([0, 500])     // Set the range
 
+    // Start doing D3 stuff
     d3.select('#svg')
       .style('border', '1px solid')
       // select all <circle>s in #svg
@@ -105,11 +106,11 @@ const xScale = d3.scaleLinear()
 ```
 Here you are creating a function `xScale` that is a linear scale function. 
 
-You set the domain to `[-150, 150]`. This says this function will translate numbers from -150 to +150. 
+You set the domain to `[-150, 150]`. This says this function will translate numbers from `-150` to `+150`. In other words the smallest number your scale is expecting is `-150` and the largest is `+150`. That's the extents!
 
-Last you set the range to `[0, 500]`. This says your scale function will return values from 0 to 500. 
+Last you set the range to `[0, 500]`. This says your scale function will return values from `0` to `500`. 
 
-All together the `xScale` function expects to take in numbers from -150 to 150 and return valuse from 0 to 500. You should expect:
+All together the `xScale` function expects to take in numbers from `-150` to `150` and return values from `0` to `500`. You should expect (a little mental unit test!):
 
 - `xScale(-150)` to return `0` 
 - `xScale(0)` to return `250` 
@@ -119,11 +120,11 @@ Use `xScale` to set the `cx` attribute:
 
 ```JS
 ...
-.attr('cx', d => xScale(d.x))
+.attr('cx', d => xScale(d.x)) // scale x with xScale
 ...
 ```
 
-This is a big improvement over the last method! 
+This is a big improvement over the last system you used! 
 
 Changing the size of your SVG. makes it 800 wide. 
 
@@ -143,13 +144,13 @@ const xScale = d3.scaleLinear()
 
 **Challenge**
 
-Create a new linear scale for the y value. 
+Create a new linear scale for the y value. The min y is -37 and the max is 42. Why not say the extent is -50 to +50. The range is the height of the SVG which is 500. 
 
 ### Scale Ordinal
 
-An ordinal scale maps arbitrary values like strings and dates to other arbitrary values like strings and colors. 
+An ordinal scale maps arbitrary values like strings and dates to other arbitrary values like other strings and colors. 
 
-The country names would use an ordinal scale. 
+To map country names to colors you would use an ordinal scale. 
 
 Define a new oridinal scale: 
 
@@ -181,7 +182,7 @@ const popScale = d3.scaleLinear()
 
 Here I found the largest and smallest population values and used these for the domain. 
 
-Then I decided on the largest and smallest circles diameter I wanted. I chose: 10 and 100. 
+Then I decided on the largest and smallest circles radius I wanted. I chose: 10 and 100. 
 
 Now use the scale: 
 
@@ -191,21 +192,21 @@ Now use the scale:
 ...
 ```
 
-This is a lot better than the previous solution. 
+This is a lot better than the previous solution. We can do better still and D3 can do the work of finding the extents for us, read on! 
 
 **Challenge**
 
-Edit the domain until the largest and smallest circles are sizes that you like: 
+Edit the domain until the largest and smallest circles are sizes that you like. 
+
+### scaleSqrt
 
 Wait! These circles do not display the populations as accurately as they could be. Currently, we're showing the diameter as the population but the circle expresses itself as an area. 
 
 You can think of this as drawing a line where each pixel represents a person. If you had a 10-pixel line and a 20-pixel line the second would represent twice as many people. 
 
-If you drew a 10px radius circle it would contain 78 pixels. A 20-pixel diameter circle would contain 314 pixels. The difference there is about 4 to 1. Remember were trying to express a 2 to 1 relation. 
+If you drew a 10px radius circle it would contain 78 pixels. A 20-pixel diameter circle would contain 314 pixels. The difference there is about 4 to 1. Remember you are trying to express a 2 to 1 relation. In this example the visual would represent a 4 to 1 relationship! 
 
-D3 can help us with a scale! 
-
-### scaleSqrt
+D3 can help you solve this with a scale! 
 
 `scaleSqrt` scales by area rather than linear. Try it out here. 
 
@@ -217,15 +218,15 @@ const popScale = d3.scaleSqrt()
   .range([10, 200])
 ```
 
-Notice the change. It may appear to be subtle. The sizes should be more accurately related now. 
+Notice the change, they may appear to be subtle. The sizes should be more accurately related now. 
 
 ## Finding min and max 
 
 This is getting better all the time. There are still a couple of places where our code is awkward. 
 
-Notice the population scale. To get the range we needed to look at the cities.csv and find the largest and smallest values. This would not work with more than 10 items. It's not going to work if something changes. 
+Notice the population scale. To get the range we needed to look at the `cities.csv` and find the largest and smallest values. This would not work with more than 10 items. It's not going to work if something changes. 
 
-The same is true for the x and y coordinates. 
+The same is true for the `x` and `y` coordinates. 
 
 You could use vanilla JS to calculate these but D3 provides some helper functions. 
 
@@ -258,9 +259,9 @@ Use these values in the domain of the population scale function.
 
 ### Making a set
 
-The last area where things are not working well is in country names. We had to add all of these names manually. If there had been more than four this would not have been easy, and as it is it's not scalable. 
+The last area where things are not working well is in country names. We had to add all of these names manually. If there had been more than four this would not have been easy, and as it is it's not scalable solution. 
 
-There is probably a strictly D3 method for this. I had a hard time figuring this since the methods seem to change over different versions of d3. We are using d3 v7 which didn't have an obvious answer.
+There is probably a strictly D3 method for this. I had a hard time figuring this out since the methods seem to change over different versions of d3. We are using d3 v7 which didn't have an obvious answer.
 
 I used vanilla JS for this. Try this: 
 
@@ -268,7 +269,7 @@ I used vanilla JS for this. Try this:
 const countries = Array.from(new Set(data.map(d => d.country)))
 ```
 
-Here `countries` should be a list of unique country names. 
+Here `countries` should be a list of unique country names. I made the unique array by first creating a Set. A set is like an array but may only contain unique values. Then I converted the set into an array.  
 
 Use this to define the domain for your `countryScale`.
 
@@ -278,7 +279,7 @@ const countryScale = d3.scaleOrdinal()
   .range(['cornflowerblue', 'gold', 'gold', 'tomato'])
 ```
 
-While these changes don't make a large change in the visualization behind the scenes they make big differences in how our code operates! 
+While these changes don't make a visual change, behind the scenes they make big differences in how our code operates! 
 
 ### Extents
 
@@ -306,7 +307,7 @@ const xScale = d3.scaleLinear()
 
 **Challenge**
 
-Use `d3.extent()` to find the min and max values for y. 
+Use `d3.extent()` to find the min and max values for `y`. 
 
 Then use this to define the `yScale`.
 
