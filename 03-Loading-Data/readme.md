@@ -1,8 +1,10 @@
 ## D3 Loaders
 
-D3 has its data loaders built-in. D3 works with JSON, CSV, and a few other data types. Read more [here](https://github.com/d3/d3/blob/master/API.md#fetches-d3-fetch).
+When working with data you'll most often be loading data from external sources.
 
-You're probably familiar with JSON let's take a look at CSV. CSV stands for Comma, Separated, Values. 
+D3 has built-in data loaders. D3 works with JSON, CSV, and a few other data types. Read more [here](https://github.com/d3/d3/blob/master/API.md#fetches-d3-fetch).
+
+You're probably already familiar with JSON, let's take a look at CSV. CSV stands for Comma, Separated, Values. 
 
 Here is a sample CSV file: 
 
@@ -18,7 +20,7 @@ Here is a sample CSV file:
 "Sao Paolo",12300000,"Brazil",-46,-23
 ```
 
-Each line is one record. 
+Each row is one record. 
 
 Take a look at the first row, the first row is special: 
 
@@ -30,7 +32,7 @@ This row defines the fields for all of the other rows. Each field is separated b
 
 The same data in JSON format would be longer but also can have nested values. CSV is flat. There is just one level of data stored. 
 
-CSV is more compact than JSON it takes fewer characters to store its contents. 
+CSV is more compact than JSON it takes fewer characters to store its contents. This makes it possible for CSV to store more data in a smaller file. 
 
 ## Loading Data
 
@@ -51,7 +53,7 @@ d3.csv('metal_bands_2017.csv')
   .then(csv => console.log(csv))
 ```
 
-Notice that both of these use a Promise! In other words: `d3.json()` and `d3.csv()` both return a promise.
+Notice that both of these return a Promise!
 
 A Promise is an object used by JS to handle async tasks. let's break the examples above into steps: 
 
@@ -60,7 +62,7 @@ d3.json('titanic-passengers.json')
   .then(json => console.log(json))
 ```
 
-What happened here? You called `d3.json('titanic-passengers.json')` which returned a Promise. A Promise is an object something like: `{...}`. Let's put it in a variable: 
+What happened here? You called `d3.json('titanic-passengers.json')` which returned a Promise. A Promise is an object. Let's put it in a variable: 
 
 
 ```JS
@@ -68,11 +70,11 @@ const p = d3.json('titanic-passengers.json')
 p.then(json => console.log(json))
 ```
 
-Here you put the promise in the variable `p` and then call the `.then()` method. The `.then()` takes a callback function which is executed when the promise resolves. In this example, the promise will resolve when the JSON data is loaded. 
+Here you put the promise in the variable `p` and then called the `.then()` method of the promise. `.then()` takes a callback function which is executed when the promise resolves. In this example, the promise will resolve when the JSON data is loaded. 
 
 The `then()` callback receives the data you are loading. 
 
-`d3.json().then(data => ...)`
+`d3.json().then(data => ...do something with data here... )`
 
 ## Getting started
 
@@ -128,11 +130,9 @@ Load your page to the browser and check the console. You should see something li
 Array Prototype
 ```
 
-What happened here? You loaded the cities.csv with D3 and D3 converted this into an array of objects. 
+What happened here? You loaded the `cities.csv` with D3 and D3 converted this into an array of objects. 
 
-This will be our data! 
-
-Add the D3 boilerplate code. 
+This will be our data for the next example! 
 
 **Challenge!**
 
@@ -152,13 +152,12 @@ d3.csv('cities.csv')
       .data(data)
       .enter()
       .append('circle')
+  })
 ```
 
-We will cover more sophisticated methods to handle some of the issues here for now let's try and tackle the Cities data with the things that we already know. 
+The Cities data contains an `x` and `y` field which is the geocoordinate latitude and longitude of the city. These numbers range from `x` of `122` (San Francisco) to `-46` (Sao Paolo), and `y` of `-37` (San Francisco) to `74` (Lahore). 
 
-The Cities data contains an x and y field which is the geocoordinate latitude and longitude of the city. These numbers range from x of 122 (San Francisco) to -46 (Sao Paolo), and y of -37 (San Francisco) to 74 (Lahore). 
-
-If we use these values to position our shapes in the SVG document we need to place them in the coordinate space of 0 to 500. The width and height of the SVG element are 500. 
+If we use these values to position our shapes in the SVG document we need to place them in the coordinate space of 0 to 500, the width and height of the SVG document. 
 
 Try this: 
 
@@ -179,7 +178,17 @@ d3.select('#svg')
 
 NOTE! I had to `parseFloat(d.x)` since the values from the CSV file are imported as strings!
 
-I scaled and offset the values. This places the 0,0 coordinate in the center of the document. 
+Here you scaled the values by multiplying by 2 to get more range, and offset the values by adding 250. 
+
+```JS
+parseFloat(d.x) * 2 + 250
+```
+
+Imagine the smallest number `-46` multiply by `2` and then add `250`. That gives us `158`. 
+
+The largest value: `122` multiplied by 2 add 250 is: `494`. 
+
+The math here is keeping the objects within the bounds of the SVG document and making the most of the space. 
 
 Let's set the size of the circles based on the populations. These population numbers are really big some are in millions! We need to scale these values. 
 
@@ -213,11 +222,24 @@ Should look like this so far:
 
 Wow, San Francisco and Fresno are pretty small compared to those other cities! 
 
-Note! The areas represented by the circle's radius do not accurately represent the population since the area of a circle is πr^2. Where our drawing represents the diameter of the population. 
+Our visualization has a couple problems: 
 
-NOTE! to scale and position our elements we need to know the max values and minimum values represented in our data. 
+**Problem!** The areas represented by the circle's radius do not accurately represent the population since the area of a circle is `πr^2`. Where our drawing represents the diameter of the population. You could take of this with some more math!
 
-NOTE! Setting the color for each country was a little awkward. 
+**Problem!** to scale and position our elements we need to know the max values and minimum values represented in our data. 
 
-While we could solve these problems on our own, you did this earlier in class, D3 is a library that was built to solve these problems! It has all of the tools we need to handle these problems. 
+**Problem!** Setting the color for each country was a little awkward. 
 
+While you could solve these problems on our own, you did this earlier, D3 is a library that was built to solve these problems! It has all of the tools we need to handle these problems. 
+
+## Challenges 
+
+Try these challenges to test your knowledge.
+
+**Challenge 1:** Add your home city to the data list in the cities.csv. Be sure to separate each value with a comma! Remember this is a CSV file you need to format it correctly! 
+
+For the x and y values you can use anything. Depending on the values you use it's possible your city could fall outside the boundaries of the SVG document! 
+
+**Challenge 2:** 
+
+Style the SVG document. Give it a background color. 
