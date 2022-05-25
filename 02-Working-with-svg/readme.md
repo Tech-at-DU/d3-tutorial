@@ -1,20 +1,20 @@
 ## SVG
 
-SVG stands for: Scalable, Vector, Graphics. It's a language related to HTML but used to draw things. Rather than display text and pictures, SVG is used to draw lines and shapes.
+SVG stands for: Scalable, Vector, Graphics. It's a language related to HTML but used to draw shapes. Rather than display text and pictures.
 
-SVG and HTML are closely related. Both languages share the same parent language and are written in much the same way with the same syntax. You can use SVG within an HTML document. 
+SVG and HTML are closely related. Both languages share the same parent language and are written in much the same way with the same syntax. You can use SVG within an HTML document! 
 
-Where HTML has tags to create headings, paragraphs, images, and links. SVG has tags that create Rectangles, circles, paths, and polygons. 
+Where HTML has tags to create headings, paragraphs, images, and links. SVG has tags that create Rectangles, circles, paths, and polygons etc. 
 
 SVG has the same syntax as HTML. SVG uses different tag names and the browser renders these following different rules.
 
-Here is a list of some of the SVG tags.
+Here is a list of some common SVG tags.
 
 - `<svg>` - The root element for an SVG document. 
 - `<rect>` - A Rectangle, you know fours sides width and height 🔲
 - `<circle>` - A Circle, these are round ⭕️
 - `<ellipse>` - An Elipse it's an oval like an egg 🥚
-- `<g>` - A Group, groups elements 
+- `<g>` - A Group, groups elements 🏘
 - `<line>` - A Line, a straight line 📈
 - `<path>` - A Path 🛣
 - `<polygon>` - A Polygon ⬡
@@ -22,11 +22,11 @@ Here is a list of some of the SVG tags.
 
 ### Making SVG happen
 
-D3 writes SVG for us! While you can write your SVG documents using D3 you will use D3 to write the SVG content for you. 
+D3 writes SVG for us! While you can write your SVG documents yourself by hand it's easier to have D3 do the work. 
 
-SVG tags have different names and many new and different attributes!
+SVG tags have different names and many new attributes!
 
-Create a new HTML document with the boilerplate code: 
+Time to start a new project! Create a new HTML document with the boilerplate code: 
 
 ```HTML
 <!DOCTYPE html>
@@ -59,9 +59,11 @@ Make an svg tag:
 </body>
 ```
 
+Above you added an SVG document to your page with a width and height of 500. 
+
 Inside an SVG tag, you can add other tags but these need to be SVG elements. SVG has its own tags/elements that are different from HTML tags/elements. 
 
-SVG elements have their attributes also. Try it yourself, make a circle. 
+SVG elements have their own attributes also. Try it yourself, make a circle.
 
 ```HTML
 <svg id="svg" width="500" height="500">
@@ -78,7 +80,7 @@ This should make a cyan circle in the center of the SVG document.
 
 **Challenge** 
 
-Make a couple more circles for fun. Change the `fill` color, `r` (radius), `cx` and `cy`.
+Make a couple more circles for fun. Change the `fill` color, `r` (radius), `cx` and `cy`. The idea is to make circles of different sizes and colors at different locations. 
 
 ### D3 and SVG Example
 
@@ -86,9 +88,9 @@ Time to make some SVG elements with D3.
 
 For this example, we will use an array of objects each with three properties: `a`, `b`, and `c`. The data will be generated randomly. 
 
-This function takes a parameter `n` and returns an array of n objects. Each object properties a, b, and c with random values from 0 - 1. 
+This function takes a parameter `n` and returns an array of `n` objects. Each object has properties a, b, and c with random values from 0 - 1. 
 
-Add the function below to your script. 
+Add the function below to your script tag. 
 
 ```JS
 function makeRandomData(n) {
@@ -106,9 +108,11 @@ Use this function to generate random data for testing. Here you're calling the f
 const data = makeRandomData(11)
 ```
 
+Generates an array of 11 objects. 
+
 ### Setup D3
 
-Start using D3. In this step, you will follow the d3 boilerplate code. 
+In this step, you will add the d3 boilerplate code. 
 
 Select the SVG element by its id name and give it a CSS style.
 
@@ -128,11 +132,13 @@ d3.select('#svg')
   .style('border', '1px solid')
   // select all <circle>s in #svg
   .selectAll('circle')
-  .data(data)
-  .enter()
+  .data(data) // add some data
+  .enter() // enter the data
 ```
 
-Set attributes on SVG `circle`. Below we've set the `cx`, `cy`, `r`, and `fill` to the values in the data.
+You should have circles now but you won't see them until you style them. 
+
+Set attributes on SVG `circle`. Set the `cx`, `cy`, `r`, and `fill` to the values in the data.
 
 ```JS
 d3.select('#svg')
@@ -140,8 +146,8 @@ d3.select('#svg')
   .selectAll('rect')
   .data(data)
   .enter()
-  // Style all <circle>s in #svg
   .append('circle')
+  // Set attributes for SVG circles
   .attr('cx', (d, i) => i * 500 / data.length)
   .attr('cy', d => d.a * 500)
   .attr('r', d => d.c * 100)
@@ -149,11 +155,13 @@ d3.select('#svg')
   .attr('opacity', () => 0.5)
 ```
 
-Notice that the `.attr()` method takes two parameters. The first is a string and should be the name of the attribute. The second is a callback function that receives one data value and returns the value you want to be assigned to that attribute. 
+Notice that the `.attr()` method takes two parameters. The first is a string and should be the name of the attribute. 
+
+The second is a callback function that receives one of the data values and returns the value you want to be assigned to that attribute. 
 
 The callback also receives the index of the data element in its array. The example above uses this to set the `cx` attribute to spread the circles evenly across the width of the SVG container. 
 
-Notice I've used an arrow function here, written on a single line the return is implicit. 
+_Notice I've used an arrow function here, written on a single line the return is implicit._
 
 ![example-1](images/example-1.png)
 
@@ -167,16 +175,22 @@ Here is a list of attributes you can use with SVG elements:
 - `fill` the fill color of the element 
 - `opacity` the transparency/opacity of the element
 
-There are lots and lots of attributes. Some apply to some elements and not to others while some attributes apply to all elements. 
+SVG has many attributes. Some apply to some elements and not to others while some attributes apply to all elements. 
 
-For example `r`/radius only applies to circles. To know which attributes apply you need to look up the element in the documentation. 
+For example `r`/radius only applies to circles. Rectangles don't have a radius. 
+
+To know which attributes apply you need to look up the element in the documentation. 
 
 https://developer.mozilla.org/en-US/docs/Web/SVG/Element
 
+## Challenges
+
+Try these challenges to check your knowledge. 
+
 **Challenges**
 
-- Set the stroke. Set the property: `stroke`. Make the value the color of the stroke. For example: `.attr('stroke', '#000')` would add a black stroke.
-- Use the data b property to set the stroke width. Something like: `.attr('stroke-width', d => 10 * d.b)`
+- Give each circle a stroke. Set the property: `stroke`. The value is the color of the stroke. For example: `.attr('stroke', '#000')` would add a black stroke.
+- Use the data `b` property to set the stroke width. Something like: `.attr('stroke-width', d => 10 * d.b)`
 - Change the stroke color. Since the data values are in the range of 0 to 1. You can use an HSL color and multiply the value by 360 to get the hue. For example: ``hsl(${360 * d.b}, 100%, 50%)``.
 - Add more data. Remember the function at the top will generate some random values based on the argument provided. 
 - Make all of the circles smaller by changing the `r` attribute.
@@ -186,7 +200,7 @@ Your work might look like this:
 
 ![Challenge 1](images/challenge-1.png)
 
-Inspect the elements in the browser: 
+Inspect the elements in the browser. You should see a list of `<circle>` elements int the `<svg>` container. Each has the properties your code set.  
 
 ```HTML
 <svg id="svg" width="500" height="500" style="border: 1px solid;">
@@ -196,19 +210,21 @@ Inspect the elements in the browser:
   ...
 ```
 
-Notice the attributes. These are all of the values you assigned with your d3 script! 
+You can use the inspector to solve problems. If a value is not appearing here it could be misspelled. 
 
 **Stretch Challenge**
 
 These circles are so round it's getting boring. Let's change them to ellipses! An ellipse has attributes: `rx` and `ry` to replace the `r` of circle. 
 
+Change: `.selectAll('circle')` and `.append('circle')` to `.selectAll('ellipse')` and `.append('ellipse')`. Then set replace `.attr('r', d => d.b * 50)` with: `.attr('rx', d => d.b * 50)` and `.attr('ry', d => d.c * 50)`.
+
 ![Challenge 2](images/challenge-2.png)
 
 ## Review
 
-SVG is a language, like HTML, but it uses different tags. Where HTML is used to display text and images SVG is used to draw shapes. 
+SVG is a language, like HTML, but it uses different tags. Where HTML is used to display text and images SVG is used to draw shapes.
 
-SVG use elements to define shapes: 
+SVG use elements to define shapes like: 
 
 - `circle`
 - `path`
