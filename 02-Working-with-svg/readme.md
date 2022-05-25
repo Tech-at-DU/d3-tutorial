@@ -1,6 +1,6 @@
 ## SVG
 
-SVG is Scalable, Vector, Graphics. It's a language related to HTML but used to draw things. Rather than display text and pictures, SVG is used to draw lines and shapes.
+SVG stands for: Scalable, Vector, Graphics. It's a language related to HTML but used to draw things. Rather than display text and pictures, SVG is used to draw lines and shapes.
 
 SVG and HTML are closely related. Both languages share the same parent language and are written in much the same way with the same syntax. You can use SVG within an HTML document. 
 
