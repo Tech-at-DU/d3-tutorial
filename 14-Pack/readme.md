@@ -6,13 +6,15 @@ Here is a picture to give you an idea:
 
 ![example 1](images/example-1.png)
 
-Here all of the values are shown as relative size and fit within space. 
+Read more about Circular packing here: https://www.data-to-viz.com/graph/circularpacking.html
+
+In a pack all of the values are shown as relative size and fit within the space.
 
 This bubble pack is a treemap. It groups related elements into a circle and shows their relative size. In the example above there is only a single level to the tree. 
 
-The example above only shows a single level but we ould show more. 
-
 ## Getting started
+
+**Challenge**
 
 Setup a new D3 page. Add the default starting HTML code. Import the D3.js code.
 
@@ -22,7 +24,7 @@ Import the `cities.csv` data. Use your favorite method for this.
 
 ## Add a color scale
 
-We won't need a scale for sizing elements that will be covered by the pack function. We do need a scale for color. 
+You won't need a scale for sizing elements that will be covered by the pack function. You do need a scale for color since you want all of the circles to be a different color. 
 
 Since you're using a list of values `d3.scaleSequential()` will be appropriate. 
 
@@ -68,7 +70,7 @@ Objects/JSON are hierarchical, for example:
 }
 ```
 
-You should have loaded the `citied.csv` in the previous step. We will use this data for this example. If we look at the data as a list of cities. IT has a single level. To build the pack diagram we still need to arrange it in a hierarchy. 
+You should have loaded the `citied.csv` in the previous step. If we look at the data as a list of cities, it has a single level. To build the pack diagram we still need to arrange it in a hierarchy. 
 
 Assuming that you loaded the `cities.csv` data and stored it in a variable named: `data`, add the following: 
 
@@ -77,11 +79,13 @@ const root = d3.hierarchy({ children: data })
   .sum(d => d.population) // Must call sum before pack()
 ```
 
-This makes a D3 hierarchy object. Calling `.sum()` is required for the packing operation to work. This function is going to calculate the size of each node in the tree. here you're passing the population since the size of each node will be based on this value. 
+This makes a D3 object hierarchy. Calling `.sum()` is required for the packing operation to work. This function is going to calculate the size of each node in the tree. Here you're passing the population since the size of each node will be based on this value. 
 
 ## d3.pack()
 
 The `d3.pack()` method is used to create enclosure diagrams. These are used to group elements within a space. A pack requires a hierarchy to do its work. 
+
+The hierarchy tells D3 how things should grouped, in other words what belongs on each bubble. 
 
 ```JS
 // Pack - Create a pack function
@@ -120,9 +124,11 @@ d3.select('#svg')
 
 Here you selected your SVG element. Then set a style to give it a border. 
 
-Then you selected all of the `g` elements. These don't exist yet. The goal is to create a group and put a circle and a text node inside the group. 
+Then you selected all of the `g` elements (groups). These don't exist yet. The goal is to create a group and put a circle and a text node inside the group. 
 
 The last line sets the data for this selection. Notice we get the data from `.leaves()` on our root node. The root node has rearranged our data, `rootNode` is our packed hierarchy. 
+
+Read more about D3 hierarchies: https://www.d3indepth.com/hierarchies/ 
 
 ```JS
 d3.select('#svg')
@@ -143,7 +149,7 @@ d3.select('#svg')
   })
 ```
 
-One way to do this is with `.append()` but, `.append()` only allows you to add a single node. For example `.appeand('circle')` adds a circle but not a text node. 
+One way to do this is with `.append()` but, `.append()` only adds a single node. For example `.appeand('circle')` adds a circle but not a text node. 
 
 This time you'll use `.join()`. With `.join('g')` you're saying you want to join the data with the selection. 
 
@@ -185,10 +191,20 @@ The last four lines set some CSS styles on the node.
 
 - `text-anchor` sets the horizontal location the text draws from
 - `alignment` sets the vertical location text draws from
-- `text-blend-mode` determines how the color blends with the background color. In this example, we're using this to make the text appear darker against a lighter background or lighter against a darker background. 
+- `text-blend-mode` determines how the color blends with the background color. In this example, you're using this to make the text appear darker against a lighter background or lighter against a darker background. 
 - `fill` sets the color of the text. 
 
 Should look something like this: 
 
 ![example 2](images/example-3.png)
+
+## Conclusion
+
+In this tutorial you delved into hierarchies and packs. This is a pretty deep subject and leads to many complex and interesting visualizations. Which include: 
+
+- Tree maps: https://www.data-to-viz.com/graph/treemap.html
+- Dendogram: https://www.data-to-viz.com/graph/dendrogram.html
+- Chord Diagrams: https://www.data-to-viz.com/graph/chord.html
+- Networks: https://www.data-to-viz.com/graph/network.html
+- and more
 
