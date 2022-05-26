@@ -8,6 +8,8 @@ In this case, we can group cities into a larger circle representing the country.
 
 Note! I added another city to each country for this example. 
 
+If you havn't already read about circular packing read this: https://www.data-to-viz.com/graph/circularpacking.html
+
 ## Getting started
 
 For this example, you'll use the `cities.csv` again. 
@@ -24,7 +26,7 @@ Load the cities.csv data using the `d3.csv()` loader.
 
 ## Visualizing hierarchies
 
-Looking at the cities data you'll find it has a hierarchy. Cities all belong to a country. The original data is flat the actual data is hierarchical. 
+Looking at the cities data you'll find it has a hierarchy. Cities all belong to a country. The original data is flat the actual data is hierarchical.
 
 The original data look slike this: 
 
@@ -53,7 +55,7 @@ Expressed as a single array:
 ]
 ```
 
-Notice some cities chare a country. Adds a level of hierarchy to the data that is not expressed in the data structure. 
+Notice some cities chare a country. This adds a level of hierarchy to the data that is not expressed in the data structure. 
 
 We could rearrange the data to express this: 
 
@@ -118,7 +120,9 @@ This will be the root element of the hierarchy.
 
 **Challenge** 
 
-Define an object with `label`, `population`, and `children` properties. Make sure the value for `population` is the total population of all cities. 
+Define an object with `label`, `population`, and `children` properties. Make sure the value for `population` is the total population of all cities.
+
+Calculate the total population from the original data.
 
 <details>
 <summary>
@@ -139,7 +143,7 @@ const byCountry = {
 
 ## Creating a hierarchy
 
-Your next challenge is to rearrange the data into a hierarchy. For this, to work we need to arrange the data so that D3 will recognize our hierarchy. 
+Your next challenge is to rearrange the data into a hierarchy. For this, to work you need to arrange the data so that D3 will recognize our hierarchy. 
 
 At the top level we need: 
 
@@ -150,7 +154,7 @@ At the top level we need:
 }
 ```
 
-`root` is the parent and `children` is an array of children. 
+`root` is the parent and `children` is an array of children or child objects. 
 
 The `children` array should contain an array of objects each with a `name` and `children`, and again `children` is an array of objects. 
 
@@ -165,7 +169,7 @@ The `children` array should contain an array of objects each with a `name` and `
 }
 ```
 
-Do you see where this going? The array of `children` in each country contains the cities in that country! 
+Do you see where this going? The array of `children` in each country contains the cities in that country! If city was broken into counties the city object would store it's counties in an array in the `children` property. 
 
 The goal is to get the data to look like this: 
 
@@ -257,7 +261,8 @@ Now sum the populations!
 root
 	.sum(d => {
 	return d.population
-}) // Must call sum before pack()
+}) 
+// Must call sum before pack()
 ```
 
 ## Packing the Circles
@@ -279,13 +284,13 @@ const rootNode = pack(root) // Must call sum() first!
 // This adds new properties to the root data
 ```
 
-Here you created a pack object from the original data. It helps understand what happens later if you look at this. Try logging it to the console. 
+Here you created a pack object from the original data. It helps to understand what happens later if you look at the `rootNode` now. Try logging it to the console. 
 
 ```JS
 console.log(rootNode)
 ```
 
-We get something like this: 
+You get something like this: 
 
 ```JS
 pd {data: Object, height: 2, depth: 0, parent: null, children: Array, …}
@@ -311,24 +316,24 @@ Let's open this up and explore.
 
 Notice your original properties: `label`, `children`, and `population` have been moved to live under the `data` property. 
 
-New properties have been added: `x`, `y`, and `r` are used to position and size this circle. These can now be used to position and size your SVG elements. 
+New properties have been added: `x`, `y`, and `r` are used to position and size this circle. These can be used to position and size your SVG elements. 
 
 The `depth`, `parent`, and `children` are used by D3 to manage the hierarchy. Now we have a structure that relates the parent element to its children and the child to the parent. 
 
 ## Creating formtters and scales
 
-We need a number formatter and a color scale. 
+Make a number formatter and a color scale. 
 
 ```JS
 // Number formatter
 const num_f = d3.format(".2s")
 
-// Create a color scale 
+// Create a color scale
 const colorScale = d3
 	.scaleOrdinal(d3.schemeCategory10)
 ```
 
-Here we used the number formatter from the previous tutorial. 
+This the number formatter from the previous tutorial. 
 
 The color scale is ordinal with the `schemeCategory10` which provides 10 different colors. The ordinal scale will allow us to map any arbitrary value across these 10 colors. In this case, we can use the country name or the city name, or even the population.
 
@@ -380,7 +385,7 @@ nodes
 
 The radius `r` attribute is set from our `rootNode` where D3 conveniently created the value for us to use. 
 
-The position is not needed since the group was positioned since being a child of the group created in the previous step it will inherit the position of the group. 
+The position is not needed since the group was positioned. Being a child of the group an element will inherit the position of the group. 
 
 The fill color is set by the country or label name. D3 is going to work through all of the elements in the hierarchy. All of the leaf nodes (the cities) have a country name. The world and country nodes all use the `label` property to store their name. Here we can check if the country is `undefined` and use `label` instead. 
 
@@ -404,7 +409,7 @@ Play with the values and properties here to change the appearance. Try these ide
 
 - Give the country a different opacity value from the cities
 - Try giving the countries a stroke
-- Try removing the fill from the world and giving the work a stroke
+- Try removing the fill from the world and giving the world a stroke
 
 Here are a few images showing what these modifications might look like. 
 
@@ -418,7 +423,7 @@ Here all of the circles have a `stroke` of `black` and a `stroke-width` of 1. No
 
 ## Adding the text
 
-Adding text is the last step. Here you'll add the population to each city. There are a few problems that will arise here. The size of some of the circles is pretty small. The numbers may be larger. Adding the city or country name will be even larger. 
+Adding text is the last step. Here you'll add the population to each city. There are a few problems that will arise. The size of some of the circles is pretty small. The numbers may be larger. Adding the city or country name will be even larger. 
 
 Second, the child circles appear on top of their parents. This will cover elements in the parent. For example, the countries appear on top of the world, and the cities appear on top of the countries. 
 
@@ -450,7 +455,7 @@ You can see the country and world populations are covered by the city circles. A
 
 How you deal with this is up to you. Here are a few ideas. 
 
-Imagine you wanted to add the city and country names. You can them to be above or below the population number. SVG doesn't allow for a text wrap or line break. The best we can do is make a second text element but this will require moving the two elements so that they do not overlap. 
+Imagine you wanted to add the city and country names. You can move them above or below the population number. SVG doesn't allow for a text wrap or line break. The best we can do is make a second text element but this will require moving the two elements so that they do not overlap. 
 
 Add a new text element to display the name. 
 
@@ -526,7 +531,7 @@ nodes
 	})
 ```
 
-Here we check that we are not a city node and then make some changes. 
+Here you check that it is not a city node and then make some changes. 
 
 I changed the color to black for the countries and world. 
 
@@ -537,3 +542,7 @@ Here is what my example looked like:
 ![example 9](images/example-9.png)
 
 Still imperfect but hopefully you can see some options that might help make a better visualization. 
+
+## Conclusion
+
+In this tutorial you delved into hierarchies and packs. This is a fairly complex visualization that makes use of tree structures. 
