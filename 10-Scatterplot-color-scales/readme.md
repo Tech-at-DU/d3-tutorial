@@ -2,6 +2,10 @@
 
 This section will look at paths again and talk about some of the other things you might do with this type of graph. 
 
+While you're here why not read about scatter plots. You'll be doing something similar later: https://www.data-to-viz.com/graph/scatter.html
+
+There's also a lollipop chart. Which is similar to what you will do here. Might as well read about that too: https://www.data-to-viz.com/graph/lollipop.html
+
 ## Scatter Plot
 
 A scatter plot shows points of data on an x and y graph. Usually, these look like small dots scattered across the page. 
@@ -12,7 +16,9 @@ Place a small circle for every month of rainfall. To do this you can make a grou
 
 For this example start with the last example showing the rainfall data as a line graph. 
 
-At the bottom of the drawing, the code adds the following. 
+**Challenge:** Start from scratch! Setup the boilerplate code and load the percipitation data. 
+
+At the bottom of the drawing, the code adds the following.
 
 ```JS
 // Scatter plot
@@ -46,6 +52,8 @@ Stop and think about that for a minute. 🤔
 
 This is the same pattern that you started with in the first tutorial. With the difference that here we first appended a group. 
 
+It's like you added another visual layer and filled it with SVG elements from the same set of data. 
+
 **Challenge**
 
 Imagine you wanted to set the size of the new circles to represent the amount of rainfall. More rainfall larger circle. How would you do that? 
@@ -63,6 +71,8 @@ Depending on the size of the circles they may overlap. So it might be good to us
 ```JS
 .attr('fill', 'rgba(255, 0, 0, 0.2)')
 ```
+
+Here `rgba()` defines a color with: Red, Green, Blue, and Alpha components. The Alpha value sets the transparency. 
 
 This is what mine looked like with color above and a range of 1 to 20 for the size of the circles. 
 
@@ -116,7 +126,7 @@ const colorScale = d3.scaleSequential()
 
 Here you are using `d3.scaleSequential()`. Notice the extent is the same but the range has been swapped for `.interpolator()`. This interpolator calculates the from a provided interpolator. D3 has many built-in interpolators some specific to colors. 
 
-Here I used `d3.interpolateViridis` it generates colors from purple through green to yellow. 
+I used `d3.interpolateViridis` it generates colors from purple through green to yellow. 
 
 Here is what it looked like for me: 
 
@@ -134,3 +144,10 @@ Try these other color interpolators:
 - `d3.interpolateRainbow`
 - `d3.interpolateCubehelixDefault`
 
+**Challenge:** Experiment with the color scales. Choose your favorite color scale and use that!
+
+## Conclusion
+
+In this tutorial you built a hybrid line, lollipop, scatter plot, which is not a real thing. Removing the line starts to turn this into a scatter plot. Replacing the line with some bars, from the previous tutorial, turns this into a lollipop chart. 
+
+You also looked at the color scale and color interpolators.
