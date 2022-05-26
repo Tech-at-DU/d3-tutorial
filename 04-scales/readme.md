@@ -50,6 +50,10 @@ For this example continue with the code from the previous example. You should ha
 </html>
 ```
 
+## Bubble Charts
+
+This example will create a simplified bubble chart. To make a full bubble chart you can combine the ideas here with ideas that come in later tutorials. read more about bubble charts here: https://datavizcatalogue.com/methods/bubble_chart.html
+
 ## Using D3 Scales
 
 A scale needs a domain and a range. The domain is the input and the range is the output. 
