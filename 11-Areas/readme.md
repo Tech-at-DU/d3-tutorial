@@ -2,6 +2,8 @@
 
 In this section, we will make a new graph and follow all of the steps we used in the previous graph for review and make a few changes along the way. 
 
+This time you will be making an area chart. Better read up on those to understand when they would be best used: https://www.data-to-viz.com/graph/area.html
+
 ## The Data
 
 The dataset for this example will be the `Weather Data in India from 1901 to 2017.csv`. This dataset contains the mean temperature for each month of the years for the years 1901 to 2017. 
@@ -22,20 +24,26 @@ It's the year and each month. The first column is unlabeled and appears to have 
 
 There are a few ways we can look at this data. 
 
-1. All months and all years. This would be a lot of information but might show a trend over time. 
+1. All months and all years. This would be a lot of information but might show a trend over time. Imaging a long timline stepping through each month over many years. 
 2. All months for a single year. This would be twelve numbers. It might show the change in temperature over a year. 
-3. One month for all years. For example Jan 1901, Jan 1902, Jan 1903, etc. This could show a trend of temperature changes over time. 
+3. One month for all years. For example Jan 1901, Jan 1902, Jan 1903, etc. This could show a trends for a time of year allowing you to compare the temperature in same month over many years. 
+
+Sometimes you will need to look at the data and arrange or rearrange the data to suit your pupose. The data will not always be in the form that you need. D3 can do some of this but other times you need to use your JS skills to arrange the data to suit your purpose. 
 
 ## Getting started
 
-- Setup an HTML document 
+**Challenge:** Setup the boiler plate document on your own! 
+
+- Setup an HTML document
+- copy the `Weather Data in India from 1901 to 2017.csv`
 - Add an SVG element
 - Import the D3 library
 - Add a script tag for your scripts
+- load the weather data csv file
 
-Do this from memory if you can. Or refer to the other tutorial projects. 
+Do this from memory if you can. Refer to the other tutorial projects if you get stuck. 
 
-Add the following script. Here we take the idea from the last examples but this time we'll use `async` and `await`. 
+Add the following script. Here you take the idea from the last examples but this time use `async` and `await`. 
 
 ```JS
 async function handleData() {
@@ -47,9 +55,9 @@ async function handleData() {
 handleData()
 ```
 
-Note! `handleData()` in this example is `async`. That means we can `await` any promise to resolve inside this function. `d3.csv()` returns a promise. So we use `await` on line 2.
+Note! `handleData()` in this example is `async`. That means you can `await` any promise to resolve inside this function. `d3.csv()` returns a promise. So you use `await` on line 2, which will wait on that line until the promise resolves before continuing to the next line. 
 
-Using the console to see the data we get: 
+Using the console to see the data you get: 
 
 ```JS
 [
@@ -60,24 +68,27 @@ Using the console to see the data we get:
 ]
 ```
 
-Each element of the array is an object. Depending on what we want to show we may have to take one row here and turn it into an array of objects. 
+Each element of the array is an object. To show all months for a single year you'll have to turn that year object into an array of months.  
 
-We should have a helper function to do that. 
+You should have a helper function to do that. 
 
 **Challenge**
 
 Write a function that takes an object with the `MON:TEMP` and turn it into an array of objects with properties `month` and `temp`. While you're at it convert those temperature strings to numbers. For example: 
 
 ```JS
-// Turn this into 
+// Turn this:
 const obj = {: "0", YEAR: "1901", JAN: "17.99", FEB: "19.43", MAR: "23.49", ...}
 function convertToArray(obj) {
   // Challenge...
 }
 
 const arr = convertToArray(obj)
+// Into: 
 // [{ month:'JAN', temp: 17.99 }, { month: 'FEB', temp: 19.43 }, { month: 'MAR', temp: 23.49 }, ...]
 ```
+
+Compare the input and the ouput above. You are starting with `{ ... }` and ending with `[{}, {}, ...]`
 
 <details>
   <summary>
@@ -96,22 +107,20 @@ function convertToArray(obj) {
 
 </details>
 
-When you're done with this use your code to get one of the months of temperature data. 
-
-This is what I did:
+When you're done with this use your code to get one of the months of temperature data. The goal is to show one month of temperature data for a single year. 
 
 ```JS
 async function handleData() {
   const data = await d3.csv('Weather Data in India from 1901 to 2017.csv')
-  const year_1901 = data[0]
-  const months_1901 = convertToArray(year_1901)
-  console.log(months_1901)
+  const year_1901 = data[0] // Get the first year data object
+  const months_1901 = convertToArray(year_1901) // convert to array
+  console.log(months_1901) // check your work
 
   // Drawing code here...
 }
 ```
 
-I got the data for 1901 and saved it to a variable. 
+Look in the browser console to check your work. 
 
 ## Drawing a path
 
@@ -125,9 +134,7 @@ const height = 300
 const margin = 40
 ```
 
-We need a scale for the x and y-axis. The x-axis is time but we don't have a full date, just the month, so we can use the index here. 
-
-The y scale will be based on the temp data. 
+You need a scale for the x and y-axis. The x-axis is time but we don't have a full date, just the month, so we can use the index here. 
 
 Define the xscale:
 
@@ -137,6 +144,8 @@ const xscale = d3.scaleLinear()
   .range([margin, width - margin])
 ```
 
+The y scale will be based on the temp data. 
+
 Now define the y scale: 
 
 ```JS
@@ -145,7 +154,7 @@ const yscale = d3.scaleLinear()
   .range([height - margin, margin])
 ```
 
-This time we'll plan by and make a group for the path. 
+This time you'll plan ahead and make a group for the path. 
 
 Add the following to set up the SVG elements with D3. 
 
@@ -169,9 +178,9 @@ const linegen = d3.line()
   .curve(d3.curveLinear)
 ```
 
-Notice you used the index of the data for the x-axis to space things evenly left to right. You used the temp value for the y scale. 
+Notice you used the index of the data for the x-axis to space things evenly left to right. You used the temp value for the y scale. This sets the height based on the data. 
 
-Now let's draw the line. You'll draw simple linear/straight lines for now. Later you will try some new ideas with this. 
+Now draw the line. You'll draw simple linear/straight lines for now. Later you can smooth it with one of the line interpolators. 
 
 Add the following to draw a line in the "graph" group. 
 
@@ -191,7 +200,7 @@ At this point you should have something like this:
 
 ### Curved path
 
-This looks good but what if we wanted a smooth curved path. Currently, D3 is draw straight line segments from point to point. 
+This looks good but what if you wanted a smooth curved path. Currently, D3 is drawing straight line segments from point to point. 
 
 In the last example, we created a graph with straight lines. This used the SVG path. If you recall I showed this example: 
 
@@ -230,7 +239,7 @@ It's the last line here that defines the curvetype used. D3 has several built in
 - `curveMonotoneX`
 - `curveCatmullRom`
 
-It's hard to put these into words try them out for yourself. Some of these will have subtle differences and this graph may not make those differences obvious. 
+It's hard to put these into words try them out for yourself. Some of these will have subtle differences and this graph may not make those differences obvious. Others have very noticable differences. 
 
 Try these:
 
@@ -277,7 +286,7 @@ const linegen = d3.area() // change line to area
   .curve(d3.curveBasis)
 ```
 
-Here you are swapping `d3.line()` for `d3.area()`. This is going to draw a filled shape. Rather than ending the line at the endpoints. The `area()` function will close the shape by drawing a line from the last point down to a baseline then across to the starting point and up to the first point. 
+Here you are swapping `d3.line()` for `d3.area()`. This is going to draw a filled shape. Rather than ending the line at the endpoints. The `area()` function will close the shape by drawing a line from the last point down to a baseline then across to the starting x and up to the first point. 
 
 The `y0()` method maps each point along the top of the chart. You used the temp values run through the `yscale()` function. 
 
@@ -287,7 +296,9 @@ Here you used the height less the margin to run the bottom of the area/shape abo
 
 **Challenge**
 
-Adjust the fill. Try a transparent color. Might be good to remove the stroke. 
+Adjust the fill. Try a transparent color. 
+
+Might be good to remove the stroke. 
 
 Might look like this at this stage: 
 
@@ -299,7 +310,7 @@ Might look like this at this stage:
 
 This is a review! Give it a try on your own. Here are a few tips. 
 
-It will be awkward to get the dates from this data since we have an object that represents the year, and then an array months that just given as an abreviation. Just hack this together by making an extent of 12 months. Something like this: 
+It will be awkward to get the dates from this data since we have an object that represents the year, and then an array of months that are just given as an abreviation. Just hack this together by making an extent of 12 months. Something like this: 
 
 ```JS
 const monthsScale = d3.scaleTime()
@@ -308,7 +319,7 @@ const monthsScale = d3.scaleTime()
   .nice()
 ```
 
-Rather than trying to get the dates from our data, we can just declare the extent with two date objects. 
+Rather than trying to get the dates from your data, you can just declare the extent with two date objects. 
 
 ```JS
 [ new Date('1901-01-01'), new Date('1901-12-01') ]
@@ -322,7 +333,7 @@ Set the range to:
 [ margin, width - margin ]
 ```
 
-So the left edge should be margin/40px from the left and the right should be 40px from the right. 
+The left edge should be margin (40px) from the left and the right should be 40px from the right (width - 40px). 
 
 <details>
   <summary>
@@ -357,7 +368,7 @@ Draw another area using another year of data. For example draw the temperature f
 
 Superimpose these one on top of the other. Give them a transparent fill. 
 
-Bonus points for using a function...
+Give yourself bonus points for using a function!
 
 Might look like this when you're done: 
 
@@ -365,5 +376,8 @@ Might look like this when you're done:
 
 **Stretch Challenge**
 
-This graph shows the mean temperature each month of a year. It might be good if we could show the temperature for the same month of all yeasr represented in the data. 
+This graph shows the mean temperature each month of a year. It might be good if you could show the temperature for the same month of all years represented in the data. 
 
+## Conclusion 
+
+In this tutorial you learned to create an area chart. You used D3's area generator along with all of the other things that were covered in the previous tutorials! 
