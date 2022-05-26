@@ -226,7 +226,7 @@ Make this a challenge if you feel up to it. You can follow the solution below. o
 
 ### Making the Legend
 
-We have the pie chart in its group. The legend will be made up of SVG circles and text elements. It would be good to keep them all in a group. This will allow us to access these elements and move them all together. 
+You have the pie chart in its group. The legend will be made up of SVG circles and text elements. It would be good to keep them all in a group. This will allow you to move all of the elements together by moving the group, or apply shared styles. 
 
 Create a new group for the legend, add the following: 
 
@@ -235,7 +235,7 @@ const labels = svg
   .append('g')
 ```
 
-Now add a circle to the labels group for each element in your data. We can follow the same pattern from the very first tutorial here. 
+Now add a circle to the labels group for each element in your data. You can follow the same pattern from the very first tutorial here. 
 
 Add the following: 
 
@@ -253,13 +253,15 @@ labels
 
 Here you selected all of the circles, added your data, and entered your data. 
 
-Next, we appended a circle for each data element. 
+Next, you appended a circle for each data element. 
 
-Last you set the attributes to draw the circles. Notice we set the `cy` based on the index and set the fill color using the `colorSCale()`. 
+Last you set attributes to draw the circles. Notice you set the `cy` based on the index. This way you can space the elements out vertically. 
+
+You set the fill color using the `colorSCale()`. This should match the colors here to the colors used in the pie chart. The same data value will have the same index. 
 
 **Challenge** 
 
-Adjust the radius, cy, and cx to make this look good. 
+Adjust the radius, `cy`, and `cx` to make this look good. 
 
 Now add the text. We can follow all of the steps again but this time append `text` elements. 
 
@@ -274,13 +276,13 @@ labels
   .attr('y', (d, i) => (i * 20) + 20)
 ```
 
-Again you are targeting the `labels` group. This time you select all `text` elements, add your data, enter the data, and append a text element for each data element. 
+Here you are targeting the `labels` group. This time you select all `text` elements, add your data, enter the data, and append a text element for each data element. 
 
-Next set the attributes of the text element. Adjust the x and y to position the text next to each circle. 
+Next set the attributes of the text element. Adjust the `x` and `y` to position the text next to each circle. 
 
 ## Challenge 
 
-Here are some final challenges for this project. 
+Try some final challenges for this project. 
 
 **Challenge**
 
@@ -290,7 +292,7 @@ The cities data also has a country name. Show the country name in the legend.
 
 The cities data shows the country name for each city. Build an array of unique country names and show a pie chart showing countries. Use the total population for all cities in that country for the value. 
 
-This won't show country population accurately but it will be proportional to the city size we already have. 
+This won't show a countries actual population but it will be proportional to the city size we already have. 
 
 Draw another smaller pie chart in one of the corners. 
 
@@ -304,7 +306,7 @@ It might look like this:
 
 ![example-3](images/example-3.png)
 
-This image is imperfect since the labels overlap but it working. 
+This image is imperfect since the labels overlap but it is working. 
 
 To do this follow these steps: 
 
@@ -359,3 +361,7 @@ Then follow all of the same steps to make a new pie and arc. Set the inner radiu
 It might look something like this: 
 
 ![example 4](images/example-4.png)
+
+## Conclusion
+
+In this tutorial you again applied everything you learned so far and created pie charts and legends on top of that! 
