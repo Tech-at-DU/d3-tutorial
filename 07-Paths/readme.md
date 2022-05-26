@@ -6,6 +6,8 @@ For this example, you will use the `precipitation.csv`. This file contains rainf
 
 This CSV file contains lost of data, almost 6000 lines! We will need to be more careful about what we display. 
 
+In this example you will create a line graph. Read more about line graphs here: https://datavizcatalogue.com/methods/line_graph.html
+
 ## Setup
 
 Start a new HTML document. 

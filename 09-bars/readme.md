@@ -1,8 +1,8 @@
 # Bars 
 
-In this section let's review what we've covered so far and create a bar graph.
+In this section you will review what was covered so far in the previous tutorials and create a bar graph.
 
-bar graphs/charts are common and a good way to show relative values and progression. Read about bar charts here: https://datavizcatalogue.com/methods/bar_chart.html
+Bar graphs/charts are common and a good way to show relative values and progression. Read about bar charts here: https://datavizcatalogue.com/methods/bar_chart.html
 
 This will give you a chance to practice everything we covered so far. 
 
