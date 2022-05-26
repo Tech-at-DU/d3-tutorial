@@ -11,7 +11,7 @@ This tutorial provides and introduction to D3.js!
 - [07 Paths](07-Paths)
 - [08 Axis](08-axis)
 - [09 Bars](09-bars)
-- [10 Scatterplots and color scales](09-Scatterplot-color-scales)
+- [10 Scatterplots and color scales](10-Scatterplot-color-scales)
 - [11 Areas](11-Areas)
 - [12 Interaction](12-Interaction)
 - [13 Pie Charts](13-Pie-Charts)
