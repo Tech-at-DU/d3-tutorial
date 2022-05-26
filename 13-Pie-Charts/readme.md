@@ -1,10 +1,6 @@
 # Pie Charts 
 
-Pie charts are circles that have been divided into pizza slices. It has been argued that pie charts are not good at representing data. 
-
-https://www.data-to-viz.com/caveat/pie.html
-
-With this in mind in the right place, they can be useful. 
+Pie charts are circles that have been divided into pizza slices. Read more about pie charts here: https://www.data-to-viz.com/caveat/pie.html
 
 As you probably guessed D3 has these covered! Let's build a pie chart. 
 
@@ -60,15 +56,14 @@ After importing it should be arranged like this. Check it for yourself by loggin
 
 ```JS
 [
-  {name: "San Francisco", population: "874961", country: "USA", x: "122", y: "-37"}
-  1 {name: "Fresno", population: "525010", country: "USA", x: "119", y: "-36"}
-  2 {name: "Lahore", population: "11126285", country: "Pakistan", x: "74", y: "31"}
-  3 {name: "Karachi", population: "14910352", country: "Pakistan", x: "67", y: "24"}
-  4 {name: "Rome", population: "4342212", country: "Italy", x: "12", y: "41"}
+  {name: "San Francisco", population: "874961", country: "USA", x: "122", y: "-37"},
+  {name: "Fresno", population: "525010", country: "USA", x: "119", y: "-36"},
+  {name: "Lahore", population: "11126285", country: "Pakistan", x: "74", y: "31"},
+  {name: "Karachi", population: "14910352", country: "Pakistan", x: "67", y: "24"},
+  {name: "Rome", population: "4342212", country: "Italy", x: "12", y: "41"},
   ...
 ]
 ```
-
 
 This is an array of objects with properties of:
 
@@ -78,12 +73,11 @@ This is an array of objects with properties of:
 - x
 - y
 
-
 ### Setup 
 
 Now that the data is loaded you should define some variables to set the height and width. 
 
-Add the following constants: 
+Add the following constants:
 
 ```JS
 const width = 600
@@ -95,7 +89,7 @@ Note! It's probably best if the width and height here match the sizes used on th
 
 ### Make a Scale 
 
-Make a scale. We need a color for each pie wedge. 
+Make a scale. You need a color for each pie wedge. 
 
 **Challenge**
 
@@ -123,7 +117,7 @@ const colorScale = d3.scaleSequential()
 
 D3 provides a `d3.pie()` method that helps us make pie charts. This method takes in an array of data and calculates the starting and ending angles for each of the slices. 
 
-Think about the pie chart. It's made up of slices. All of the slices together make up the entire circle. To draw the pie you need to know the starting and ending angle for each slice. 
+Think about the pie chart. It's made up of slices. All of the slices together make up the entire circle/pie. Each slice a triangle with an arc on one side. To draw the pie you need to know the starting and ending angle for each slice/arc. 
 
 Define a piegenerator, add the following: 
 
@@ -131,7 +125,7 @@ Define a piegenerator, add the following:
 const pieGen = d3.pie()
 ```
 
-The pie generator doesn't draw the pie directly. We need to calculate the arcs from some data. 
+The pie generator doesn't draw the pie directly. You need to calculate the arcs from some data. 
 
 Define some arc data. Add the following: 
 
@@ -141,7 +135,9 @@ const arcData = pieGen(data.map(d => d.population))
 
 Here you're using the `piegen` to generate arc/slice data from the cities data. You're using population as value to determine the size of each arc/slice.
 
-Remember the path tutorial? You used a function to generate the path data. We need to do the same thing here. This we are going to generate one path for arc/pie slice. 
+Piegen is going to add up all of the populations then calculate the slice arc as a percent each city population takes up of the whole. 
+
+Remember the path tutorial? You used a function to generate the path data. You need to do the same thing here. This time you are going to generate one path for arc/pie slice. 
 
 Define an arc generator. Add the following: 
 
@@ -166,7 +162,7 @@ https://github.com/d3/d3-shape#arcs
 
 **Challenge**
 
-Try adjusting the numbers for inner radius, outer radius, and padding. 
+Try adjusting the numbers for inner radius, outer radius, and padding. Be sure to test out all of these values and observe the results.
 
 ### Drawing the pie chart
 
@@ -178,7 +174,7 @@ const svg = d3
   .select('#svg')
 ```
 
-Since the arc generator is going to a path for each arc/slice we should put all of this in a group. 
+Since the arc generator is going to a path for each arc/slice you should put all of this in a group. 
 
 Make a group, add the following:
 
@@ -190,11 +186,11 @@ const pieGroup = svg
   .attr('transform', `translate(${width / 2}, ${height / 2})`)
 ```
 
-Here we transformed the `pieGroup` to move it into the center of the SVG viewport. The arcs will draw around the center of the group. 
+Here you transformed the `pieGroup` to move it into the center of the SVG viewport. The arcs will draw around the center of the group. 
 
-Now draw the arcs. Here we need to make some paths. There will be one for each arc/slice.
+Now draw the arcs. In this step you will make some paths. There will be one path for each arc/slice.
 
-Add the folloeing: 
+Add the following: 
 
 ```JS
 const piePath = pieGroup
@@ -206,9 +202,9 @@ const piePath = pieGroup
   .attr('fill', (d, i) => colorScale(i)) // Use the color scale
 ```
 
-The pattern here is very similar to the pattern we used at the very beginning. The difference here is that the path data comes from the `arcGen`. 
+The pattern here is very similar to the pattern we used at the very beginning. The difference this time is that the path data comes from the `arcGen`. 
 
-Notice we set the fill for each arc and used the `colorScale()` to set the colors. 
+Notice you set the fill for each arc and used the `colorScale()` to generate the color value. 
 
 At this stage you should have something like: 
 
@@ -216,7 +212,7 @@ At this stage you should have something like:
 
 ## Adding a legend
 
-This chart is looking good but I can't tell what each slice represents. If we knew what the colors were we would know how big Fresno is vs San Francisco!
+This chart is looking good but I can't tell what each slice represents. If you knew what the colors were you would know how big Fresno is vs San Francisco!
 
 Imagine that our chart looked like this: 
 
@@ -226,7 +222,7 @@ You might be able to do this with one of the axis functions. In this example, yo
 
 **Challenge**
 
-Make this a challenge if you feel up to it. You can follow the solution below. or compare your work to the solution. 
+Make this a challenge if you feel up to it. You can follow the solution below. or compare your work to the solution. The goal is to displa a 
 
 ### Making the Legend
 
