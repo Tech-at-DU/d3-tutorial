@@ -1,12 +1,16 @@
 # Interaction
 
-D3 Supports interaction. In a few ways. In this section, you will look at the idea of updating data to have and seeing the view update. 
+D3 Supports interaction. In this section, you will look at the idea of updating data and seeing the visualization change in real time based on the data. 
+
+Take a look at some of the examples on the D3 site to get an idea of the range of interaction and animation you can create.
+
+https://d3js.org
 
 ## Getting started 
 
-For this example, we will use the same data used in the last example which was the `Weather Data in India from 1901 to 2017.csv`. 
+For this example, you will use the same data used in the last example which was the `Weather Data in India from 1901 to 2017.csv`. 
 
-The goal here is to make a menu that that lets us select the year we want to view. 
+The goal is to make a menu that that lets us select the year we want to view. 
 
 ### Adding a menu
 
@@ -26,7 +30,9 @@ Add a select dropdown with a few years.
 
 The menu has an option for each of 5 years, and a value of each year is the index of that year's data in the data array. 
 
-A quick reminder as to how this will connect with the data. Remember our data looks like this: 
+**Challenge:** I included 1901 to 1905 in the sample code above. Try generating menu options that include all years 1901 to 2017. Do this in code by generating the options with a loop or other method. 
+
+A quick reminder as to how this will connect with the data. Remember the data looks like this: 
 
 ```JS
 [
@@ -37,15 +43,11 @@ A quick reminder as to how this will connect with the data. Remember our data lo
 ]
 ```
 
-This is an array of objects. Each is one year/12 months of mean temperature measurement from 1901 to 2017. 
-
-**Stretch Challenge**
-
-Generate the options here using code! 
+This is an array of objects. Each is one year/12 months of mean temperature measurement from 1901 to 2017.
 
 ### Styles 
 
-I added a few styles to make things look a little better. 
+Add a few styles to make things look a little better. You can use CSS to style your pages and the SVG element. 
 
 ```CSS
 /* Put the box in the center of the page */
@@ -76,16 +78,18 @@ Notice the menu in the lower right.
 
 ## Adding a listener
 
-We need to know when a new value is selected from the menu. In this section, you'll add a vanilla JavaScript listener. Something like this: 
+You need to know when a new value is selected from the menu. In this section, you'll add a vanilla JavaScript listener. Something like this: 
 
-`element.addEventListener('change', handler)`
+```JS
+element.addEventListener('change', handler)
+```
 
-Note! Important here is understanding scope. The handler function for this `change` event will need access to the elements created by D3. 
+Note! The handler function for this `change` event will need access to the elements created by D3. Pay close attention to the scope of the variables you create. 
 
 In our previous work all of that code was inside the `function handleData()` function and the variables used were defined there. For example: 
 
 ```JS
-async function handleData() {
+async function handleData() { // Function begins
  const data = ...
  const year_1901 = ...
  const months_1901 = ...
@@ -106,7 +110,7 @@ async function handleData() {
  // line generator
  const linegen = ...
 
-}
+} // function ends
 ```
 
 These variables are only accessible from inside the `handleData()` function. They can not be accessed outside of this function! 
@@ -114,20 +118,21 @@ These variables are only accessible from inside the `handleData()` function. The
 Our listener needs to work with some of these variables. To make this possible you have one of two options: 
 
 1. Declare the variables outside `handleData()`. If you do this you can access you define your listener function anywhere. 
-2. Declare the listener inside `handleData()`. 
+2. Declare the listener inside `handleData()`. Defined inside the function the listener will have access to it's outer scope. 
 
 Here is what either of these methods might look like. 
 
 **Method 1:** Declare variables outside `handleData()`. 
 
 ```JS
+// Variables declared outside
 let data
 let year
 let graph
 let linegen
 
 async function handleData() {
- data = ...
+ data = ... // values assigned inside
  year = ...
  ...
  // Make a group for the graph
@@ -180,15 +185,15 @@ async function handleData() {
 } // <-- handleData() block ends here! 
 ```
 
-In this example, we defined our event listener inside of the `handleData()` function. Here everything else stays the same without the need for change. Also notice we can use `const` since the variables are assigned at the time they are declared. 
+In this example, you defined our event listener inside of the `handleData()` function. Here everything else stays the same without the need for change. Also notice you can use `const` since the variables are assigned at the time they are declared. 
 
 ### adding a listener
 
-I'm going to use the second option. You can use your favorite method. 
+The example below will use the second option. You can use your favorite method. 
 
 **Challenge** 
 
-Add an event listener. It should listen for change events on the select element. 
+Add an event listener. It should listen for change events on the select element. Print the year data for the selected year to the console. 
 
 For now, handle these events by getting the `value` from the `select` element. This should be the index: 0, 1, 2, etc. Use this index to get the year's temperature from the data array. 
 
@@ -210,9 +215,9 @@ document.querySelector('select')
 
 ## Updating D3 data
 
-D3 is pretty smart. If you change the data assigned to an element the element will redraw. This means we need a reference to the element. 
+D3 is pretty smart, if you change the data assigned to an element the element will redraw. This means you need a reference to any element you want to update. 
 
-For this example, we only need to update the area/path. That means we need a reference to that element stored in a variable. 
+For this example, you only need to update the area/path. That means you need a reference to that element stored in a variable. 
 
 Currently your code should look similar to this: 
 
@@ -245,17 +250,18 @@ Add the last three lines here:
 ```JS
 document.querySelector('select')
  .addEventListener('change', e => {
- const index = parseInt(e.target.value)
- console.log(data[index])
- // Update the path here! 
- path
- .attr('d', linegen(convertToArray(data[index])))
+	// Get the value from the selected option
+	const index = parseInt(e.target.value) 
+	console.log(data[index])
+	// Update the path here! 
+	path
+		.attr('d', linegen(convertToArray(data[index])))
 })
 ```
 
-When a change event occurs we get the value from the select option. This should be the index of data we want. Form values are always numbers. Next, we set the `d` attribute of the path. To do this we call `linegen()`. 
+When a change event occurs you get the value from the select option. This should be the index of data. Form values are always strings so you convert to an integer with `parseInt()`. 
 
-This function needs some data. The data is an object so we use the helper function to turn it into an array. 
+Next, set the `d` attribute of the path. To do this call `linegen()` again and pass the new data. 
 
 **Challenge**
 
@@ -293,32 +299,30 @@ document.querySelector('select')
 
 ### Animating Changes 
 
-This looks Real good so far but a little motion would make it amazing. Again D3 has us covered!
+This looks good so far but a little motion would make it amazing. Again D3 has you covered!
 
-For any change to properties, we need to tell D3 to `transition` and what the `duration` of the transition is. 
+For any change to properties, you can to tell D3 to `transition` and what the `duration` of the transition is. 
 
-We can't animate the initial state since the transition is a change from one state to another. 
-
-We also have to call `transition()` first before setting any attributes. The attributes that come after the transition will be animated. 
+You also have to call `transition()` first before setting any attributes. The attributes that come after the transition will be animated. 
 
 In the event handler add the two new lines shown below: 
 
 ```JS
 document.querySelector('select')
- .addEventListener('change', e => {
- const index = parseInt(e.target.value)
- const hue = 360 / 12 * index 
- const fillColor = `hsla(${hue}, 100%, 50%, 0.33)`
- // Update the path here! 
- path
- .transition() // Add a tranistion
- .duration(1000) // set the duration
- .attr('d', linegen(convertToArray(data[index])))
- .attr('fill', fillColor)
+  .addEventListener('change', e => {
+  const index = parseInt(e.target.value)
+  const hue = 360 / 12 * index 
+  const fillColor = `hsla(${hue}, 100%, 50%, 0.33)`
+  // Update the path here! 
+  path
+    .transition() // Add a tranistion
+    .duration(1000) // set the duration
+    .attr('d', linegen(convertToArray(data[index])))
+    .attr('fill', fillColor)
  })
 ```
 
-Notice the transition and duration come before you set the line data/d and the fill. So these attributes get animated. 
+Notice the transition and duration come before you set the line data/d and the fill! 
 
 The duration is set to 1000. This in milliseconds so 1000 === 1 second. 
 
@@ -326,15 +330,15 @@ Should work something like this:
 
 ![example 3](imagess/example-3.gif)
 
-**Challenge**
+**Challenge** 
 
 Adjust the duration to the time that looks best to you. 
 
 ### Easing
 
-Transitions are all about changing values over time. There is some math involved. How we get from one value to another is handled by an easing function. 
+Transitions are all about changing values over time. There is some math involved. How a value gets from one value to another is handled by an easing function. 
 
-Easing functions can impart character and quality to motion. There are many built-in easing functions. Let's apply a couple here and see what they look like. 
+Easing functions can impart character and quality to the motion. There are many built-in easing functions. Let's apply a couple here and see what they look like. 
 
 Apply easing in the same way you applied duration. 
 
@@ -346,11 +350,11 @@ Add the following new line to your path update in the event handler:
 
 ```JS
 path
- .transition()
- .duration(1000)
- .ease(d3.easeExpIn) // Add an easing function here! 
- .attr('d', linegen(convertToArray(data[index])))
- .attr('fill', fillColor)
+  .transition()
+  .duration(1000)
+  .ease(d3.easeExpIn) // Add an easing function here! 
+  .attr('d', linegen(convertToArray(data[index])))
+  .attr('fill', fillColor)
 ```
 
 Try these: 
@@ -362,7 +366,7 @@ Try these:
 There are a lot of easing functions. See the link above. The differences between some will be very subtle. The three examples above are very dramatic. 
 
 
-## Further Challenges
+## Challenges
 
 This is looking pretty good so far. But it could be taken further. Try these challenges. 
 
@@ -376,7 +380,7 @@ The challenge here is to find the extent for all years 1901 to 2017 and use this
 
 **Challenge**
 
-The graph shows a single year. It might be good if we could compare years. You try any of the suggestions below or come up with your solution. 
+The graph shows a single year. It might be good if we could compare years. You can try any of the suggestions below or come up with your solution. 
 
 Add a second or third menu. These menus allow us to choose different years to show. It might look like the image below. Notice the menu shows 1901, 1902, and 1903. 
 
@@ -387,3 +391,7 @@ Add a new menu that lets us choose how many years after the selected year should
 Take a look at the image below. Notice the first menu shows 1901 and the second shows +4. The image shows 4 years starting with 1901. So the years shown here would be 1901, 1902, 1903, and 1904. 
 
 ![example 5](images/example-5.png)
+
+## Conclusion 
+
+In this tutorial you revisited the ideas from almost all of the previouse tutorials and added updating and animating a chart with D3. You also sorted and filtered data before graphing it. 
