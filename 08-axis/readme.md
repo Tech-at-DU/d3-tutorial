@@ -1,6 +1,8 @@
 ## Drawing an Axis
 
-This next section will continue from the precipitation graph in [07-Paths](../07-Paths).
+This next section will continue from the precipitation graph created in the previous tutorial 
+
+[07-Paths](../07-Paths).
 
 The current graph is looking good but it would be hard for people to intuit what we were expressing with this image. 
 
@@ -8,9 +10,9 @@ Which asks the question: What is this image expressing?
 
 ![example 1](../07-Paths/images/example-2.png)
 
-Time is running left to right on the horizontal axis. What is the time? The graph shows 1998 to 2017. 
+Time is running left to right on the horizontal axis. What is the time? The graph shows 1998 to 2017 in months. 
 
-The vertical axis of the graph is showing how much rain fell each month. 
+The vertical axis of the graph is showing how much rain fell each month in inches. 
 
 There should be a month for each peak but it's hard to tell where 2005 might be? Or any other month or year. 
 
@@ -22,11 +24,13 @@ What if our graph looked like this:
 
 ![example 2](images/example-2.png)
 
+Here I added a horizontal and vertical axis.
+
 An axis is a series of labels that run along the horizontal and vertical axis of the graph. If you're thinking D3 has a tool to generate an axis you would be correct! 
 
 ## Setting size and margins
 
-In the last example, we set the size by using hard numbers. This works but will create a lot of work for us if we need to change the size of our graph. 
+In the last example, we set the size by using hard numbers. This works but will create a lot of work for us if we need to change the size of our graph. Using hard numbers is also prone to errors. 
 
 Our SVG viewport is 600 by 400 pixels and moved the graph inside these dimensions by 40 pixels on each side. 
 
@@ -47,7 +51,7 @@ function handleData(data) {
   ...
 ```
 
-We will use these numbers later in the code to determine the size and position of the elements we draw.
+You will use these new variables later in the code to determine the size and position of the elements you draw.
 
 ## Time Scale
 
@@ -55,7 +59,7 @@ The horizontal axis in the previous example used a linear scale: `d3.scaleLinear
 
 ### Parsing dates
 
-For this, to work we need to provide D3 with date objects. Currently, our data has dates in string format. 
+To work with dates you need to provide D3 with date objects. Currently, our data has dates in string format. 
 
 ```
 30/11/2016
@@ -63,7 +67,7 @@ For this, to work we need to provide D3 with date objects. Currently, our data h
 
 That's `day/month/year`. This must be European? Maybe that's why the state codes are weird? 
 
-Luckily D3 has `d3.timeParse()` a function we can use to format a string into a date object. 
+Luckily D3 has `d3.timeParse()` a function you can use to format a string into a date object. 
 
 Add the following above your scales:
 
@@ -80,7 +84,7 @@ The second line loops over all of the objects in our data and replaces the exist
 
 ### d3.scaleTime()
 
-Now we can use a time scale for the xscale. Replace the existing xscale with: 
+Now you can use a time scale for the xscale. Replace the existing xscale with: 
 
 ```JS
 // Find the extents of the dates
@@ -92,7 +96,7 @@ const xscale = d3.scaleTime() // Make a time scale!
   .nice() // Rounds the scale "nicely"
 ```
 
-This should look the same as before. The difference here is we're using dates to scale the x-axis and we have some variables to calculate the width and margin. 
+This should look the same as before. The difference here is you're using dates to scale the x-axis and we have some variables to calculate the width and margin. 
 
 ### Adjust the yscale
 
@@ -101,12 +105,12 @@ Use your variables on the yscale.
 ```JS
 const yscale = d3.scaleLinear()
   .domain(percipitationExtents)
-  .range([height - margin, margin])
+  .range([height - margin, margin]) // Use the margin and height here
 ```
 
 ### LineGen with dates 
 
-Since we used the date to set the x scale we need to calculate the x position for each point on the line using dates. 
+Since you used the date to set the x scale you need to calculate the x position for each point on the line using dates. 
 
 Adjust the `linegen` function. 
 
@@ -120,7 +124,7 @@ const linegen = d3.line()
 
 ## Drawing the axis
 
-To draw the axis we need to consider the structure of our SVG document. 
+To draw the axis you need to consider the structure of your SVG document. 
 
 Currently the document is structured like this:
 
@@ -143,13 +147,13 @@ const svg = d3
 
 Here you selected the `#svg` element and then appended a `path`. 
 
-We want to add some more elements. The new elements will draw the axis showing dates along the bottom, and inches of ranfall along the left. For this to be possible you need to create an SVG structured like this: 
+You want to add some more elements. The new elements will draw the axis showing dates along the bottom, and inches of ranfall along the left. For this to be possible you need to create an SVG structured like this: 
 
-```SVG
+```HTML
 <svg>
   <g><path d="..."></path></g>
-  <g>...</g><!-- date axis-->
-  <g>...</g><!-- rainfall axis-->
+  <g>...</g><!-- date axis -->
+  <g>...</g><!-- rainfall axis -->
 </svg>
 ```
 
@@ -182,9 +186,11 @@ graph
   .attr('fill', 'none')
 ```
 
+Here you have the same situation as before but the main svg node is now stored in the variable: `svg` and the d3 group object that contains the line/path is the variable: `graph`. 
+
 ### Generating an axis
 
-Now we generate and axis! Luckily D3 has us covered with `d3.axisBottom()` and `d3.axisLeft()`. 
+Now generate an axis on the bottom and left sides! Luckily D3 has you covered with `d3.axisBottom()` and `d3.axisLeft()`. 
 
 Add the following: 
 
@@ -208,11 +214,11 @@ svg
   .call(bottomAxis)
 ```
 
-Note! Group does not have `x` or `y` attributes but you can use transform translate. This is works the same as CSS! 
+Note! Group does not have `x` or `y` attributes but you can use transform translate. This works the same as CSS! 
 
-Notice you used the `height` and `margin` variables here! 
+Notice you used the `height` and `margin` variables here to define the position. 
 
-The last line uses the `call()` method to call the provided function. 
+The last line uses the `call()`. This generates all of the things that make the axis. The lines and text elements etc.
 
 Now make the left axis. 
 
@@ -318,3 +324,14 @@ d3.csv('precipitation.csv')
   .then(handleData)
 ```
 
+## Challenge 
+
+**Challenge 1:** Adjust the size of your svg container. Change the height and width to something that might better contain your graph. 
+
+Then adjust the margin to place the axis better to fit the new size. 
+
+**Challenge 2:** Make up your own challenge here...
+
+## Conclusion 
+
+In this tutorial you learned how to create axis with D3. You also learned how to place the axis relative to a graph you have drawn. 
