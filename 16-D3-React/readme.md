@@ -1,10 +1,12 @@
 # D3 & React
 
-You might be creating a React project and needs to incorporate D3. This is possible! To do this its important to understand that D3 and React work with the DOM in two different ways. 
+You might be creating a React project and needs to incorporate D3. This is possible! To do this its important to understand that D3 and React work with the DOM in two different ways.
 
-D3 uses the DOM in the traditional way where it access the "real" DOM directly. React uses a virtual DOM. Problems arise when mixing the two systems. D3 may make changes to the DOM, later React updates a component it will overwrite those changes using what it has stored in the virtual DOM. 
+D3 uses the DOM in the traditional way where it access the "real" DOM directly. React uses a virtual DOM. Problems arise when mixing the two systems. D3 may make changes to the DOM, when React updates a component it will overwrite changes made by D3. 
 
-To solve the problem you either need to make all of changes to the virtual DOM. To do this all of your changes need to happen through components, props, and state. Or, mark a DOM element as a Reference. This removes it from React's virtual.
+For D3 and React to work together you use one of two methods. 
+
+Handle all changes to element in a component, this way elements are managed by the virtual DOM, or declare a DOM element as a Reference, this prevents that element from being managed by the virtual DOM. 
 
 Here is a link to a guide: 
 
@@ -30,9 +32,30 @@ Start your project with:
 yarn start
 ```
 
-Open this new project in your code editor. 
+Open the project in your code editor. 
 
 ## Make a Bar chart component
+
+This first example will let D3 manage the DOM by creating a ref. You'll start by creating a custom hook that returns reference to the D3 managed DOM element. 
+
+To make it easy to use D3 make yourself a custom hook. Add a new file `useD3.js`.
+
+```JS
+import { useRef, useEffect } from 'react'
+import * as d3 from 'd3'
+
+export const useD3 = (renderChartFn, dependencies) => {
+	const ref = useRef()
+
+	useEffect(() => {
+		renderChartFn(d3.select(ref.current))
+		return () => {}
+		}, dependencies)
+	return ref
+}
+```
+
+The code above is a hook. Next you'll create a new component to display a chart and import the hook above there. 
 
 Create a new file `BarChart.js`.
 
@@ -61,22 +84,7 @@ function BarChart() {
 export default BarChart
 ```
 
-To make it easy to use D3 make yourself a custom hook. Add a new file `useD3.js`. 
-
-```JS
-import { useRef, useEffect } from 'react'
-import * as d3 from 'd3'
-
-export const useD3 = (renderChartFn, dependencies) => {
-	const ref = useRef()
-
-	useEffect(() => {
-		renderChartFn(d3.select(ref.current))
-		return () => {}
-		}, dependencies)
-	return ref
-}
-```
+Notice this component is rendering an SVG element. Here you created some groups: `plot-area`, `x-axis`, and `y-axis`. In the previous examples you created those dynamically with D3. Here you wrote those elements and will populate them with D3. 
 
 Now update the `BarChart` component in `BarChart.js`. Here you are importing the new `useD3`, and add the code to draw the bar chart. 
 
@@ -134,7 +142,7 @@ function BarChart({ data }) {
 
   return (
     <svg
-			ref={ref} // Don't forget to add this line!
+			ref={ref} // *** Don't forget to add this line! ***
       style={{
         height: 500,
         width: "100%",
@@ -154,9 +162,11 @@ export default BarChart
 
 Notice you added the drawing code within the callback of the `useD3` hook. This hook returns a `ref`. The `ref` is a reference to a DOM element. This allows you to manage that element outside the virtual DOM! 
 
-Notice all of the D3 drawing code happens within the callback created here. 
+Notice all of the D3 drawing code happens within the callback in the call to `useD3`.
 
 In the `<svg>` block a the bottom notice that you have added `ref={ref}`. This assigns the ref you created at the to this element. 
+
+Look at the drawing code. Notice the `svg.select('.x-axis')...`, `svg.select('.y-axis')...`, and `svg.select('.plot-area')...`. Here you are selecting the elements you wrote hand. You skipped `.append()` for these because they already exist! You can select them in this way because you have created the ref for their parent svg element. 
 
 ## Using the BarChart Component
 
@@ -168,18 +178,19 @@ Open `App.js` and add the following:
 import './App.css';
 import BarChart from './BarChart';
 
+// Define you data
 const data = [
-	{ label: "Oakland", population: 425097, country: "USA" }
-	{ label: "Fresno", population: 525010, country: "USA" }
-	{ label: "San Francisco", population: 874961, country: "USA" }
-	{ label: "Peshawar", population: 1970042, country: "Pakistan" }
-	{ label: "Karachi", population: 14910352, country: "Pakistan" }
-	{ label: "Lahore", population: 11126285, country: "Pakistan" }
-	{ label: "venice", population: 258685, country: "Italy" }
-	{ label: "Naples", population: 967069, country: "Italy" }
-	{ label: "Rome", population: 4342212, country: "Italy" }
-	{ label: "Salvador", population: 2886698, country: "Brazil" }
-	{ label: "Sao Paolo", population: 12300000, country: "Brazil" }
+	{ label: "Oakland", population: 425097, country: "USA" },
+	{ label: "Fresno", population: 525010, country: "USA" },
+	{ label: "San Francisco", population: 874961, country: "USA" },
+	{ label: "Peshawar", population: 1970042, country: "Pakistan" },
+	{ label: "Karachi", population: 14910352, country: "Pakistan" },
+	{ label: "Lahore", population: 11126285, country: "Pakistan" },
+	{ label: "venice", population: 258685, country: "Italy" },
+	{ label: "Naples", population: 967069, country: "Italy" },
+	{ label: "Rome", population: 4342212, country: "Italy" },
+	{ label: "Salvador", population: 2886698, country: "Brazil" },
+	{ label: "Sao Paolo", population: 12300000, country: "Brazil" },
 	{ label: "Rio", population: 6748000, country: "Brazil" }
 ]
 
@@ -196,7 +207,9 @@ function App() {
 export default App;
 ```
 
-Here we hard codes the data. The page with the chart should look something like: 
+The data is an array of objects. You could define this any where and import it if you like.
+
+The page with the chart should look something like: 
 
 ![example-2](images/example-2.png)
 
@@ -206,15 +219,16 @@ Note! that I left the default Create-React.App `App.css` in place which is addin
 
 That was a little awkward placing all of the data in a `App.js`. This would be possible and maybe convenient for small lists of data. For many cases it will be easier to load the data from outside. 
 
-Copy the `cities.csv` into the public folder of your React project.
+Copy the `cities.csv` *into the public folder* of your React project.
 
 In `App.js` make the following changes:
 
 ```JS
 import './App.css';
 import BarChart from './BarChart';
-import { useState, useEffect } from 'react'
-import * as d3 from 'd3'
+// Import useState and useEffect
+import { useState, useEffect } from 'react' 
+import * as d3 from 'd3' // import D3
 
 function App() {
   const [data, setData] = useState([])
@@ -239,5 +253,14 @@ function App() {
 export default App;
 ```
 
-Since loading the data will be an asynchrous action you need to store the data on state. React will only render a component when state changes or the component receives props. In this case the App component will render when it loads new data since you are storing the data on a state variable and updating it when it loads. The BarChart component will update since you are passing data to it as a prop. 
+Since loading the data will be an asynchrous action you need to store the data on state. React will only render a component when state changes or the component receives props. In this case the App component will render when it loads new data since you are storing the data on a state variable and updating that variable when the data is laoded. The BarChart component will update when new data is passed as a prop. 
 
+## Challenges
+
+This looks good but that data is getting pretty old! 
+
+**Challenge:** Try this example with another dataset.
+
+## Conclusion
+
+In this tutorial you leanred to build a D3 chart in React. You created a custom hook that managed DOM elements in React using a ref. 
