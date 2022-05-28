@@ -2,24 +2,6 @@
 
 Some data contains location information. D3 contains some powerful tools for displaying maps. 
 
-
-<!-- Outline
-
-Ideas from Blocks:
-https://bl.ocks.org/d3noob/82f4db23d47971c74699abb5f4bf8204
-
-import map json:
-<script src="https://unpkg.com/topojson@3"></script>
-
-Download: world-110m2.json 
-from: https://github.com/cszang/dendrobox/blob/master/data/world-110m2.json
-Click "raw" and save your file with the name: world-110m2.json
-
-
- -->
-
-
-
 ## Getting started
 
 Start by setting up the boiler plate D3 HTML document. Leave out the SVG tag and you will generate that in code this time. 
@@ -160,4 +142,16 @@ When you're done your map might look like this:
 
 ![Example 1](./images/example-1.png)
 
+**Challenge:** 
 
+Style the SVG element. Place it in the center of the page. You'll need to use CSS styles for this. 
+
+Give the SVG elemment a border. 
+
+**Challenge:** 
+
+Edit the fill and stroke styles of the map. 
+
+## Conclusion 
+
+In this tutorial you created a world map with D3 using topojson along with D3's projection. 
