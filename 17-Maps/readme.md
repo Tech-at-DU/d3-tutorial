@@ -150,7 +150,98 @@ Give the SVG elemment a border.
 
 **Challenge:** 
 
-Edit the fill and stroke styles of the map. 
+Edit the fill and stroke styles of the map.
+
+## Positioning the map
+
+Besides projecting the map on to a flat surface also controls how the project is positioned. Since the world is a sphere you could rotate it before flattening it onto the screen. 
+
+The project has a rotation option. Try setting the rotation: 
+
+```JS
+const projection = d3.geoMercator()
+  .rotate([-180, 0]); // Set the rotation
+```
+
+This should rotate the world -180 degrees on the vertical axis. 
+
+Take a look at the antarctic: 
+
+```JS
+.rotate([0, 90]);
+```
+
+Here you rotated the globe 90 on the horzontal axis. 
+
+You can also set the scale of the map. Try this: 
+
+```JS
+.scale(400)
+.rotate([0, 90]);
+```
+
+This should zoom into the antartic. 
+
+Try this: 
+
+```JS
+.scale(100)
+.rotate([0, 0]);
+```
+
+This should image should make it clear how the mercator projection distorts the world map at the top and bottom. 
+
+**Challenge:** 
+
+Use rotation and scale to zoom in on Japan. 
+
+<details>
+<summary>
+
+**solution**
+
+</summary>
+
+These were the numbers I used:
+```JS
+.scale(550)
+.rotate([-120, -45]);
+```
+
+</details>
+
+## Add some color
+
+Add a little color. This next step won't solve all of your color questions. In this step you'll give each country a different color based on a linear scale. In more practical examples you'll want to assign a color to a region. 
+
+Create a linear scale for color. There are 176 countries in the list so that will be the domain. The colors from tomato to gold will be the range.  
+
+```JS
+// Color scale 
+const colorScale = d3.scaleLinear()
+  .range(['tomato', 'gold'])
+  .domain([0, 176])
+```
+
+D3 recognizes the keyword colors, tomato is: `#FF6347`, and gold is: `#FFD700`. D3 will interpolate across these values. 
+
+Here is another strategy. Use one of D3 color interpolators. Try this: 
+
+```JS
+const colorScale = d3.scaleSequential()
+  .interpolator(d3.interpolateRainbow)
+  .domain([0, 176])
+```
+
+Notice here you changed the scale type to sequential. Then used the interpolator with the rainbow interpolator. This should cycle through the rainbow and give each country a different color. 
+
+Here is another alternative. This doesn't use a scale at all. Instead you will generate a fill color dynamically. Find the line that sets the fill attribute for the path. 
+
+```JS
+.attr('fill', (d, i) => `hsl(${360 / 176 * i}, 70%, 50%)`)
+```
+
+HSL colors take a hue as the first parameter. This ranges from 0 to 360. If we need 176 colors you can divide 360 by 176 and then multiply by the index to get a unique hue for each country. 
 
 ## Conclusion 
 
