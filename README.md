@@ -19,4 +19,4 @@ This tutorial provides and introduction to D3.js!
 - [15 Hierarchy](15-Hierarchy)
 - [16 D3 React](16-D3-React)
 - [17 D3 Maps](17-Maps)
-
+- [18 D3 Maps Part 2](18-Maps-Part-2)
