@@ -18,4 +18,5 @@ This tutorial provides and introduction to D3.js!
 - [14 Pack](14-Pack)
 - [15 Hierarchy](15-Hierarchy)
 - [16 D3 React](16-D3-React)
+- [17 D3 Maps](17-Maps)
 
