@@ -235,6 +235,10 @@ const colorScale = d3.scaleSequential()
 
 Notice here you changed the scale type to sequential. Then used the interpolator with the rainbow interpolator. This should cycle through the rainbow and give each country a different color. 
 
+Yout map might look like this after using the color scale:  
+
+![example 2](./images/example-2.png)
+
 Here is another alternative. This doesn't use a scale at all. Instead you will generate a fill color dynamically. Find the line that sets the fill attribute for the path. 
 
 ```JS
