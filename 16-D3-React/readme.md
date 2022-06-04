@@ -57,6 +57,28 @@ export const useD3 = (renderChartFn, dependencies) => {
 
 The code above is a hook. Next you'll create a new component to display a chart and import the hook above there. 
 
+This needs some explanation. This function is a hook. A hook function whose name begins with "use". Here you created a function named `useD3`. 
+
+Inside a hook you can call other hooks as long as you call them unconditionally. That is you can't put a call to another hook inside of an if else statement for example. 
+
+A hook can take any parameters you care to include. In this the `useD3` hook takes two parameters: `renderChartFn` and `dependencies`.
+
+Read more about React Hooks: https://reactjs.org/docs/hooks-custom.html
+
+So how does the the `useD3` hook work? 
+
+React normally manages DOM but in this case we want D3 to handle the DOM. "Handling" the DOM in this case means creating and updating elements in DOM. In out example we want D3 to create new SVG elements and set their attributes. 
+
+To offload this this behavior from React and pass it to D3 you need a ref. A ref is a "reference" to a DOM element that will be handled outside of React. In our case this will the SVG element. 
+
+The Ref can't be used until the element it refers to is created. For this work you'll use the `useEffect` hook. 
+
+`useEffect` can be used to run a callback function when a component loads or when a component is updated. 
+
+All of this might be hard to follow now let's talk about it again at the end after all of the rest of the code is in place. It will make more sense then. 
+
+## Creating the bar chart
+
 Create a new file `BarChart.js`.
 
 Add the following: 
@@ -138,7 +160,7 @@ function BarChart({ data }) {
 			.attr('y', d => yscale(d.population))
 			.attr('height', d => yscale(0) - yscale(d.population))
 			.attr('fill', d => colorScale(d.country))
-	}, [data.length])
+	}, [JSON.stringify(data)])
 
   return (
     <svg
@@ -167,6 +189,10 @@ Notice all of the D3 drawing code happens within the callback in the call to `us
 In the `<svg>` block a the bottom notice that you have added `ref={ref}`. This assigns the ref you created at the to this element. 
 
 Look at the drawing code. Notice the `svg.select('.x-axis')...`, `svg.select('.y-axis')...`, and `svg.select('.plot-area')...`. Here you are selecting the elements you wrote hand. You skipped `.append()` for these because they already exist! You can select them in this way because you have created the ref for their parent svg element. 
+
+The last parameter of `useD3`: `[JSON.stringify(data)]` might look a little weird. This is an array of dependencies. If one of the values in this array changes the render function, the first parameter, will be run. 
+
+In this case we have an array of data. That we need to to compare which doesn't play nice here. To fix that I coverted the data into a string.
 
 ## Using the BarChart Component
 
@@ -255,6 +281,51 @@ export default App;
 
 Since loading the data will be an asynchrous action you need to store the data on state. React will only render a component when state changes or the component receives props. In this case the App component will render when it loads new data since you are storing the data on a state variable and updating that variable when the data is laoded. The BarChart component will update when new data is passed as a prop. 
 
+## Review 
+
+Let's review everything that happened in this example. 
+
+### useD3
+
+The `useD3` hook is responsible for creating a reference to the DOM element where D3 will do it's work creating DOM elements. 
+
+```JS
+export const useD3 = (renderChartFn, dependencies) => {
+	const ref = useRef()
+
+	useEffect(() => {
+		renderChartFn(d3.select(ref.current))
+		return () => {}
+		}, dependencies)
+	return ref
+}
+```
+
+This hook can't do anything with the DOM until that DOM element is created so you used `useEffect`. Here `useEffect` will run the call back when the DOM is loaded and when any value in the `dependencies` array is updated. 
+
+To use `useD3` you called it in the `BarChart` component. 
+
+```JS
+const ref = useD3((svg) => {
+
+	... d3 drawing code here ...
+
+}, [JSON.stringify(data)])
+```
+
+`useD3` returns a reference object which you assigned to the svg element where D3 will do it's drawing. 
+
+```HTML
+<svg
+	ref={ref}
+	...
+</svg>
+```
+
+The first argument you pass to `useD3` is the render function. This function does the work of rendering your D3 elements. 
+
+The second argument you passed to `useD3` is the `dependencies` array. If any value in this array changes `useD3` will run the render function again. Which should redraw your chart. 
+
 ## Challenges
 
 This looks good but that data is getting pretty old! 
@@ -264,3 +335,4 @@ This looks good but that data is getting pretty old!
 ## Conclusion
 
 In this tutorial you leanred to build a D3 chart in React. You created a custom hook that managed DOM elements in React using a ref. 
+
