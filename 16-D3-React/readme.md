@@ -328,9 +328,13 @@ The second argument you passed to `useD3` is the `dependencies` array. If any va
 
 ## Challenges
 
-This looks good but that data is getting pretty old! 
+**Challenge:** This looks good but that data is getting pretty old! Try this example with another dataset.
 
-**Challenge:** Try this example with another dataset.
+**Challenge:** Update the data. Doing this will show how `useEffect` is working with `useD3` and that `dependencies` array. 
+
+Try this: create a couple buttons that sort the data on different criteria. For example: sort on name/label. Sort on country, sort on population. 
+
+Since `array.sort()` mutates the original array you'll need to top the array when you set state.  
 
 ## Conclusion
 
