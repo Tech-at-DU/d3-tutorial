@@ -9,7 +9,7 @@ You're probably already familiar with JSON, let's take a look at CSV. CSV stands
 Here is a sample CSV file: 
 
 ```
-"name","population","country","x","y"
+"label","population","country","x","y"
 "San Francisco",874961,"USA",122,-37
 "Fresno",525010,"USA",119,-36
 "Lahore",11126285,"Pakistan",74,31
@@ -25,7 +25,7 @@ Each row is one record.
 Take a look at the first row, the first row is special: 
 
 ```
-"name","population","country","x","y"
+"label","population","country","x","y"
 ```
 
 This row defines the fields for all of the other rows. Each field is separated by a comma. The first line names the values in each of the following rows. 

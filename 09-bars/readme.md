@@ -30,18 +30,18 @@ In your script load this dataset using your favorite method.
 
 ## Drawing Bars
 
-At this point, you should have your data loaded. The data should be an array of cities with names, populations, and countries. It should look something like this: 
+At this point, you should have your data loaded. The data should be an array of cities with labels, populations, and countries. It should look something like this: 
 
 ```JS
 [
-  {name: "San Francisco", population: "874961", country: "USA", x: "122", y: "-37"}
-  {name: "Fresno", population: "525010", country: "USA", x: "119", y: "-36"}
-  {name: "Lahore", population: "11126285", country: "Pakistan", x: "74", y: "31"}
-  {name: "Karachi", population: "14910352", country: "Pakistan", x: "67", y: "24"}
-  {name: "Rome", population: "4342212", country: "Italy", x: "12", y: "41"}
-  {name: "Naples", population: "967069", country: "Italy", x: "14", y: "40"}
-  {name: "Rio", population: "6748000", country: "Brazil", x: "-43", y: "-22"}
-  {name: "Sao Paolo", population: "12300000", country: "Brazil", x: "-46", y: "-23"}
+  {label: "San Francisco", population: "874961", country: "USA", x: "122", y: "-37"}
+  {label: "Fresno", population: "525010", country: "USA", x: "119", y: "-36"}
+  {label: "Lahore", population: "11126285", country: "Pakistan", x: "74", y: "31"}
+  {label: "Karachi", population: "14910352", country: "Pakistan", x: "67", y: "24"}
+  {label: "Rome", population: "4342212", country: "Italy", x: "12", y: "41"}
+  {label: "Naples", population: "967069", country: "Italy", x: "14", y: "40"}
+  {label: "Rio", population: "6748000", country: "Brazil", x: "-43", y: "-22"}
+  {label: "Sao Paolo", population: "12300000", country: "Brazil", x: "-46", y: "-23"}
 ]
 ```
 

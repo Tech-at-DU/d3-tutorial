@@ -46,7 +46,7 @@ handleData()
 The cities data looks like this: 
 
 ```CSV
-"name","population","country","x","y"
+"label","population","country","x","y"
 "San Francisco",874961,"USA",122,-37
 "Fresno",525010,"USA",119,-36
 "Lahore",11126285,"Pakistan",74,31
@@ -56,18 +56,18 @@ After importing it should be arranged like this. Check it for yourself by loggin
 
 ```JS
 [
-  {name: "San Francisco", population: "874961", country: "USA", x: "122", y: "-37"},
-  {name: "Fresno", population: "525010", country: "USA", x: "119", y: "-36"},
-  {name: "Lahore", population: "11126285", country: "Pakistan", x: "74", y: "31"},
-  {name: "Karachi", population: "14910352", country: "Pakistan", x: "67", y: "24"},
-  {name: "Rome", population: "4342212", country: "Italy", x: "12", y: "41"},
+  {label: "San Francisco", population: "874961", country: "USA", x: "122", y: "-37"},
+  {label: "Fresno", population: "525010", country: "USA", x: "119", y: "-36"},
+  {label: "Lahore", population: "11126285", country: "Pakistan", x: "74", y: "31"},
+  {label: "Karachi", population: "14910352", country: "Pakistan", x: "67", y: "24"},
+  {label: "Rome", population: "4342212", country: "Italy", x: "12", y: "41"},
   ...
 ]
 ```
 
 This is an array of objects with properties of:
 
-- name
+- label
 - population
 - country
 - x
@@ -271,7 +271,7 @@ labels
   .data(data)
   .enter()
   .append('text')
-  .text(d => d.name)
+  .text(d => d.label)
   .attr('x', 20)
   .attr('y', (d, i) => (i * 20) + 20)
 ```
@@ -342,7 +342,7 @@ rLabels
   .data(data)
   .enter()
   .append('text')
-  .text(d => d.name)
+  .text(d => d.label)
   // Place labels around circle ?
   .attr("transform", (d, i) => `translate(${arcLabels.centroid(arcData[i])})`)
   .attr('text-anchor', 'middle')
