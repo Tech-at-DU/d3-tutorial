@@ -84,11 +84,56 @@ function stopAudio() {
 }
 ```
 
-At this stage clicking the audio button shouldplay the audio. Clicking stop should stop the audio. 
+At this stage clicking the play button should play the audio file. Clicking stop should stop the audio. 
 
 Notice you declared the `audio` variable outside the functions so it can be used in both functions. 
 
 ### Analysing the audio
 
-JavaScript allows you to analyse your audio. This process provides a data array that describes the volume of the sound at the current moment in 255 frequency bands. 
+JavaScript allows you to analyze your audio. This process provides a data array that describes the volume of the sound in a number of frequency bands. Audio data is a series of 8 bit values. 
+
+Analyzing audio needs to work efficiently because of the rate at which data needs to be analyzed. You are listening to audio is real time. To create a visualization that visually displays the data in real time you will be udating the visualization 30 to 60 times per second. This requires looking at a lot of data in a short amount of time. 
+
+To make this more effecient the audio analyzer stores data in bytes. A byte is 8 bits of information that represents a value from 0 to 255. 
+
+This is more effecient because knowing the size of the data in advance allows the computer to store access it more efficiently. 
+
+The analyzer returns an array of data but does this as a `Uint8Array`. This is an array of fixed size that stores only 8 bit unsigned integers. So its a special array that stores integers in the range of 0 to 255. 
+
+Read more about `Uint8Array` here: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Uint8Array
+
+Add a couple variables to your project: 
+
+```JS
+let audio
+let frequencyArray
+let isPlaying = false
+let analyser
+```
+
+These will be outside of the functions you have created since they need to be accessed across several of those functions. 
+
+```JS
+function playAudio() {
+  audio = new Audio()
+  const audioContext = new AudioContext() // Add this before assigning source
+  audio.src = './audio/bird-whistling-a.wav'
+  // Setup the analyser
+  analyser = audioContext.createAnalyser()
+  analyser.fftSize = 32
+  const source = audioContext.createMediaElementSource(audio)
+  source.connect(analyser)
+  source.connect(audioContext.destination);
+  audio.play()
+  isPlaying = true
+  requestAnimationFrame(renderAudio)
+}
+```
+
+Here you created an audio context. You'll use this to connect your analyser to the audio object. Create this before setting the audio source. 
+
+Next you creatd the analyser and set the fft size. This will set the number of bands the audio data will be divided into. The value has to be a power of 2 and between 2^5 and 2^15. So 32, 64, 128, 256, 512, 1024, 2048, 4096, 8192, 16384, and 32768 are the only choices. 
+
+
+
 
