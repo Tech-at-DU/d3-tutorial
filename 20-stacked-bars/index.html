@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stacked bars</title>
+</head>
+<body>
+
+  <svg id="svg" width="500" height="300"></svg>
+
+  <script type="module">
+    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+    
+    async function handleData() {
+      // Load the data
+      const data = await d3.csv('cities.csv')
+      console.log(data)
+      // Rearrange the data into an array of countries with cities
+      // First get a list of the countries
+      data.forEach(d => d.population = parseInt(d.population))
+      const countries = Array.from(new Set(data.map(d => d.country)))
+      const byCountry = []
+      countries.forEach(country => {
+        const obj = {
+          country,
+          total: 0
+        }
+        const cities = data.filter(d => d.country === country).forEach((city, i) => {
+          obj['city'+i] = city.population // get a city
+          obj.total += city.population // tally the total population 
+        })
+        byCountry.push(obj)
+      })
+
+      console.log(byCountry) // Check our work
+
+      const margin = { top: 10, right: 10, bottom: 20, left: 80 }
+      const width = 600 - (margin.left + margin.right)
+      const height = 300 - (margin.top + margin.bottom)
+
+      // x scale 
+      const xscale = d3.scaleBand()
+        .domain(byCountry.map(d => d.country))
+        .range([margin.left, width + margin.left])
+        .padding(0.05) // space between bars
+      
+      // Get the popluation extents  
+      const popExtent = d3.extent(byCountry, d => d.total)
+
+      const yscale = d3.scaleLinear()
+        .domain([0, popExtent[1]]) // Lets use 0 to the max extent
+        .range([height, margin.top])
+
+      const colorscale = d3.scaleOrdinal()
+        .domain(['city0', 'city1'])
+        .range(['orange','green'])
+
+      // Select the SVG element
+      const svg = d3.select("#svg")
+        .attr("width", width + margin.left + margin.right)
+        .attr("height", height + margin.top + margin.bottom)
+      
+      // Append a group 
+      svg.append("g")
+        .attr("transform", `translate(0, ${height})`)
+        .call(d3.axisBottom(xscale).tickSizeOuter(0));
+
+      // Add Y axis
+      svg.append("g")
+        .attr("transform", `translate(${margin.left}, 0)`)
+        .call(d3.axisLeft(yscale));
+
+
+      const stackedData = d3.stack()
+        .keys(['city0', 'city1'])(byCountry)
+      
+      svg.append("g")
+      .selectAll("g")
+      // Enter in the stack data = loop key per key = group per group
+      .data(stackedData)
+      .enter()
+      .append("g")
+      .attr("fill", d => colorscale(d.key))
+      .selectAll("rect")
+      // enter a second time = loop subgroup per subgroup to add all rectangles
+      .data(d => d)
+      .enter()
+      .append("rect")
+      .attr("x", (d, i) => xscale(d.data.country))
+      .attr("y", d => yscale(d[1]))
+      .attr("height", d => yscale(d[0]) - yscale(d[1]))
+      .attr("width", xscale.bandwidth())
+      .attr("opacity", 0.5)
+
+    }
+
+    handleData()
+
+  </script>
+</body>
+</html>
