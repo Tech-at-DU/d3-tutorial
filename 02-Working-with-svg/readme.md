@@ -134,6 +134,7 @@ d3.select('#svg')
   .selectAll('circle')
   .data(data) // add some data
   .enter() // enter the data
+  .append('circle') // append some circles
 ```
 
 You should have circles now but you won't see them until you style them. 
