@@ -210,7 +210,7 @@ NOTE! Since you have written the width style as: `d / 10 * 100` numbers greater 
 
 NOTE! Adding more values should generate new elements in the browser!
 
-NOTE! Remember the normalization function from the data challenges? That could be used here to convert your array of values to an array of nirmalized values! 
+NOTE! Remember the normalization function from the data challenges? That could be used here to convert your array of values to an array of normalized values! 
 
 **Challenge 2**
 
