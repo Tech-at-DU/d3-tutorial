@@ -30,7 +30,7 @@ Link to the library from the CDN. Add the script tag at the bottom of the body t
 ```HTML
 <body>
 
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     // Your script here!
   </script>
