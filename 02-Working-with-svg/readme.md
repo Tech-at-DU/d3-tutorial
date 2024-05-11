@@ -143,7 +143,7 @@ Set attributes on SVG `circle`. Set the `cx`, `cy`, `r`, and `fill` to the value
 ```JS
 d3.select('#svg')
   .style('border', '1px solid')
-  .selectAll('rect')
+  .selectAll('circle')
   .data(data)
   .enter()
   .append('circle')
