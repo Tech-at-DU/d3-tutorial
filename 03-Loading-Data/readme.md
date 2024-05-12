@@ -244,6 +244,16 @@ For the x and y values you can use anything. Depending on the values you use it'
 
 Style the SVG document. Give it a background color. 
 
+**Challenge 3:** 
+
+Gove each circle a different color fill. Remember! With SVG elements the background color of the element is set with the `fill` attribute! You can try something like: 
+
+```JS
+.attr('fill', (d, i) => `hsl(${360 / data.length * i}, 100%, 50%)`)
+```
+
+Notice in the example code callback function takes two parameters `d` and `i`. Where `d` is the data value, and `i` is the index of that value in the data array. Knowing the index of a value is useful sometimes, and D3 provides that as the second parameter. 
+
 ## Conclusion 
 
 In this tutorial you learned to load JSON and CSV data into D3. 
