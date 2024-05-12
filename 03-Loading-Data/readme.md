@@ -93,7 +93,7 @@ To get started with this example create a new HTML file and add your boilerplate
 
   <svg id="svg" width="500" height="500"></svg>
 
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     // Your Script here...
   </script>
