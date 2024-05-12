@@ -16,7 +16,7 @@ For this example continue with the code from the previous example. You should ha
 <body>
   <svg id="svg" width="500" height="500"></svg>
 
-  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
   <script>
     d3.csv('cities.csv')
       .then(data => {
