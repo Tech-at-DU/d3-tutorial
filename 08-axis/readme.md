@@ -232,6 +232,8 @@ svg
   .call(leftAxis)
 ```
 
+Read up on axis! https://d3js.org/d3-axis#d3-axis
+
 At this point you should have something like this: 
 
 ![example-2](images/example-2.png)
