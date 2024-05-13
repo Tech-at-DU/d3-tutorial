@@ -56,7 +56,11 @@ This example will create a simplified bubble chart. To make a full bubble chart 
 
 ## Using D3 Scales
 
-A scale needs a domain and a range. The domain is the input and the range is the output. 
+A scale needs a domain and a range. The domain is the input and the range is the output.
+
+The `scaleLinear(domain, range)` function creates a function that returns a linearly scaled value from the domain and range provided. 
+
+https://d3js.org/d3-scale/linear#scaleLinear
 
 **Domains**
 
@@ -151,9 +155,11 @@ const xScale = d3.scaleLinear()
 Create a new linear scale for the y value. The min y is -37 and the max is 42. Why not say the extent is -50 to +50. The range is the height of the SVG which is 500. 
 
 ### d3.extent
-In the previous examples you may be askign where numbers like `525010` and `14910352` or `-37` and `42` came from? The first pair is the maximum and minimum populations from and the second pair are the minimum and maximum y values, from the cities data. 
+In the previous examples you may be asking where numbers like `525010` and `14910352` or `-37` and `42` came from? The first pair is the maximum and minimum populations from and the second pair are the minimum and maximum y values, from the cities data. 
 
 D3 provides some helper functions that can find minimum and maximum values for you. The `d3.extent(iterable, accessor)` function returns an array with the maximum and minimum values. 
+
+https://d3js.org/d3-array/summarize#extent
 
 Try it for yourself. Replace the `populationScale` with this: 
 
@@ -165,6 +171,9 @@ const popScale = d3.scaleLinear()
 ```
 
 Here the min and max populations are found from the data. Notice that you are providing `extent()` with an array. The second paramter is a function that returns the value you are interested in finding the extents of `d => d.population`. 
+
+**Challenge**
+Use `extent()` to find the domain and range for the `xScale` and `yScale`.
 
 ### Scale Ordinal
 
