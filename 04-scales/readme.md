@@ -177,7 +177,9 @@ Use `extent()` to find the domain and range for the `xScale` and `yScale`.
 
 ### Scale Ordinal
 
-An ordinal scale maps arbitrary values like strings and dates to other arbitrary values like other strings and colors. 
+An ordinal scale maps arbitrary values like strings and dates to other arbitrary values like other strings and colors. Use an ordinal scale to map strings to other values. 
+
+https://d3js.org/d3-scale/ordinal#scaleOrdinal
 
 To map country names to colors you would use an ordinal scale. 
 
