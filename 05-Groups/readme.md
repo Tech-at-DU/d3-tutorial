@@ -41,7 +41,7 @@ The goal is to have D3 structure out svg like this:
 </svg>
 ```
 
-To do this we are going to rewrie some of the D3 code we used previously. Start with this: 
+To do this we are going to rewrite some of the D3 code we used previously. Start with this: 
 
 ```JS
 const node = d3.select('#svg')
