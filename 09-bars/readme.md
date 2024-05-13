@@ -242,6 +242,8 @@ const leftAxis = d3.axisLeft(yscale)
 
 Here you format to 2 digits with a single decimal. The numbers now read in millions. 
 
+https://d3js.org/d3-axis#axis_tickFormat
+
 Read more about formatting here: http://bl.ocks.org/zanarmstrong/05c1e95bf7aa16c4768e
 
 Maybe you want more ticks along the axis. Try this: 
