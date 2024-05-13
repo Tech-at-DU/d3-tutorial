@@ -150,6 +150,22 @@ const xScale = d3.scaleLinear()
 
 Create a new linear scale for the y value. The min y is -37 and the max is 42. Why not say the extent is -50 to +50. The range is the height of the SVG which is 500. 
 
+### d3.extent
+In the previous examples you may be askign where numbers like `525010` and `14910352` or `-37` and `42` came from? The first pair is the maximum and minimum populations from and the second pair are the minimum and maximum y values, from the cities data. 
+
+D3 provides some helper functions that can find minimum and maximum values for you. The `d3.extent(iterable, accessor)` function returns an array with the maximum and minimum values. 
+
+Try it for yourself. Replace the `populationScale` with this: 
+
+```JS
+const popScale = d3.scaleLinear()
+  // .domain([525010, 14910352])
+  .domain(d3.extent(data, d => d.population))
+  .range([20, 200])
+```
+
+Here the min and max populations are found from the data. Notice that you are providing `extent()` with an array. The second paramter is a function that returns the value you are interested in finding the extents of `d => d.population`. 
+
 ### Scale Ordinal
 
 An ordinal scale maps arbitrary values like strings and dates to other arbitrary values like other strings and colors. 
