@@ -4,7 +4,7 @@ The group is an SVG element that groups other elements together. The Group eleme
 
 A group is a tag like `<circle>` and `<ellipse>`. The group tag looks like this: `<g>`, `g` for "group".
 
-What is a group used for? Grouping other elements together! A group is a container element. That is doesn't display anything itself but displays all of its children. 
+What is a group used for? Grouping other elements together! A group is a container element. That is doesn't display anything itself but displays all of its children. The `<g>` tag in an SVG is a lot like the `<div>` tag in an HTML document!
 
 You can apply properties to the group and all children will inherit those properties. 
 
