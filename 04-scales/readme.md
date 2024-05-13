@@ -227,7 +227,7 @@ This is a lot better than the previous solution. We can do better still and D3 c
 
 **Challenge**
 
-Edit the domain until the largest and smallest circles are sizes that you like. 
+Edit the range until the largest and smallest circles are sizes that you like. 
 
 ### scaleSqrt
 
@@ -245,15 +245,15 @@ Edit the `popScale`:
 
 ```JS
 const popScale = d3.scaleSqrt()
-  .domain([525010, 14910352])
-  .range([10, 200])
+  .domain(d3.extent(data, d => d.population))
+  .range([20, 200])
 ```
 
 Notice the change, they may appear to be subtle. The sizes should be more accurately related now. 
 
 ## Finding min and max 
 
-This is getting better all the time. There are still a couple of places where our code is awkward. 
+This is getting better all the time! There are still a couple of places where our code is awkward. 
 
 Notice the population scale. To get the range we needed to look at the `cities.csv` and find the largest and smallest values. This would not work with more than 10 items. It's not going to work if something changes. 
 
@@ -275,6 +275,32 @@ const xScale = d3.scaleLinear()
   .domain([minX, maxX]) // Use the min and max here
   .range([700, 100])
 ```
+
+Note! You could have used `extent()` but this would have returned an array with the min and max values. So why use `d3.min()` and `d3.max()`? In some cases you might want to two values separately, for example if you wanted to round the values up or for another reason. 
+
+Consider the x and y coordinates. Using the min and max values for these places some of the objects at the edges of the diagram. This migth not look that great with circles since this places half the circle off the edge of the view. 
+
+Try replacing the `xScale` with:
+
+```JS
+// Create a linear scale
+// Get the min and max for x (be sure to convert these to numbers!)
+const minX = d3.min(data, d => parseFloat(d.x))
+const maxX = d3.max(data, d => parseFloat(d.x))
+
+console.log('min', minX, 'max', maxX)
+const xScale = d3.scaleLinear()
+  .domain([minX, maxX]) // Use the min and max values
+  .range([0, 800])     // Set the range
+```
+
+This finds the min and max values for x. `extent()` would have done the same! Notice how this places some of the objects at the edges of the diagram. With the separate min and max values you can adjust the appearance. Try this: 
+
+```JS
+  .domain([minX - 50, maxX + 50])
+```
+
+This pushes everything 50px from the left edge to the right and 50px to the left from the right edge. 
 
 **Challenge**
 
