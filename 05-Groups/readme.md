@@ -136,7 +136,7 @@ x + Math.cos(Math.PI * 1.75) * radius
 Math.sin(Math.PI * 1.75) * radius
 ```
 
-You'll need to get the radius from the population scale!
+The code above is abstracted from the code you have worked with. You'll need to get the `radius` from the population scale! The `x` is value returned from the `xScale`.
 
 The solution to this problem is presented below if you get stuck you can peek at it in the next section. 
 
