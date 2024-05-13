@@ -182,7 +182,9 @@ const yscale = d3.scaleLinear()
 
 ## Line Generator
 
-Time to make a line generator. If you recall from the previous tutorial you used `d3.line()` to generate the data needed to draw a path. In that example, there were only a few points. This time you have 239 points! you will need a better solution. 
+Time to make a line generator. If you recall from the previous tutorial you used `d3.line()` to generate the data needed to draw a path. In that example, there were only a few points. This time you have 239 points! you will need a better solution.
+
+https://d3js.org/d3-shape/line#_line
 
 Create a line generator function! 
 
