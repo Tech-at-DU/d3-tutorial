@@ -256,7 +256,7 @@ const leftAxis = d3.axisLeft(yscale)
 
 Now you get 12 ticks. D3 seems to round this depending on the range. Try a few different values and see what happens. 
 
-You can also control the width of the ticks. These are the little lines along the axis. 
+You can also control the width of the ticks. "Ticks" are the little lines along the axis that show up at each value. 
 
 ```JS
 const leftAxis = d3.axisLeft(yscale)
@@ -264,6 +264,8 @@ const leftAxis = d3.axisLeft(yscale)
   .ticks(12)
   .tickSize(-width) // Set the width of the ticks
 ```
+
+Notice how this stretches the "ticks" across the width of the chart. 
 
 Oh San Francisco you're soo small! 
 
