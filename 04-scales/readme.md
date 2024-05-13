@@ -336,7 +336,7 @@ const countryScale = d3.scaleOrdinal()
   .range(['cornflowerblue', 'gold', 'gold', 'tomato'])
 ```
 
-While these changes don't make a visual change, behind the scenes they make big differences in how our code operates! 
+While these changes don't make a visual change, behind the scenes they make big differences in how our code operates! Your diagram will look simialr to this: 
 
 ![example](images/example-1.png)
 
