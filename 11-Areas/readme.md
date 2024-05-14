@@ -382,9 +382,9 @@ Bonus points for using a scale to determine the color! Use the ideas from the pr
 **Stretch Challenge**
 If you solved the challenge above you may notice that some of the data falls off the bottom of the chart, that is it dips below the bottom of the scale, or possibly above the top of the scale. 
 
-This happens because the yscale used gets it's extents from the 1901 data. Which has a minimum of percipitation of 18. The data covers years from 1901 to 2017 and it's possible that one of those years has a monimum percipitation less than 18! For example 1948 shows 17.33. 
+This happens because the yscale used gets it's extents from the 1901 data. Which has a minimum of temp of 18. The data covers years from 1901 to 2017 and it's possible that one of those years has a monimum temp less than 18! For example 1948 shows 17.33. 
 
-The same applies to the maximum percipitation. This challnge to is to set the extents of the yscale to min and max percipitation found in all of the data! 
+The same applies to the maximum temp. This challnge to is to set the extents of the yscale to min and max temp found in all of the data! 
 
 **Stretch Challenge**
 
