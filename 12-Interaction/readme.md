@@ -271,7 +271,7 @@ You can make the color anything you like. For bonus points make the color differ
 
 Might look like this when you choose 1904:
 
-![example 2](images/example-2.md)
+![example 2](images/example-2.png)
 
 <details>
  <summary>
