@@ -53,7 +53,7 @@ This should format any number shortened with a suffix. Something like:
 
 ## d3.hierarch()
 
-Some data is hierarchical. D3 can handle and display this type of data provided it is arranged in a hierarchy. 
+Some data is hierarchical. D3 can handle and display this type of data provided it is arranged in a hierarchical data structure. 
 
 Arrays/Lists are flat for example: 
 
@@ -79,13 +79,13 @@ const root = d3.hierarchy({ children: data })
   .sum(d => d.population) // Must call sum before pack()
 ```
 
-This makes a D3 object hierarchy. Calling `.sum()` is required for the packing operation to work. This function is going to calculate the size of each node in the tree. Here you're passing the population since the size of each node will be based on this value. 
+This makes a D3 object hierarchy. Calling `.sum()` is required for the packing operation to work. This function is going to calculate the size of each node in the tree. Here you are passing the population since the size of each node will be based on this value. 
 
 ## d3.pack()
 
 The `d3.pack()` method is used to create enclosure diagrams. These are used to group elements within a space. A pack requires a hierarchy to do its work. 
 
-The hierarchy tells D3 how things should grouped, in other words what belongs on each bubble. 
+The hierarchy tells D3 how things should grouped, in other words what belongs in each bubble. 
 
 ```JS
 // Pack - Create a pack function
@@ -96,7 +96,7 @@ const pack = d3.pack()
 
 Here you created a new `pack` object and set its size. I matched the size to the size of the SVG element I was using. You should do the same by changing the numbers here: `.size([500, 500])`. The first number is the width and the second is the height. 
 
-The next line `.padding(10)` sets the space between packed elements. You may want to come and adjust this value after you see what your pack diagram looks like. 
+The next line `.padding(10)` sets the space between packed elements. You may want to adjust this value after you see what your pack diagram looks like. 
 
 ## Creating a Root node
 
@@ -109,7 +109,7 @@ const rootNode = pack(root) // Must call sum() first!
 
 ## Drawing the pack diagram
 
-The next step is to start drawing the pack diagram. 
+Start drawing the pack diagram. 
 
 ```JS
 // Select the SVG element 
@@ -126,7 +126,7 @@ Here you selected your SVG element. Then set a style to give it a border.
 
 Then you selected all of the `g` elements (groups). These don't exist yet. The goal is to create a group and put a circle and a text node inside the group. 
 
-The last line sets the data for this selection. Notice we get the data from `.leaves()` on our root node. The root node has rearranged our data, `rootNode` is our packed hierarchy. 
+The last line sets the data for this selection. Notice we get the data from `.leaves()` on our root node. The root node has rearranged our data, `rootNode` contains the elements of the hierarchy as "leaves". 
 
 Read more about D3 hierarchies: https://www.d3indepth.com/hierarchies/ 
 
@@ -149,7 +149,7 @@ d3.select('#svg')
   })
 ```
 
-One way to do this is with `.append()` but, `.append()` only adds a single node. For example `.appeand('circle')` adds a circle but not a text node. 
+One way to do this is with `.append()` but, `.append()` only adds a single node. For example `.append('circle')` adds a circle but not a text node. 
 
 This time you'll use `.join()`. With `.join('g')` you're saying you want to join the data with the selection. 
 
@@ -161,7 +161,7 @@ Should look something like this:
 
 ![example 2](images/example-2.png)
 
-Add a text node to each group and place it in the center of the circle. 
+Add a text node to each group and place it in the center of the circle. You'll be adding the following code after the code snippet above! 
 
 ```JS
 // Add a text node to each group
@@ -183,9 +183,7 @@ d3.select('#svg')
   .style('fill', 'white')
 ```
 
-Here you joined some new elements to the existing elements. 
-
-Appended a text node to each. Then set the text of each node. Here you used the number formatting function you created earlier. 
+Here you joined some new elements to the existing elements. This added a text node to the existing group nodes, appending a text node to each, and set the text of each node. Here you used the number formatting function you created earlier. 
 
 The last four lines set some CSS styles on the node. 
 
