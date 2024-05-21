@@ -354,5 +354,5 @@ Since `array.sort()` mutates the original array you'll need to copy the array wh
 
 ## Conclusion
 
-In this tutorial you leanred to build a D3 chart in React. You created a custom hook that managed DOM elements in React using a ref. 
+In this tutorial you learned how to build a D3 chart in React. You created a custom hook that managed DOM elements in React using a ref, you also used the `useEffect` hook, and made use of it's dependency array.  
 
