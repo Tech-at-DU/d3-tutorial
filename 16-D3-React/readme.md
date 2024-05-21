@@ -1,12 +1,15 @@
 # D3 & React
 
-You might be creating a React project and needs to incorporate D3. This is possible! To do this its important to understand that D3 and React work with the DOM in two different ways.
+You might be creating a React project and need to incorporate D3. This is possible! To do this its important to understand that D3 and React work with the DOM in two different ways.
 
-D3 uses the DOM in the traditional way where it access the "real" DOM directly. React uses a virtual DOM. Problems arise when mixing the two systems. D3 may make changes to the DOM, when React updates a component it will overwrite changes made by D3. 
+D3 uses the DOM in the traditional way where it access the "real" DOM directly. React uses a virtual DOM, and updates the real DOM indirectly. 
+
+Problems arise when mixing the two systems! D3 may make changes to the DOM, when React updates a component it will overwrite changes made by D3. 
 
 For D3 and React to work together you use one of two methods. 
 
-Handle all changes to element in a component, this way elements are managed by the virtual DOM, or declare a DOM element as a Reference, this prevents that element from being managed by the virtual DOM. 
+1. Handle all changes to an element in a component, this way elements are managed by the virtual DOM.
+2. Or, declare a DOM element as a Reference (ref), this prevents that element from being managed by the virtual DOM. 
 
 Here is a link to a guide: 
 
@@ -23,13 +26,13 @@ npx create-react-app react-d3-example
 Add D3 as a dependency:
 
 ```
-yarn add d3
+npm i d3
 ```
 
 Start your project with: 
 
 ```
-yarn start
+npm start
 ```
 
 Open the project in your code editor. 
@@ -38,48 +41,52 @@ Open the project in your code editor.
 
 This first example will let D3 manage the DOM by creating a ref. You'll start by creating a custom hook that returns reference to the D3 managed DOM element. 
 
-To make it easy to use D3 make yourself a custom hook. Add a new file `useD3.js`.
+To make this easier, make yourself a custom hook. Add a new file `src/useD3.js`.
 
 ```JS
 import { useRef, useEffect } from 'react'
 import * as d3 from 'd3'
 
 export const useD3 = (renderChartFn, dependencies) => {
-	const ref = useRef()
-
-	useEffect(() => {
-		renderChartFn(d3.select(ref.current))
-		return () => {}
-		}, dependencies)
-	return ref
+  const ref = useRef()
+  
+  useEffect(() => {
+    renderChartFn(d3.select(ref.current))
+    return () => {}
+    }, dependencies)
+  return ref
 }
 ```
 
-The code above is a hook. Next you'll create a new component to display a chart and import the hook above there. 
+The code above is a hook. You'll be able to use this in any component by importing it and calling `useD3()`. It returns a reference to a DOM element, in these examples it will be the SVG element where D3 will be doing it's work.  
 
-This needs some explanation. This function is a hook. A hook function whose name begins with "use". Here you created a function named `useD3`. 
+Next you'll create a new component to display a chart and import the hook above there. 
 
-Inside a hook you can call other hooks as long as you call them unconditionally. That is you can't put a call to another hook inside of an if else statement for example. 
+This needs some explanation. This function is a hook. A hook is a function whose name begins with "use". Here you created a function named `useD3`. 
 
-A hook can take any parameters you care to include. In this the `useD3` hook takes two parameters: `renderChartFn` and `dependencies`.
+Inside a hook you can call other hooks as long as you call them **unconditionally**. That is you can't put a call to a hook inside of an `if else` statement, or a loop for example. The idea is that if you call a hook in a component you must always call that hook at the same point in that component! 
+
+A hook can take any parameters you care to include. The `useD3` hook takes two parameters: `renderChartFn` and `dependencies`.
 
 Read more about React Hooks: https://reactjs.org/docs/hooks-custom.html
 
 So how does the the `useD3` hook work? 
 
-React normally manages DOM but in this case we want D3 to handle the DOM. "Handling" the DOM in this case means creating and updating elements in DOM. In out example we want D3 to create new SVG elements and set their attributes. 
+React normally manages DOM but in this case we want D3 to handle the DOM. "Handling" the DOM in this case means creating and updating elements in DOM. In this example you want D3 to create new SVG elements and set their attributes, and attach these elements to the same parent SVG element. 
 
-To offload this this behavior from React and pass it to D3 you need a ref. A ref is a "reference" to a DOM element that will be handled outside of React. In our case this will the SVG element. 
+For example, you'll always want the same parent SVG element, and you will want to create and remove `rect`, `circle`, or `path` elements that children of that SVG parent element. 
 
-The Ref can't be used until the element it refers to is created. For this work you'll use the `useEffect` hook. 
+To guarantee you always using the same SVG element you need a `ref`. A `ref` is a "reference" to a DOM element that will be handled outside of React's virtual DOM. In our case this will the SVG element. 
+
+The `ref` can't be used until the element it refers to is created. For this to work you'll use the `useEffect` hook. 
 
 `useEffect` can be used to run a callback function when a component loads or when a component is updated. 
 
-All of this might be hard to follow now let's talk about it again at the end after all of the rest of the code is in place. It will make more sense then. 
+All of this might be hard to follow now let's talk about it again at the end after you have worked through code example. It will make more sense then. 
 
 ## Creating the bar chart
 
-Create a new file `BarChart.js`.
+Create a new file `src/BarChart.js`.
 
 Add the following: 
 
@@ -106,7 +113,7 @@ function BarChart() {
 export default BarChart
 ```
 
-Notice this component is rendering an SVG element. Here you created some groups: `plot-area`, `x-axis`, and `y-axis`. In the previous examples you created those dynamically with D3. Here you wrote those elements and will populate them with D3. 
+Notice, this component is rendering an SVG element. Here you created some groups: `plot-area`, `x-axis`, and `y-axis`. In the previous examples you created those dynamically with D3. Here you wrote those elements and will populate them with D3. 
 
 Now update the `BarChart` component in `BarChart.js`. Here you are importing the new `useD3`, and add the code to draw the bar chart. 
 
@@ -182,17 +189,26 @@ function BarChart({ data }) {
 export default BarChart
 ```
 
-Notice you added the drawing code within the callback of the `useD3` hook. This hook returns a `ref`. The `ref` is a reference to a DOM element. This allows you to manage that element outside the virtual DOM! 
+Everything here was covered in the previous tutorials! It may look a little different in this context. Read the code above and find the things you recognize. 
 
-Notice all of the D3 drawing code happens within the callback in the call to `useD3`.
+Let's talk about what's different.
 
-In the `<svg>` block a the bottom notice that you have added `ref={ref}`. This assigns the ref you created at the to this element. 
+You added the "drawing" code within the callback of the `useD3` hook. This hook returns a `ref`. The `ref` is a reference to the SVG tag (a DOM element). This allows you to manage that element outside the virtual DOM! 
 
-Look at the drawing code. Notice the `svg.select('.x-axis')...`, `svg.select('.y-axis')...`, and `svg.select('.plot-area')...`. Here you are selecting the elements you wrote hand. You skipped `.append()` for these because they already exist! You can select them in this way because you have created the ref for their parent svg element. 
+All of the D3 drawing code happens within the callback in the call to `useD3`.
 
-The last parameter of `useD3`: `[JSON.stringify(data)]` might look a little weird. This is an array of dependencies. If one of the values in this array changes the render function, the first parameter, will be run. 
+In the `<svg>` block near the bottom, you have added `ref={ref}`. This assigns the ref you created to this element. 
 
-In this case we have an array of data. That we need to to compare which doesn't play nice here. To fix that I coverted the data into a string.
+Look at the drawing code. Notice the `svg.select('.x-axis')...`, `svg.select('.y-axis')...`, and `svg.select('.plot-area')...`. Here you are selecting the elements you wrote by hand. You skipped `.append()` for these because they already exist! You can select them in this way because you have created the `ref` for their parent svg element. 
+
+Look at the implementation of `useD3` in `BarChart.js`. The last parameter of `useD3`: `[JSON.stringify(data)]` might look a little weird. This is an array of dependencies. If one of the values in this array changes the render function, the first parameter, will be run. 
+
+Look at `useD3.js`. Notice that the dependency array mentioned above is included as the last parameter to `useEffect`. This causes `useEffect` callback, its first parameter, to run again when one of the values in the array changes. 
+
+Read more about `useEffec` and the dependency array here: 
+- https://react.dev/reference/react/useEffect#specifying-reactive-dependencies
+
+In this case we have an array of data. Comparing two arrays is problematic. Arrays are stored as references. Comparing the same reference will always be true even if the values change. Comparing different refernces will always be false, even if that contain the same values! To solve this conundrum you can convert the array to a string, with `JSON.stringify()`. Using this method you will comparing strings!
 
 ## Using the BarChart Component
 
@@ -233,17 +249,17 @@ function App() {
 export default App;
 ```
 
-The data is an array of objects. You could define this any where and import it if you like.
+The data is an array of objects. You could define this any where, or import it if you like.
 
 The page with the chart should look something like: 
 
 ![example-2](images/example-2.png)
 
-Note! that I left the default Create-React.App `App.css` in place which is adding the background color and some other styles. 
+Note! I left the default Create-React.App `App.css` in place which is adding the background color and some other styles. Here it is affecting the font, color, and background color. 
 
 ## Loading CSV Data from a file
 
-That was a little awkward placing all of the data in a `App.js`. This would be possible and maybe convenient for small lists of data. For many cases it will be easier to load the data from outside. 
+That was a little awkward placing all of the data in a `App.js`. This would be convenient for small lists of data. For many cases it will be easier to load the data from outside. 
 
 Copy the `cities.csv` *into the public folder* of your React project.
 
@@ -279,7 +295,7 @@ function App() {
 export default App;
 ```
 
-Since loading the data will be an asynchrous action you need to store the data on state. React will only render a component when state changes or the component receives props. In this case the App component will render when it loads new data since you are storing the data on a state variable and updating that variable when the data is laoded. The BarChart component will update when new data is passed as a prop. 
+Loading the data will be an asynchrous action you need to store the data on state. React will only render a component when state changes or the component receives props. In this case the App component will render when it loads new data since you are storing the data on a state variable and updating that variable when the data is laoded. The BarChart component will update when new data is passed as a prop. 
 
 ## Review 
 
@@ -301,7 +317,7 @@ export const useD3 = (renderChartFn, dependencies) => {
 }
 ```
 
-This hook can't do anything with the DOM until that DOM element is created so you used `useEffect`. Here `useEffect` will run the call back when the DOM is loaded and when any value in the `dependencies` array is updated. 
+This hook can't do anything with the DOM until that DOM element is created so you used `useEffect`. Here `useEffect` will run the call back, first parameter, when the DOM is loaded and when any value in the `dependencies` array is updated. 
 
 To use `useD3` you called it in the `BarChart` component. 
 
@@ -310,14 +326,14 @@ const ref = useD3((svg) => {
 
 	... d3 drawing code here ...
 
-}, [JSON.stringify(data)])
+}, [JSON.stringify(data)]) // depedency array!
 ```
 
 `useD3` returns a reference object which you assigned to the svg element where D3 will do it's drawing. 
 
 ```HTML
 <svg
-	ref={ref}
+	ref={ref} // this makes this svg a ref
 	...
 </svg>
 ```
@@ -334,7 +350,7 @@ The second argument you passed to `useD3` is the `dependencies` array. If any va
 
 Try this: create a couple buttons that sort the data on different criteria. For example: sort on name/label. Sort on country, sort on population. 
 
-Since `array.sort()` mutates the original array you'll need to top the array when you set state.  
+Since `array.sort()` mutates the original array you'll need to copy the array when you set state after sorting.  
 
 ## Conclusion
 
