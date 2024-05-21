@@ -2,7 +2,7 @@
 
 Hierarchies are a core feature of data structures. You see these in all parts of computer science. In the last example, you created a hierarchy with a single level. It was all about cities. Imagine we also want to show a relationship between cities and countries. 
 
-In this case, we can group cities into a larger circle representing the country. The result might look like this. 
+Todo this you can group cities into a larger circle representing the country. The result might look like this. 
 
 ![example 1](images/example-1.png)
 
@@ -12,7 +12,7 @@ If you havn't already read about circular packing read this: https://www.data-to
 
 ## Getting started
 
-For this example, you'll use the `cities.csv` again. 
+For this example, you'll use the `cities.csv` again.
 
 **Challenge**
 
@@ -26,7 +26,7 @@ Load the cities.csv data using the `d3.csv()` loader.
 
 ## Visualizing hierarchies
 
-Looking at the cities data you'll find it has a hierarchy. Cities all belong to a country. The original data is flat the actual data is hierarchical.
+Looking at the cities data you'll find there is a hierarchy hidden in there. Cities all belong to a country. This data structure is flat and doesn't express that hierarchy.
 
 The original data look slike this: 
 
@@ -44,44 +44,43 @@ Expressed as a single array:
 
 ```JS
 [
-	{ label: "San Francisco", population: 874961, country: "USA", x: 122, y: -37
-	{ label: "Fresno", population: 525010, country: "USA", x: 119, y: -36
-	{ label: "Lahore", population: 11126285, country: "Pakistan", x: 74, y: 31
-	{ label: "Karachi", population: 14910352, country: "Pakistan", x: 67, y: 24
-	{ label: "Rome", population: 4342212, country: "Italy", x: 12, y: 41
-	{ label: "Naples", population: 967069, country: "Italy", x: 14, y: 40
-	{ label: "Rio", population: 6748000, country: "Brazil", x: -43, y: -22
-	{ label: "Sao Paolo", population: 12300000, country: "Brazil", x: -46, y: -23
+  { label: "San Francisco", population: 874961, country: "USA", x: 122, y: -37
+  { label: "Fresno", population: 525010, country: "USA", x: 119, y: -36
+  { label: "Lahore", population: 11126285, country: "Pakistan", x: 74, y: 31
+  { label: "Karachi", population: 14910352, country: "Pakistan", x: 67, y: 24
+  { label: "Rome", population: 4342212, country: "Italy", x: 12, y: 41
+  { label: "Naples", population: 967069, country: "Italy", x: 14, y: 40
+  { label: "Rio", population: 6748000, country: "Brazil", x: -43, y: -22
+  { label: "Sao Paolo", population: 12300000, country: "Brazil", x: -46, y: -23
 ]
 ```
 
-Notice some cities chare a country. This adds a level of hierarchy to the data that is not expressed in the data structure. 
+Notice some cities share a country. This adds a level of hierarchy to the data, not expressed in the data structure. 
 
-We could rearrange the data to express this: 
+We could rearrange the data to express the hierarchy like this: 
 
 ```JS
 { 
-	Brazil: [
-		{label: "Rio", population: "6748000", country: "Brazil", x: "-43", y: "-22"},
-		{label: "Sao Paolo", population: "12300000", country: "Brazil", x: "-46", y: "-23"}
-	],
-	Italy: [
-		{label: "Rome", population: "4342212", country: "Italy", x: "12", y: "41"},
-		{label: "Naples", population: "967069", country: "Italy", x: "14", y: "40"}
-	],
-	Pakistan: [
-		{label: "Lahore", population: "11126285", country: "Pakistan", x: "74", y: "31"},
-		{label: "Karachi", population: "14910352", country: "Pakistan", x: "67", y: "24"}
-	],
-	USA: [
+  Brazil: [
+    {label: "Rio", population: "6748000", country: "Brazil", x: "-43", y: "-22"},
+    {label: "Sao Paolo", population: "12300000", country: "Brazil", x: "-46", y: "-23"}
+  ],
+  Italy: [
+    {label: "Rome", population: "4342212", country: "Italy", x: "12", y: "41"},
+    {label: "Naples", population: "967069", country: "Italy", x: "14", y: "40"}
+  ],
+  Pakistan: [
+    {label: "Lahore", population: "11126285", country: "Pakistan", x: "74", y: "31"},
+    {label: "Karachi", population: "14910352", country: "Pakistan", x: "67", y: "24"}
+  ],
+  USA: [
 		{label: "San Francisco", population: "874961", country: "USA", x: "122", y: "-37"},
 		{label: "Fresno", population: "525010", country: "USA", x: "119", y: "-36"}
 	]
 }
 ```
 
-With this arrangement, we can see that each country has cities. Our code can make this distinction also! 
-
+With this arrangement, we can see that each country has cities. With this struture your code can make sense of the hierarchy! 
 
 ## D3 Hierarchies
 
@@ -93,12 +92,12 @@ In the last example you needed to arrange your data as:
 
 ```JS
 { 
-	children: [ 
-		{ label: 'Fresno', ... }, 
-		{ label: 'Lahore', ... }, 
-		{ label: 'Rome', ... }, 
-		...
-	] 
+  children: [
+    { label: 'Fresno', ... }, 
+    { label: 'Lahore', ... }, 
+    { label: 'Rome', ... }, 
+    ...
+  ] 
 }
 ```
 
@@ -108,15 +107,15 @@ For this example you need to arrange the data like this:
 
 ```JS
 { 
-	label: 'World',
-	population: 9999999,
-	children: []
+  label: 'World',
+  population: 9999999,
+  children: []
 }
 ```
 
-Note! The population needs to be the total population of all cities! 
+Note! The population needs to be the total population of all child cities! 
 
-This will be the root element of the hierarchy. 
+This will be the root element of the hierarchy.
 
 **Challenge** 
 
@@ -143,9 +142,9 @@ const byCountry = {
 
 ## Creating a hierarchy
 
-Your next challenge is to rearrange the data into a hierarchy. For this, to work you need to arrange the data so that D3 will recognize our hierarchy. 
+Your next challenge is to rearrange the data into a hierarchy. To do this, you need to arrange the data so that D3 will recognize our hierarchy. 
 
-At the top level we need: 
+At the top level you need: 
 
 ```JS
 {
@@ -169,7 +168,7 @@ The `children` array should contain an array of objects each with a `name` and `
 }
 ```
 
-Do you see where this going? The array of `children` in each country contains the cities in that country! If city was broken into counties the city object would store it's counties in an array in the `children` property. 
+Do you see where this going? The array of `children` in each country contains the cities in that country! If each **city** was broken into **counties** the city object would store it's counties in an array in the `children` property! 
 
 The goal is to get the data to look like this: 
 
@@ -198,13 +197,13 @@ The goal is to get the data to look like this:
 }
 ```
 
-Note! you have to sum the population for all cities in a country along the way. 
+Note! you have to sum the population for all cities in a country along the way. You did this earlier, it's not shown in the last couple examples!
 
 **Challenge**
 
-Your goal is the get the data arranged in the structure above. There are many ways to do this. Any method you choose is as good as another. 
+Your goal is to get the data arranged in the structure above. There are many ways to do this. Any method you choose is as good as another. 
 
-If you need help getting started try this. Start with a:
+If you need help getting started try this. Start with:
 
 ```JS
 const byCountry = {
@@ -220,6 +219,8 @@ const countryNames = Array.from(new Set(data.map(d => d.country)))
 ```
 
 This should give you an array of unique country names/strings. Now turn these into objects with children.
+
+Along the way you need to sum the total population of each country and assign that to each country object! The world has the population of all cities in the world, and each country should have a population that is the total population of all cities in that country! 
 
 <details>
 <summary>
@@ -245,6 +246,8 @@ console.log(byCountry)
 
 </details>
 
+Once you have solved this your data is ready for D3! Often you will need to "massage" your data into a form that works with the code that you are writing! 
+
 ## Creating the hierarchy with D3
 
 Create a D3 hierarchy with: 
@@ -253,7 +256,7 @@ Create a D3 hierarchy with:
 const root = d3.hierarchy(byCountry)
 ```
 
-Note! `byCountry` was the name I used to store the hierarchy I created in the previous step. You may have used any other name. 
+Note! `byCountry` was the name I used to store the hierarchy created in the previous step. You may have used any other name, so adjust these examples accordingly! 
 
 Now sum the populations!
 
@@ -262,7 +265,7 @@ root
 	.sum(d => {
 	return d.population
 }) 
-// Must call sum before pack()
+// Must call sum before pack()!
 ```
 
 ## Packing the Circles
@@ -314,11 +317,13 @@ Let's open this up and explore.
 }
 ```
 
-Notice your original properties: `label`, `children`, and `population` have been moved to live under the `data` property. 
+Notice your original object, with properties properties: `label`, `children`, and `population` has been moved to live under the `data` property. 
 
-New properties have been added: `x`, `y`, and `r` are used to position and size this circle. These can be used to position and size your SVG elements. 
+New properties have been. Added: `x`, `y`, and `r` are used to position and size this circle. You will use these to position and size your SVG elements. 
 
-The `depth`, `parent`, and `children` are used by D3 to manage the hierarchy. Now we have a structure that relates the parent element to its children and the child to the parent. 
+The `depth`, `parent`, and `children` are used by D3 to manage the hierarchy. 
+
+Now you have a structure that relates the parent element to its children and the child to the parent, and all these to the SVG elements that will be displayed! 
 
 ## Creating formtters and scales
 
@@ -345,11 +350,11 @@ const colorScale = d3
 	.scaleOrdinal(['gold', 'tomato', 'cornflowerblue', 'green', 'chocolate', 'cadetblue', 'rebeccapurple'])
 ```
 
-Here the scale values are a list of keyword colors. 
+Here the scale values are a list of keyword colors. You can use any color values here, or one of D3's built in color scales, which you worked with previously! 
 
 ## Drawing the Circles
 
-Draw the circles. Again this is the same as the previous tutorial! 
+Draw the circles. This is the same as the previous tutorial! 
 
 ```JS
 // Start drawing circles! 
@@ -364,7 +369,7 @@ Here you're drawing the groups that will eventually hold the circles and text.
 
 This returns a list of group nodes which you will use to add some circles and text. 
 
-Let's draw some circles. This will draw a circle between the world, each country, and each city. The cities will be positioned within a country, and countries will all be positioned within the world.
+Let's draw some circles. The cities will be positioned within a country, and countries will all be positioned within the world.
 
 Notice that each circle is transformed and the `x` and `y` values that were created when we "packed" our data. 
 
@@ -383,21 +388,77 @@ nodes
 	.attr('opacity', '0.5')
 ```
 
+NOTE! This is iterating over all of the descendents. That is all of the children, and those children's children starting with the root node. Try this: 
+
+```JS
+ nodes
+  .append('circle')
+  .attr('r', d => d.r) // get the radius
+  .attr('fill', d => {
+    // Try logging the label
+    console.log(d.data.label)
+    if (d.data.country === undefined) {
+      return colorScale(d.data.label)
+    }
+    return colorScale(d.data.country)
+  })
+  .attr('opacity', '0.5')
+```
+
+In the console you should see a list like this: 
+
+```
+world 
+USA 
+Pakistan 
+Italy 
+Brazil 
+San Francisco 
+Fresno 
+Lahore
+Karachi 
+Rome 
+Naples 
+Rio 
+Sao Paol
+```
+
+Notice that D3 started with the world, then looped over all of it's children displaying the countries. Then it look at each of those children and looped over those children, this would be the cities!
+
 The radius `r` attribute is set from our `rootNode` where D3 conveniently created the value for us to use. 
+
+```JS
+.attr('r', d => d.r) // get the radius
+```
 
 The position is not needed since the group was positioned. Being a child of the group an element will inherit the position of the group. 
 
-The fill color is set by the country or label name. D3 is going to work through all of the elements in the hierarchy. All of the leaf nodes (the cities) have a country name. The world and country nodes all use the `label` property to store their name. Here we can check if the country is `undefined` and use `label` instead. 
+The fill color is set by the country or label name. D3 is going to iterate through all of the elements in the hierarchy. All of the leaf nodes (the cities) have a country name. The world and country nodes all use the `label` property to store their name. Here you can check if the country is `undefined` and use `label` instead. 
 
-Passing the name into the `colorScale()` should give us a unique color for each country. Since the city nodes will have the same country names and the country nodes the larger country circles will have the same colors as the cities they contain. 
+```JS
+.attr('fill', d => {
+  if (d.data.country === undefined) {
+    return colorScale(d.data.label)
+  }
+  return colorScale(d.data.country)
+})
+```
+
+Passing the country name into the `colorScale()` should give us a unique color for each country. Since the city nodes will have the same colors as the country that contains them, you passed the country name for that city into the `colorScale()`. 
+
+```JS
+.attr('opacity', '0.5')
+```
 
 The last line sets the `opacity` of the element. This makes circles 50% transparent. Without this, it would be hard to see the cities contained within the country circles. 
+
+**Challenge** Give countries and cities a different opacity. Imagine countries are more transparent with an opacity of `0.2`. Cities are less opaque with and have an opactity of 0.5. Look at the `.attr('fill', ...)` for ideas on how to solve this! 
 
 At this point your visualization might look like this: 
 
 ![example 2](images/example-2.png)
 
-Note! The image above is using the key word colors `.scaleOrdinal(['gold', 'tomato', 'cornflowerblue', 'green', 'chocolate', 'cadetblue', 'rebeccapurple'])`
+Note! The image above is using the key word colors `.scaleOrdinal(['gold', 'tomato', 'cornflowerblue', 'green', 'chocolate', 'cadetblue', 'rebeccapurple'])`. If you used different colors your results might look different. 
 
 ![example 3](images/example-3.png)
 
@@ -405,11 +466,10 @@ This example uses the `.scaleOrdinal(d3.schemeCategory10)` color list.
 
 **Challenge**
 
-Play with the values and properties here to change the appearance. Try these ideas: 
+Play with the values and properties to change the appearance. Try these ideas: 
 
-- Give the country a different opacity value from the cities
 - Try giving the countries a stroke
-- Try removing the fill from the world and giving the world a stroke
+- Try removing the fill from the world and giving the world only a stroke
 
 Here are a few images showing what these modifications might look like. 
 
@@ -423,9 +483,11 @@ Here all of the circles have a `stroke` of `black` and a `stroke-width` of 1. No
 
 ## Adding the text
 
-Adding text is the last step. Here you'll add the population to each city. There are a few problems that will arise. The size of some of the circles is pretty small. The numbers may be larger. Adding the city or country name will be even larger. 
+Adding text is the last step. Here you will display the population to each city. There are a few problems to solve. 
 
-Second, the child circles appear on top of their parents. This will cover elements in the parent. For example, the countries appear on top of the world, and the cities appear on top of the countries. 
+The size of some of the circles is pretty small. The numbers may be larger than the diameter. Adding the city or country name will most likely extend beyond the area of the circle that contains it in some cases. 
+
+Second, the child circles appear on top of their parents. This will cover elements in the parent. For example, the countries appear on top of the world, and the cities appear on top of the countries. In some cases this is good, for example, this works well to display the circles. For labels this might not work so well. 
 
 Add the population to each circle: 
 
@@ -441,11 +503,27 @@ nodes
 
 Here you append a text node to each group in nodes. 
 
-Set the text to population. 
+```JS
+nodes
+	.append('text')
+```
+
+Set the text to population, and use the number formatter to format the numbers. 
+
+```JS
+.text(d => `${num_f(d.data.population)}`)
+```
 
 Then set some text attributes and styles. These include the `font-family`, `text-anchor`, and `alignment-baseline`, and `fill`. 
 
-The `text-anchor` and `alignment-baseline` set the center point around where the text will be drawn. The `text-anchor` `middle` sets the position to horizontal center. The `alignment-baseline` `middle` sets the vertical alignment to the center. 
+```JS
+.attr('font-family', 'Helvetica')
+.style('text-anchor', 'middle')
+.style('alignment-baseline', 'middle')
+.style('fill', 'white')
+```
+
+The `text-anchor` and `alignment-baseline` set the center point around where the text will be drawn, `text-anchor` `middle` sets the position to horizontal center. The `alignment-baseline` `middle` sets the vertical alignment to the center. 
 
 Might look like this:
 
@@ -454,6 +532,11 @@ Might look like this:
 You can see the country and world populations are covered by the city circles. Also, when the circles are clustered the country population is especially obscured. 
 
 How you deal with this is up to you. Here are a few ideas. 
+
+- Move the values so they "stack" in front of the circles.
+- Move the values outside of the circles.
+- Move the values outside the world circle.
+- Create a legend where these values are listed. 
 
 Imagine you wanted to add the city and country names. You can move them above or below the population number. SVG doesn't allow for a text wrap or line break. The best we can do is make a second text element but this will require moving the two elements so that they do not overlap. 
 
@@ -497,7 +580,7 @@ It might look like this so far:
 
 Note this is imperfect especially in the USA since all of the circles are much smaller than the text. 
 
-To make this work you will have to make changes.
+To make this work you will have to make more changes.
 
 - If the whole diagram is larger then there will be more space and the centers of all of the circles will move further apart. 
 - The text could be smaller. This would provide more space. If the text is too small it will be hard to read. 
