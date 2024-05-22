@@ -269,3 +269,5 @@ HSL colors take a hue as the first parameter. This ranges from 0 to 360. If we n
 ## Conclusion 
 
 In this tutorial you created a world map with D3 using topojson along with D3's projection. 
+
+Read more about projections here: https://www.d3indepth.com/geographic/
