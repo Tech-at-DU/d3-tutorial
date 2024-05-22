@@ -395,3 +395,5 @@ Take a look at the image below. Notice the first menu shows 1901 and the second 
 ## Conclusion 
 
 In this tutorial you revisited the ideas from almost all of the previouse tutorials and added updating and animating a chart with D3. You also sorted and filtered data before graphing it. 
+
+This is an area chart, read more about these here: https://www.data-to-viz.com/graph/area.html
