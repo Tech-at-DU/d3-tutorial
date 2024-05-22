@@ -302,3 +302,5 @@ Your graph should look something like this:
 ## Conclusion 
 
 In this tutorial you learned to work with paths generating a line from data. 
+
+This chart is similar to a line chart, read more about these here: https://www.data-to-viz.com/graph/line.html
