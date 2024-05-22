@@ -356,3 +356,4 @@ Since `array.sort()` mutates the original array you'll need to copy the array wh
 
 In this tutorial you learned how to build a D3 chart in React. You created a custom hook that managed DOM elements in React using a ref, you also used the `useEffect` hook, and made use of it's dependency array.  
 
+The bar chart is probably the most common type of chart. It has many different forms. Check the range of different types of bar charts: https://datavizproject.com/?s=bar
