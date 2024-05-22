@@ -26,7 +26,7 @@ There are four countries: Brazil, Italy, Pakistan, and USA. There are two cities
 
 ## Setup HTML
 
-Create a new html document. Name it index.html. Add the following boilerplate code: 
+Create a new html document. Name it `index.html`. Add the following boilerplate code: 
 
 ```HTML
 <!DOCTYPE html>
@@ -40,17 +40,19 @@ Create a new html document. Name it index.html. Add the following boilerplate co
 <body>
 
   <svg id="svg" width="500" height="300"></svg>
-
+  
   <script type="module">
     import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
-
+  
     // Your code here
   </script>
 </body>
 </html>
 ```
 
-You will drawing your chart into the svg#svg. You are importing the D3 library as a module. All of your code will go in the script tag below the comment "Your code here".
+Notice! This example uses a different arrangement from earlier examples. it functions the same! Here the `<script>` tag has the `type="module"` attribute. This allows the use of `import` and `from`. Here you are importing d3.js from a CDN (Content Delivery Network). 
+
+You will drawing your chart into the `svg#svg`. You are importing the D3 library as a module. All of your code will go in the script tag below the comment "Your code here".
 
 ## Loading Data
 
@@ -58,8 +60,8 @@ Load the data from the CSV file with an async function.
 
 ```JS
 async function handleData() {
-    // Load the data
-    const data = await d3.csv('cities.csv')
+  // Load the data
+  const data = await d3.csv('cities.csv')
 
 }
 
@@ -112,15 +114,15 @@ const countries = Array.from(new Set(data.map(d => d.country)))
 const byCountry = []
 // Populate the byCountry array woth data
 countries.forEach(country => {
-    const obj = {
-        country,
-        total: 0
-    }
-    const cities = data.filter(d => d.country === country).forEach((city, i) => {
-        obj['city'+i] = city.population // get a city
-        obj.total += city.population // tally the total population 
-    })
-    byCountry.push(obj)
+  const obj = {
+    country,
+    total: 0
+  }
+  const cities = data.filter(d => d.country === country).forEach((city, i) => {
+    obj['city'+i] = city.population // get a city
+    obj.total += city.population // tally the total population 
+  })
+  byCountry.push(obj)
 })
 
 console.log(byCountry) // Check our work
@@ -157,16 +159,16 @@ const yscale = d3.scaleLinear()
     .range([height, margin.top])
 ```
 
-X scale uses scaleBand indexed on the country name. 
+X scale uses `scaleBand()` indexed on the country name. 
 
-Y scale uses population extent based on 0 to the total population for all countries. It finds the highest total population and will range from 0 to that highest value. 
+Y scale uses population extent based on `0` to the total population for all countries. It finds the highest total population and will range from 0 to that highest value. 
 
 Add a color scale. 
 
 ```JS
 const colorscale = d3.scaleOrdinal()
-    .domain(['city0', 'city1'])
-    .range(['orange','green'])
+  .domain(['city0', 'city1'])
+  .range(['orange','green'])
 ```
 
 ## Create axis
@@ -178,8 +180,8 @@ Start by selecting the SVG element and setting it's size.
 ```JS
 // Select the SVG element
 const svg = d3.select("#svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+  .attr("width", width + margin.left + margin.right)
+  .attr("height", height + margin.top + margin.bottom)
 ```
 
 Next, append a group for the bottom axis and position that axis with the magins. 
@@ -187,8 +189,8 @@ Next, append a group for the bottom axis and position that axis with the magins.
 ```JS
 // Append a group bottom axis
 svg.append("g")
-    .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(xscale).tickSizeOuter(0));
+  .attr("transform", `translate(0, ${height})`)
+  .call(d3.axisBottom(xscale).tickSizeOuter(0))
 ```
 
 Append another group for the left axis
@@ -196,8 +198,8 @@ Append another group for the left axis
 ```JS
  // Add a left axis
 svg.append("g")
-    .attr("transform", `translate(${margin.left}, 0)`)
-    .call(d3.axisLeft(yscale));
+  .attr("transform", `translate(${margin.left}, 0)`)
+  .call(d3.axisLeft(yscale))
 ```
 
 ## Setup stack 
@@ -206,36 +208,45 @@ Here you'll use `d3.stack()`. This will generate a stack but it needs to know wh
 
 ```JS
 const stackedData = d3.stack()
-    .keys(['city0', 'city1'])(byCountry)
+  .keys(['city0', 'city1'])(byCountry)
 ```
 Notice you provide the keys and the data. 
 
 ## Drawing the stacked bars
 
-
-
 ```JS
 svg.append("g")
-    .selectAll("g")
-    // Enter in the stack data = loop key per key = group per group
-    .data(stackedData)
-    .enter()
-    .append("g")
-    .attr("fill", d => colorscale(d.key))
-    .selectAll("rect")
-    // enter a second time = loop subgroup per subgroup to add all rectangles
-    .data(d => d)
-    .enter()
-    .append("rect")
-    // We need the country name to arrange the bars on the x
-    .attr("x", (d, i) => xscale(d.data.country))
-    .attr("y", d => yscale(d[1]))
-    .attr("height", d => yscale(d[0]) - yscale(d[1]))
-    .attr("width", xscale.bandwidth())
-    .attr("opacity", 0.5)
+  .selectAll("g")
+  // Enter in the stack data = loop key per key = group per group
+  .data(stackedData)
+  .enter()
+  .append("g")
+  .attr("fill", d => colorscale(d.key))
+  .selectAll("rect")
+  // enter a second time = loop subgroup per subgroup to add all rectangles
+  .data(d => d)
+  .enter()
+  .append("rect")
+  // We need the country name to arrange the bars on the x
+  .attr("x", (d, i) => xscale(d.data.country))
+  .attr("y", d => yscale(d[1]))
+  .attr("height", d => yscale(d[0]) - yscale(d[1]))
+  .attr("width", xscale.bandwidth())
+  .attr("opacity", 0.5)
 ```
 
 ![stacked bars](./stacked-bars.png)
+
+This chart shows the total population as the height of each bar. Each of the bars is divided into colors which show the size of each city in that country. 
+
+Read more about stacked bar charts: https://www.storytellingwithdata.com/blog/stacked-bars
+
+**Challenges:**
+
+- Change the color scale to something more interesting.
+- Look up some city populations and add another city to each country in the CSV file.
+- Add another country with cities to the CSV data.
+
 
 
 
