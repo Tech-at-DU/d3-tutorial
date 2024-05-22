@@ -74,9 +74,9 @@ We could rearrange the data to express the hierarchy like this:
     {label: "Karachi", population: "14910352", country: "Pakistan", x: "67", y: "24"}
   ],
   USA: [
-		{label: "San Francisco", population: "874961", country: "USA", x: "122", y: "-37"},
-		{label: "Fresno", population: "525010", country: "USA", x: "119", y: "-36"}
-	]
+    {label: "San Francisco", population: "874961", country: "USA", x: "122", y: "-37"},
+    {label: "Fresno", population: "525010", country: "USA", x: "119", y: "-36"}
+  ]
 }
 ```
 
@@ -132,9 +132,9 @@ Calculate the total population from the original data.
 
 ```JS
 const byCountry = {
-	label: 'world',
-	children: [],
-	population: data.reduce((acc, d) => parseInt(d.population) + acc, 0)
+  label: 'world',
+  children: [],
+  population: data.reduce((acc, d) => parseInt(d.population) + acc, 0)
 }
 ```
 
@@ -148,8 +148,8 @@ At the top level you need:
 
 ```JS
 {
-	name: 'root',
-	children: [ ... ]
+  name: 'root',
+  children: [ ... ]
 }
 ```
 
@@ -159,12 +159,12 @@ The `children` array should contain an array of objects each with a `name` and `
 
 ```JS
 {
-	name: 'root',
-	children: [
-		{ name: 'USA', population: 1825068, children: [ ... ] },
-		{ name: 'Pakistan', population: 28006679, children: [ ... ] },
-		...
-	]
+  name: 'root',
+  children: [
+    { name: 'USA', population: 1825068, children: [ ... ] },
+    { name: 'Pakistan', population: 28006679, children: [ ... ] },
+    ...
+  ]
 }
 ```
 
@@ -174,26 +174,26 @@ The goal is to get the data to look like this:
 
 ```JS
 {
-	name: 'root',
-	children: [
-		{ 
-			name: 'USA', 
-			population: 1825068,
-			children: [
-				{ label: "San Francisco", population: 874961, x: 122, y -37 }, 
-				{ label: "Fresno", population: 525010, x: 119, y: -36 }
-			] 
-		},
-		{ 
-			name: 'Pakistan', 
-			population: 28006679,
-			children: [
-				{ label: "Lahore", population: 11126285, x: 74, y 31 },
-				{ label: "Karachi", population: 14910352, x: 67, y: 24 }
-			] 
-		},
-		...
-	]
+  name: 'root',
+  children: [
+    { 
+      name: 'USA', 
+      population: 1825068,
+      children: [
+        { label: "San Francisco", population: 874961, x: 122, y -37 }, 
+        { label: "Fresno", population: 525010, x: 119, y: -36 }
+      ] 
+    },
+    { 
+      name: 'Pakistan', 
+      population: 28006679,
+      children: [
+        { label: "Lahore", population: 11126285, x: 74, y 31 },
+        { label: "Karachi", population: 14910352, x: 67, y: 24 }
+      ] 
+    },
+    ...
+  ]
 }
 ```
 
@@ -207,8 +207,8 @@ If you need help getting started try this. Start with:
 
 ```JS
 const byCountry = {
-	name: 'root',
-	children: []
+  name: 'root',
+  children: []
 }
 ```
 
@@ -232,13 +232,13 @@ Along the way you need to sum the total population of each country and assign th
 ```JS
 const countryNames = Array.from(new Set(data.map(d => d.country)))
 countryNames.forEach(d => {
-	const cities = data.filter(c => c.country === d)
-	const pop = cities.reduce((acc, d) => parseInt(d.population) + acc, 0)
-	byCountry.children.push({ 
-		label: d, 
-		population: pop, 
-		children: cities 
-	})
+  const cities = data.filter(c => c.country === d)
+  const pop = cities.reduce((acc, d) => parseInt(d.population) + acc, 0)
+  byCountry.children.push({ 
+    label: d, 
+    population: pop, 
+    children: cities 
+  })
 })
 
 console.log(byCountry) 
@@ -262,8 +262,8 @@ Now sum the populations!
 
 ```JS
 root
-	.sum(d => {
-	return d.population
+  .sum(d => {
+  return d.population
 }) 
 // Must call sum before pack()!
 ```
@@ -275,8 +275,8 @@ Now create a pack from your hierarchy. Note! This code is the same as the previo
 ```JS
 // Pack - Create a pack function
 const pack = d3.pack()
-	.size([500, 500]) // Set the size of the area
-	.padding(2) // define some padding between each circle
+  .size([500, 500]) // Set the size of the area
+  .padding(2) // define some padding between each circle
 ```
 
 Now pack the root node. 
@@ -305,15 +305,15 @@ Let's open this up and explore.
 
 ```js
 {
-	children: [pd, pd, pd, pd],
-	data: {label: "world", children: Array, population: 57334411},
-	depth: 0,
-	height: 2,
-	parent: null,
-	r: 249.99999999999997,
-	value: 172003233,
-	x: 250,
-	y: 250
+  children: [pd, pd, pd, pd],
+  data: {label: "world", children: Array, population: 57334411},
+  depth: 0,
+  height: 2,
+  parent: null,
+  r: 249.99999999999997,
+  value: 172003233,
+  x: 250,
+  y: 250
 }
 ```
 
@@ -335,7 +335,7 @@ const num_f = d3.format(".2s")
 
 // Create a color scale
 const colorScale = d3
-	.scaleOrdinal(d3.schemeCategory10)
+  .scaleOrdinal(d3.schemeCategory10)
 ```
 
 This the number formatter from the previous tutorial. 
@@ -347,7 +347,7 @@ Note! You could use a list of your own colors here. For example:
 ```JS
 // Create a color scale 
 const colorScale = d3
-	.scaleOrdinal(['gold', 'tomato', 'cornflowerblue', 'green', 'chocolate', 'cadetblue', 'rebeccapurple'])
+  .scaleOrdinal(['gold', 'tomato', 'cornflowerblue', 'green', 'chocolate', 'cadetblue', 'rebeccapurple'])
 ```
 
 Here the scale values are a list of keyword colors. You can use any color values here, or one of D3's built in color scales, which you worked with previously! 
@@ -359,10 +359,10 @@ Draw the circles. This is the same as the previous tutorial!
 ```JS
 // Start drawing circles! 
 const nodes = d3.select('#svg')
-	.selectAll('g')
-	.data(rootNode.descendants())
-	.join('g')
-	.attr('transform', d => `translate(${d.x}, ${d.y})`)
+  .selectAll('g')
+  .data(rootNode.descendants())
+  .join('g')
+  .attr('transform', d => `translate(${d.x}, ${d.y})`)
 ```
 
 Here you're drawing the groups that will eventually hold the circles and text. 
@@ -377,15 +377,15 @@ You'll be adding a circle and text to each of these groups in the next steps. Th
 
 ```JS
 nodes
-	.append('circle')
-	.attr('r', d => d.r) // get the radius
-	.attr('fill', d => {
-		if (d.data.country === undefined) {
-			return colorScale(d.data.label)
-		}
-		return colorScale(d.data.country)
-	})
-	.attr('opacity', '0.5')
+  .append('circle')
+  .attr('r', d => d.r) // get the radius
+  .attr('fill', d => {
+    if (d.data.country === undefined) {
+      return colorScale(d.data.label)
+    }
+    return colorScale(d.data.country)
+  })
+  .attr('opacity', '0.5')
 ```
 
 NOTE! This is iterating over all of the descendents. That is all of the children, and those children's children starting with the root node. Try this: 
@@ -493,12 +493,12 @@ Add the population to each circle:
 
 ```JS
 nodes
-	.append('text')
-	.text(d => `${num_f(d.data.population)}`)
-	.attr('font-family', 'Helvetica')
-	.style('text-anchor', 'middle')
-	.style('alignment-baseline', 'middle')
-	.style('fill', 'white')
+  .append('text')
+  .text(d => `${num_f(d.data.population)}`)
+  .attr('font-family', 'Helvetica')
+  .style('text-anchor', 'middle')
+  .style('alignment-baseline', 'middle')
+  .style('fill', 'white')
 ```
 
 Here you append a text node to each group in nodes. 
@@ -544,12 +544,12 @@ Add a new text element to display the name.
 
 ```JS
 nodes
-	.append('text')
-	.text(d => `${d.data.label}`)
-	.attr('font-family', 'Helvetica')
-	.style('text-anchor', 'middle')
-	.style('alignment-baseline', 'middle')
-	.style('fill', 'white')
+  .append('text')
+  .text(d => `${d.data.label}`)
+  .attr('font-family', 'Helvetica')
+  .style('text-anchor', 'middle')
+  .style('alignment-baseline', 'middle')
+  .style('fill', 'white')
 ```
 
 With this addition things might look like this: 
@@ -592,26 +592,26 @@ For the country names block I made these changes:
 
 ```JS
 nodes
-	.append('text')
-	.text(d => `${d.data.label}`)
-	.attr('font-family', 'Helvetica')
-	.style('text-anchor', 'middle')
-	.style('alignment-baseline', 'middle')
-	// set the fill color to black for country and world
-	.style('fill', d => {
-		if (d.data.country === undefined) {
-			return 'black'
-		}
-		return 'white'
-	})
-	// Offset the y by the radius for the country and world
-	.attr('transform', d => {
-		if (d.data.country === undefined) {
-			return `translate(0, -${d.r})`
-		}
-
-		return 'translate(0, -8)'
-	})
+  .append('text')
+  .text(d => `${d.data.label}`)
+  .attr('font-family', 'Helvetica')
+  .style('text-anchor', 'middle')
+  .style('alignment-baseline', 'middle')
+  // set the fill color to black for country and world
+  .style('fill', d => {
+    if (d.data.country === undefined) {
+      return 'black'
+    }
+    return 'white'
+  })
+  // Offset the y by the radius for the country and world
+  .attr('transform', d => {
+    if (d.data.country === undefined) {
+      return `translate(0, -${d.r})`
+    }
+  
+    return 'translate(0, -8)'
+  })
 ```
 
 Here you check that it is not a city node and then make some changes. 
@@ -629,3 +629,5 @@ Still imperfect but hopefully you can see some options that might help make a be
 ## Conclusion
 
 In this tutorial you delved into hierarchies and packs. This is a fairly complex visualization that makes use of tree structures. 
+
+This is a circle pack, read more about this here: https://datavizproject.com/data-type/packed-circle-chart/
