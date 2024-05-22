@@ -257,3 +257,5 @@ Notice in the example code callback function takes two parameters `d` and `i`. W
 ## Conclusion 
 
 In this tutorial you learned to load JSON and CSV data into D3. 
+
+This chart is similar to bubble plot, read more about this here: https://www.data-to-viz.com/graph/bubble.html
