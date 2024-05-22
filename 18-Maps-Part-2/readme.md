@@ -18,7 +18,7 @@ Be sure to import:
 Copy your dependencies into this folder. You need:  
 
 - `earthquake.csv` Find this in the data directory of this repo!
-- `world-110m2.json` 
+- `world-110m2.json` Download this [here](https://github.com/cszang/dendrobox/blob/master/data/world-110m2.json). 
 
 Setup the map. Define some constants: 
 
@@ -34,14 +34,14 @@ Select the body element, create an SVG element and set the width and height:
 const svg = d3.select('body')
   .append('svg')
   .attr('width', width)
-  .attr('height', height);
-  ```
+  .attr('height', height)
+```
 
 Define a group to hold the map: 
 
 ```JS
 // Make a group to hold the map
-const g = svg.append('g');
+const g = svg.append('g')
 ```
 
 Define a projection and a path generator:
@@ -51,11 +51,11 @@ Define a projection and a path generator:
 const projection = d3.geoMercator()
   // .center([0, 5])
   .scale(150)
-  .rotate([0, 0]);
+  .rotate([0, 0])
 
 // Create a path
 const path = d3.geoPath()
-  .projection(projection);
+  .projection(projection)
 ```
 
 Create a color color scale you can use to color the countries: 
@@ -141,11 +141,13 @@ Wow that's a lot of keys! Let's list them here:
 - Magnitude Source
 - Status
 
-I highlighted a couple pieces of data that we will use in this example: latitude, longitude, and magnitude. The first two are the geo coordinates of the earthquake. 
+I highlighted a couple pieces of data that we will use in this example: latitude, longitude, and magnitude. The first two are the geo coordinates locating the earthquake on the globe. 
 
-Scroll to the bottom of the data. There is more than 23,000 earthquakes recorded here! That's a lot of data. Mabe too much to show on the screen. Imagine 23,000 circles... Might be hard to understand what was going on. It may also caus performance issues. 
+Scroll to the bottom of the data. There is more than 23,000 earthquakes recorded here, that's a lot of data! This is too much to show on the screen. Imagine 23,000 circles... Might be hard to understand what was going on. It may also cause performance issues, since you would creating another 23,000 SVG objects that need to be rendered. 
 
-You need to filter this data to show a reasonable number of data points. I experimented a bit and found that displaying all of the earthquakes with a magnitude greater than 7 showed a reasonable number of quakes. 
+You should filter this data to show a reasonable number of data points. I experimented a bit and found that displaying all of the earthquakes with a magnitude greater than 7 showed a reasonable number of quakes. 
+
+This might also make sense since magnitude 7 earthquakes are serious enough to be of interest. 
 
 Add the following below the line that loads the earthquake data: 
 
@@ -156,24 +158,27 @@ const data = earthquakeData.filter(d => d.Magnitude > 7)
 
 ## Marking the Earthquakes
 
-The next step is to display an evg element at the position of each earthquake. To do this you need to translate the longitude and latitude data into screen coordintes. These are two different numbers and scales! 
+The next step is to display an svg element at the position of each earthquake. To do this you need to translate the longitude and latitude data into screen coordintes. These are two different numbers and scales! 
 
 Read about longitude and latitude (optional): https://en.wikipedia.org/wiki/Geographic_coordinate_system
 
 Luckily D3 has this all figured out! The projection function you created earlier will translate any pair of geocoordinates into pixel coordinates! For example: 
 
 ```JS
-projection([-122.431297, 37.773972]) // [159.47561397944156, 143.05157618818106]
+projection([-122.431297, 37.773972])
+// geocoordinates [-122.431297, 37.773972] -> x, y pixels [159.47561397944156, 143.05157618818106]
 ```
 
 The input array contains the geolocation [longitude, latitude] of San Francisco the output array contains the x and y position of San Francisco on this projection. Notice you input an array and the output was an array!
+
+Remember! be a better programmer by asking what the input types, and the output type for any function!
 
 The data has these properties: 
 
 - **Latitude**
 - **Longitude**
 
-Notice the splling! (uppercase L)
+Notice the spelling! (uppercase L)
 
 Create a circle for each earthquake: 
 
@@ -192,7 +197,9 @@ d3.select('svg')
   .attr('fill', 'rgba(255, 0, 0, 0.15)')
 ```
 
-First you select the svg element. Then selected all of the circles. It might have been good to put all of these circles in a group first (**challenge** add all of the circles to a group!) Then you set the data for this selection, entered the data, appended circles. This should give you a circle for each element in the data array. 
+Place the code above inside the `loadMap()` function, below the `g.selectAll('path')...` block. 
+
+First you selected the `svg` element. Then selected all of the `circles`. It might have been good to put all of these circles in a group first (**challenge** add all of the circles to a group!) Then you set the data for this selection, entered the data, appended circles. This should give you a circle for each element in the data array. 
 
 Next you positioned each circle by setting it's `cx` and `cy`. To do this you got the data element as `d` then passed the array of longitude and latitude: `[[d.Longitude, d.Latitude]]` into your `projection()` function. 
 
@@ -275,9 +282,9 @@ const infoBox = d3.select('svg')
   .attr('display', 'none') // add this line! 
 ```
 
-If an element has display none it is not visible.
+If an element has `display` `none` it is not visible.
 
-The infor box will become visible when you hover over one of the circle, it should hide when you move the cursor off of the circle. You can do this by adding mous events with D3. 
+The info box will become visible when you hover over one of the circle, it should hide when you move the cursor off of the circle. You can do this by adding mous events with D3. 
 
 D3 works with all of the standard JS events but uses it's own syntax of `.on(event, handler)` instead of JavaScript's `.addEventListener(event, handler)`.
 
@@ -324,7 +331,7 @@ Display the box and set the magnitude.
 })
 ```
 
-First you select the element you mouseovered. `this` in an event handler is the element that generated the event. In this case it should be one of the circles. You can select it with: `d3.select(this)`. Then set the stroke of the circle. 
+First you select the element the mouse is over. `this` in an event handler is the element that generated the event. In this case it should be one of the circles. You can select it with: `d3.select(this)`. Then set the stroke of the circle. 
 
 Next find the info box with via it's class name. Set display to `yes` to make it visible. Then stransform it to the location of the circle you are hovering over. To do this you need to get the `cx` and `cy` attributes. 
 
