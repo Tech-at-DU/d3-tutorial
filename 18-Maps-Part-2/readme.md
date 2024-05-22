@@ -356,6 +356,19 @@ The map should look reoughly like this:
 
 ![example 2](./images/example-2.png)
 
+**Challenge:**
+
+You may notice that the info box flickers. If you pay close attention, you'll notice that this occurs when the cursor is over a circle but is also overlapping the info box. You get a loop. The hovering over a circle makes the box display. Now you're hovering over the box, and no longer over the circle so it box disappears. Which leaves you over the circle, and box appears again. 
+
+You can fix this by adding the folling styles: 
+
+- The `svg` element needs the style: `pointer-events` `none`
+- The `circle` elements need the style: `pointer-events` `fill`
+
+You can add these styles any way you like! 
+
+The result is that svg ignores mouse/pointer events and circles apply these events only to their fill. 
+
 **Challenge** 
 
 Style the info box and text. Do anything you like here. Make it look the way you think is best. Set the fill color, stroke, and stroke-width, change the size etc. 
