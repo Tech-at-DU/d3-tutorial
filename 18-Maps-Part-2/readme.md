@@ -17,8 +17,8 @@ Be sure to import:
 
 Copy your dependencies into this folder. You need:  
 
-- `earthquake.csv` 
-- `world-110m2.json`
+- `earthquake.csv` Find this in the data directory of this repo!
+- `world-110m2.json` 
 
 Setup the map. Define some constants: 
 
