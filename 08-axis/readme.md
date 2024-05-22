@@ -337,3 +337,6 @@ Then adjust the margin to place the axis better to fit the new size.
 ## Conclusion 
 
 In this tutorial you learned how to create axis with D3. You also learned how to place the axis relative to a graph you have drawn. 
+
+This chart is similar to a line chart, read more about these here: https://www.data-to-viz.com/graph/line.html
+
