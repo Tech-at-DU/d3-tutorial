@@ -393,3 +393,5 @@ This graph shows the mean temperature each month of a year. It might be good if 
 ## Conclusion 
 
 In this tutorial you learned to create an area chart. You used D3's area generator along with all of the other things that were covered in the previous tutorials! 
+
+This is an area chart, read more about these here: https://www.data-to-viz.com/graph/area.html
