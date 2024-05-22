@@ -18,16 +18,16 @@ Start by setting up the boiler plate D3 HTML document. Leave out the SVG tag and
 <html lang="en">
 
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>D3 Maps US</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>D3 Maps US</title>
 </head>
 
 <body>
-<script src="https://d3js.org/d3.v7.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
 <script>
-	// code here
+  // code here
 </script>
 </body>
 </html>
@@ -37,7 +37,7 @@ Start by setting up the boiler plate D3 HTML document. Leave out the SVG tag and
 
 ## Dependencies 
 
-For this project there are a couple dependencies. You need to import `topojson`. This contains utilities that work map data. It's repsonible for drawing the borders around regions on the map. 
+For this project there are a couple dependencies. You need to import `topojson`. This contains utilities that work with map data. It's repsonible for drawing the borders around regions on the map. 
 
 Check out the topojson repo: https://github.com/topojson/topojson
 
@@ -47,7 +47,7 @@ Add this to head of your document:
 <script src="https://unpkg.com/topojson@3"></script>
 ```
 
-YOu also need some map data. There are many different datasets for maps. For this example you will use a world map. I couldn't find this data on a CDN so you'll need to download the file and save it to the directory where you are working. 
+You will also need some map data. There are many different datasets for maps. For this example you will use a world map. I couldn't find this data on a CDN so you'll need to download the file and save it to the directory where you are working. 
 
 - Go to: https://github.com/cszang/dendrobox/blob/master/data/world-110m2.json
 - Click "raw" and save the file with the name: "world-110m2.json"
@@ -64,7 +64,7 @@ const height = 500
 
 ## Projections 
 
-The globe is a sphere your computer screen is flat. To display the world on your screen you need a projection to map the sphere on to the flat screen. D3 supports many different types of projections. 
+The globe is a sphere your computer screen is flat. To display the world on your screen you need to use a projection to map the sphere on to the flat screen. D3 supports many different types of projections. 
 
 Check out some examples and read more about projections here: https://github.com/d3/d3-geo-projection
 
@@ -75,7 +75,7 @@ Define a projection:
 const projection = d3.geoMercator()
 ```
 
-Here you used the mercator projection. YOu may have seen this in the docs linked above. This is a classic map. Notice the top and bottom are stretched out where in the center band of of the globe things are the correct relative size.
+Here you used the mercator projection. You may have seen this in the docs linked above. This is a classic map. Notice the top and bottom are stretched out where in the center band of of the globe things are the correct relative size.
 
 ## Drawing the Map
 
@@ -85,8 +85,9 @@ Start by creating an SVG element:
 const svg = d3.select('body')
   .append('svg')
   .attr('width', width)
-  .attr('height', height);
+  .attr('height', height)
 ```
+This time you created the root svg element dynamically using D3 instead of writing the `<svg>` tag manually! 
 
 Notice you used the width and height defined earlier. 
 
@@ -94,7 +95,7 @@ Next create a path that will draw the outlines of the continents and countries o
 
 ```JS
 const path = d3.geoPath()
-  .projection(projection);
+  .projection(projection)
 ```
 
 Here you used `d3.geoPath()` and passed your `projection` in and it returned a path. 
@@ -102,7 +103,7 @@ Here you used `d3.geoPath()` and passed your `projection` in and it returned a p
 Next add a group to hold the map path: 
 
 ```JS
-const g = svg.append('g');
+const g = svg.append('g')
 ```
 
 Last load the map data:
@@ -118,11 +119,13 @@ async function loadMap() {
     .append('path')
     .attr('d', path)
 }
+
+loadMap()
 ```
 
-Here you need to load the `world-110m2.json` data you downloaded earlier. Since this is an asynchronus activity you used a an `async` function and `d3.json` to load the file since it is a JSON file. 
+Here you need to load the `world-110m2.json` data you downloaded earlier. Since this is an asynchronus activity you used a an `async` function and `d3.json()` to load the file since it is a JSON file. 
 
-After the file loads you selected the path and set the data. Notice that you used `topojson`, which you imported at the top, passed the `topolgy` data in to define the features that you wanted. In this case you want the countries. 
+After the file loads you selected the path and set the data. Notice that you used `topojson`, which you imported at the top, passed the `topology` data in to define the features that you wanted. In this case you want the countries. 
 
 Then you set appeded a path and set the `d` property to draw the svg shapes. 
 
@@ -168,7 +171,7 @@ This should rotate the world -180 degrees on the vertical axis.
 Take a look at the antarctic: 
 
 ```JS
-.rotate([0, 90]);
+.rotate([0, 90])
 ```
 
 Here you rotated the globe 90 on the horzontal axis. 
@@ -177,7 +180,7 @@ You can also set the scale of the map. Try this:
 
 ```JS
 .scale(400)
-.rotate([0, 90]);
+.rotate([0, 90])
 ```
 
 This should zoom into the antartic. 
@@ -186,7 +189,7 @@ Try this:
 
 ```JS
 .scale(100)
-.rotate([0, 0]);
+.rotate([0, 0])
 ```
 
 This should image should make it clear how the mercator projection distorts the world map at the top and bottom. 
@@ -204,15 +207,15 @@ Use rotation and scale to zoom in on Japan.
 
 These were the numbers I used:
 ```JS
-.scale(550)
-.rotate([-120, -45]);
+.scale(850)
+.rotate([-135, -45])
 ```
 
 </details>
 
 ## Add some color
 
-Add a little color. This next step won't solve all of your color questions. In this step you'll give each country a different color based on a linear scale. In more practical examples you'll want to assign a color to a region. 
+Add a little color. This next step won't solve all of your color questions but it will get you started coloring the map. In this step you'll give each country a different color based on a linear scale. 
 
 Create a linear scale for color. There are 176 countries in the list so that will be the domain. The colors from tomato to gold will be the range.  
 
@@ -223,7 +226,23 @@ const colorScale = d3.scaleLinear()
   .domain([0, 176])
 ```
 
-D3 recognizes the keyword colors, tomato is: `#FF6347`, and gold is: `#FFD700`. D3 will interpolate across these values. 
+D3 recognizes the keyword colors, tomato is: `#FF6347`, and gold is: `#FFD700`. D3 will interpolate (blend) across these values. 
+
+**Challenge:** 
+
+Apply the color scale to the fill. 
+
+<details>
+<summary>
+
+**solution**
+
+</summary>
+```JS
+ .attr('fill', (d, i) => colorScale(i))
+```
+</details>
+ 
 
 Here is another strategy. Use one of D3 color interpolators. Try this: 
 
@@ -233,9 +252,9 @@ const colorScale = d3.scaleSequential()
   .domain([0, 176])
 ```
 
-Notice here you changed the scale type to sequential. Then used the interpolator with the rainbow interpolator. This should cycle through the rainbow and give each country a different color. 
+Notice here you changed the scale type to sequential. Then used the interpolator with the rainbow interpolator. This should cycle through the default D3 rainbow and give each country a different color. 
 
-Yout map might look like this after using the color scale:  
+Your map might look like this after using the color scale:  
 
 ![example 2](./images/example-2.png)
 
