@@ -391,4 +391,4 @@ In this tutorial you reviewd the concepts of making a world map with D3. Then yo
 
 Read more about projections here: https://www.d3indepth.com/geographic/
 
-Curious about geojson? Read about it here: https://doc.arcgis.com/en/arcgis-online/reference/geojson.htm#:~:text=GeoJSON%20is%20an%20open%20standard,variety%20of%20geographic%20data%20structures.
+Curious about geojson? Read about it here: https://doc.arcgis.com/en/arcgis-online/reference/geojson.htm
