@@ -388,3 +388,7 @@ Display other information in the info box. There is lots more data in the CSV fi
 ## Conclusion
 
 In this tutorial you reviewd the concepts of making a world map with D3. Then you learned to map data with geolocation information on to a projection. You also used `.on()` to handle mouse events. 
+
+Read more about projections here: https://www.d3indepth.com/geographic/
+
+Curious about geojson? Read about it here: https://doc.arcgis.com/en/arcgis-online/reference/geojson.htm#:~:text=GeoJSON%20is%20an%20open%20standard,variety%20of%20geographic%20data%20structures.
