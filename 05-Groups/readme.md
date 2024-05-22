@@ -267,3 +267,5 @@ Notice `d3.line()` returns a function! You are calling this function and passing
 ## Conclusion 
 
 In this tutorial you learned to create and use SVG groups.
+
+This chart is similar to bubble plot, read more about this here: https://www.data-to-viz.com/graph/bubble.html
