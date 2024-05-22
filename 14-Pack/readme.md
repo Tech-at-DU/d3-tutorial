@@ -198,6 +198,8 @@ Should look something like this:
 
 ## Conclusion
 
+This is a circle pack, read more about this here: https://datavizproject.com/data-type/packed-circle-chart/
+
 In this tutorial you delved into hierarchies and packs. This is a pretty deep subject and leads to many complex and interesting visualizations. Which include: 
 
 - Tree maps: https://www.data-to-viz.com/graph/treemap.html
