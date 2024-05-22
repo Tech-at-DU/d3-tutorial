@@ -151,3 +151,7 @@ Try these other color interpolators:
 In this tutorial you built a hybrid line, lollipop, scatter plot, which is not a real thing. Removing the line starts to turn this into a scatter plot. Replacing the line with some bars, from the previous tutorial, turns this into a lollipop chart. 
 
 You also looked at the color scale and color interpolators.
+
+This is simialr to a scatter plot and a histogram, read more about these here: 
+- https://www.data-to-viz.com/graph/scatter.html
+- https://www.data-to-viz.com/graph/histogram.html
