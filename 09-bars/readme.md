@@ -288,3 +288,5 @@ Notice this conflicts with the number of ticks.
 
 In this tutorial you learned to create bar graph. This is the most type of graph you will run into. Here you used the new scale band to evenly space elements. You also added axis and formatting which makes a very complete chart. 
 
+This is a historgram, read more about histograms here: https://www.data-to-viz.com/graph/histogram.html
+
