@@ -10,8 +10,10 @@ Create a new directory where you will be working. Add a new html file and add yo
 
 Be sure to import: 
 
-- `<script src="https://d3js.org/d3.v7.min.js"></script>`
-- `<script src="https://unpkg.com/topojson@3"></script>`
+```HTML
+<script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
+<script src="https://unpkg.com/topojson@3"></script>
+```
 
 Copy your dependencies into this folder. You need:  
 
