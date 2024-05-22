@@ -365,3 +365,5 @@ It might look something like this:
 ## Conclusion
 
 In this tutorial you again applied everything you learned so far and created pie charts and legends on top of that! 
+
+This is pie chart, you should read about these here: https://eagereyes.org/pie-charts
