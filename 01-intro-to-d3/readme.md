@@ -1,6 +1,6 @@
 # D3 Tutorial
 
-This tutorial will get you started learning D3. This tutorial covers the fundamental concepts. Later tutorials will delve into more advanced features in D3. D3 is deep, the tutorials here cover a lot but know that there is more!
+This tutorial will get you started learning D3. The tutorial covers the fundamental concepts you will need. Later tutorials will delve into more advanced features in D3. D3 is deep, the tutorials here cover a lot but know that there is more!
 
 D3 is written with JavaScript and runs in a browser. D3 is a data visualization library. Its purpose is to read data and display that data graphically. The name D3 stands for Data Driven Documents. 
 
