@@ -1,8 +1,8 @@
 # D3 Join API
 
-When working with D3 you may have noticed that elements will be created, updated, and removed from the DOM. D3 does automatically. The Join API gives you control over the elements as they are created, updated and removed from the DOM. 
+When working with D3 you may have noticed that elements will be created, updated, and removed from the DOM. D3 does this automatically for each item in the data you provide, creating elements that don't exist, updating the existing element when values change, and removing elements if the number of data items changes. The Join API gives you control over the elements as they are created, updated, and removed from the DOM. 
 
-Why is this important? Understanding the Join API allows you to with D3. Especially for things that apply to interactive charts. 
+Why is this important? Understanding the Join API allows you to do more with D3, especially with interactive charts! 
 
 ## Getting started 
 
@@ -58,7 +58,7 @@ const height = 300 - (margin.top + margin.bottom)
 
 ## Add some data
 
-The goal of this example will be to display a bar graph and and remove bars in the graph by clicking the buttons. 
+The goal of this example will be to display a bar graph where you can add and remove bars in the graph by clicking the buttons. 
 
 The data for this example will be an array of numbers from 0 to 100. 
 
@@ -87,9 +87,9 @@ document.querySelector('#remove-button')
   })
 ```
 
-Here I used vanilla JS we couold have used D3 to handle these click events also. 
+Here I used vanilla JS, you could have used D3 to handle these click events also. 
 
-Notice there is a call to `drawBars()` which is function you'll define in the future!
+Notice, there is a call to `drawBars()` which is function you'll define in the future! It hasn't been defined yet so you might see an error! 
 
 ### Setting up the scales
 
@@ -178,11 +178,11 @@ function drawBars() {
 drawBars()
 ```
 
-The `drawBars()` function will draw the bars in the bar chart and update the horizontal scale. Here the function is stubbed. 
+The `drawBars()` function will draw the bars in the chart and updates the horizontal scale. Here the function is stubbed. 
 
 Notice that you are calling the function once at the bottom to initialize the chart. You are also calling this function when the "Add" and "Remove" buttons are clicked. 
 
-Since the x scale will change when new data is added to the data array you need to update the x scale when you redraw the bars. 
+Since the x scale will change when new data is added to the data array, you need to update the x scale when you redraw the bars. 
 
 ```JS
 function drawBars() {
@@ -199,7 +199,7 @@ function drawBars() {
 }
 ```
 
-Using scale band the scale is based on a list of values, since you're changing the number of values you need update the domain of the x scale. 
+Using scale band makes the scale based on a list of values, since you're changing the number of values you need update the domain of the x scale. 
 
 Now make some bars: 
 
@@ -228,9 +228,9 @@ function drawBars() {
 
 Here you selected all rectangles in the `barsGroup`, assigned your data, then set the `x`, `y`, `width`, and `height` attributes to draw the bars. 
 
-The `x` is set by the xscale , `y` is set via yscale. The `width` is set by the `xscale` with bandwidth. 
+The `x` is set by the xscale , `y` is set by yscale. The `width` is set by the `xscale` with bandwidth. 
 
-Note! Since the `rect` draws from the upper left corner you calculated the height as the height of the chart - the data value through the yscale function. 
+Note! Since the `rect` draws from the upper left corner you calculated the height as the height of the chart less the data value through the yscale function. 
 
 Last you need to update the axis. 
 
@@ -246,7 +246,7 @@ function drawBars() {
   barGroup
     .selectAll('rect')
     .data(data)
-    .join('rect')
+    .join('rect') // *** Use join!
     .attr('x', xscale)
     .attr('y', d => yscale(d))
     .attr('width', xscale.bandwidth())
@@ -265,7 +265,7 @@ function drawBars() {
 
 Great work! 
 
-So far you should have a single bar and the two axese. Clicking the buttons should add and remove bars from the chart. The data is random so the bars will be different each time you add a new one. 
+So far you should have a single bar and the two axese. Clicking the buttons should add and remove bars from the chart. The data is random so the bars will be different each time you add a new one!
 
 ## D3 Join API
 
@@ -277,17 +277,17 @@ When you create a D3 selection D3 makes use of any existing elements that it fin
 
 If there are no elements or not enough elements D3 creates new elements. 
 
-If there are too many elements D3 removes the extra elements. 
+If there are too many elements D3 removes the extra elements. On any update elements may be leaving the DOM, existing elements may change values, and extra elements may be removed from the DOM. 
 
-D3 does these things automatically. Sometime you will want to control what happens to these elements. For example you might want to: 
+Sometime you will want to control what happens to these elements that created, updated, or removed. For example you might want to: 
 
 - Style the newly added data element
-- Animate animate entering, updating, and exiting elements. 
-- You may want to animate elements differently depending on whether they are entering, updating, or exiting. 
-
-Let's try these ideas with the current example. 
+- Animate new, updated, or exiting elements. 
+- You may want to animate elements differently depending on whether they are entering, updating, or exiting.
 
 Read more about D3 join here: https://observablehq.com/@philippkoytek/d3-part-3-selection-join-explained
+
+Let's try these ideas with the current example. 
 
 ### Using the Join API
 
@@ -366,7 +366,7 @@ Test it out. The initial bar should be red since it was newly added.
 
 Add a new bar and the first bar should become orange since it was updated. The newly added bar should be red. 
 
-Removing a bar should leave you will only orange bars since a bar was removed and the remaining bars were updated! 
+Removing a bar should leave you with only orange bars since a bar was removed and the remaining bars were updated! 
 
 ### Animating changes
 
@@ -389,7 +389,7 @@ Test this out. New elements should fade in.
 
 Note! you need to `opacity` with `.style()` instead of `.attr()`.
 
-Note! We need to set the initial opacity to 0 then animate this to 1. 
+Note! You need to set the initial opacity to 0 then animate this to 1. 
 
 Animate updated elements. You can animate all of the attributes this time:
 
@@ -421,11 +421,12 @@ Now you should exiting element change to gray and fade out. Might be hard to see
 
 ## Challenges
 
-**Challenge:** Modify the transitions here to your taste. Think about all of the attributes you can animate. Any changes applied before `.transition()` will not be animated, while changes applied after `.transition()` will be animated. 
+**Challenge:** Modify the transitions to your taste. Think about all of the attributes you can animate. Any changes applied before `.transition()` will not be animated, while changes applied after `.transition()` will be animated. 
 
 **Challenge:** Applied the join API to one of the previous tutorial examples.
 
 ## Conclusion
 
-In this tutorial you explored the D3 join API and used it's enter, exit, and update pattern. This allowed you to handle elements as they enter, exit and are updaed in the DOM. 
+In this tutorial you explored the D3 join API and used it's enter, exit, and update pattern. This allowed you to handle elements as they enter, exit and are updaed in the DOM.
 
+D3s Join API is a powerful tool! You will use it to make complex interactive visualizations! 
