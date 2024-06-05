@@ -22,3 +22,4 @@ This tutorial provides and introduction to D3.js!
 - [18 D3 Maps Part 2](18-Maps-Part-2)
 - [19 D3 Join API](19-D3-Join)
 - [20 Stacked Bars](20-stacked-bars)
+- [21 Sankey Chart](21-sankey)
