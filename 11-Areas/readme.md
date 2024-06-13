@@ -374,6 +374,16 @@ Might look like this when you're done:
 
 ![example-5](images/example-5.png)
 
+**Challenge**: You may notice that the time is formatted oddly with showing the year 1901 in place of January. I'm guessing that D3 does this by default to show that the year changes. You can determine the formatting used on an axis using: 
+
+```JS
+// Define the axis generators
+const bottomAxis = d3.axisBottom(monthsScale)
+  .tickFormat(d3.timeFormat("%B"))
+```
+
+Here the tick format uses a time formatter to show the month. "%B" says use the fulle month, for example: December. You can use "%b" for the short month, for example: Dec. 
+
 **Challenge**
 Draw each new area with a different fill color. Use opacity to make these transparent. 
 
