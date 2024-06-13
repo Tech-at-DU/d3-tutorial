@@ -1,10 +1,10 @@
 # Sankey Diagrams
 
-A sankey diagram show amounts through stages. This represents the flow and changes in value of data. 
+A sankey diagram show amounts through stages. This represents the flow and changes and division in values. 
 
 Read about sankey here: https://en.wikipedia.org/wiki/Sankey_diagram
 
-take a look at some sankey charts on Observable: https://observablehq.com/search?query=sankey
+Take a look at some sankey charts on Observable: https://observablehq.com/search?query=sankey
 
 ## Make a Sankey Diagram
 This example will create a sankey chart using vanilla html and D3. We won't be using React for this. You could take the ideas here and combine them with the previous tutorial to create a React version of this project! 
@@ -31,7 +31,7 @@ Add an SVG element.
 <svg id="svg" width="600" height="600"></svg>
 ```
 
-D3 doesn't support sankey charts out of the box, you need to import some extra code from this repo: https://github.com/d3/d3-sankey
+D3 doesn't support sankey charts out of the box, you must import some extra code from this repo: https://github.com/d3/d3-sankey
 
 Check out the "installation" section: https://github.com/d3/d3-sankey?tab=readme-ov-file#installing and get the script tags that import sankey from the CDN. 
 
@@ -58,7 +58,7 @@ Now add a script tag where you will do your work!
 ```
 
 ## Data
-The data used for a sankey chart must be arranged as an object with nodes and links. Nodes determines the "bars" and links draw the paths between the nodes.
+The data used for a sankey chart must be arranged as an object with `nodes` and `links`. Nodes determines the "bars" and links draw the paths between the nodes. Every link connects two nodes!
 
 A simple sankey with two nodes and a single link:
 
@@ -121,9 +121,9 @@ const graph = {
 }
 ```
 
-Notice! Here there are three nodes and two links. Both links share the same source node. The first link ends at node 1 and the second link ends at node 2. 
+Here there are three nodes and two links. Both links share the same source node. The first link ends at node 1 and the second link ends at node 2. 
 
-![sankey-3]()
+![sankey-3](./images/sankey-3.png)
 
 Imagine that this chart might show a total that splits into to two categories. For example, `node0` might represent total passengers on the Titanic, and `node1` could passengers that died, and `node2` could be passengers that survived. 
 
@@ -151,9 +151,9 @@ const graph = {
 
 ![sankey-4](./images/sankey-4.png)
 
-Note! The `value` of links 3 and 4 add up to 3. The total passengers might be 4, since links 1 and 2 have a total value of 4. There is still one unit of passengers left. 
+Note! The `value` of links 3 and 4 add up to 3. The total passengers might be 4, since links 1 and 2 have a total value of 4. There is still one unit of passengers left unaccounted. 
 
-Imagine all of sirviors were female. We could add one more link from survivors to female passengers. Ths time I changed the names to match teh categories. 
+Imagine all of sirviors were female. We could add one more link from survivors to female passengers. Ths time I changed the names to match the categories. 
 
 ```JS
  const graph = {
@@ -178,7 +178,7 @@ It might look like this.
 
 ![sankey-5](./images/sankey-5.png)
 
-This is not accurate to the Titanic data since this exmaple shows only 4 passengers total, two men and two women, one woman survivor, two women and one man died. 
+This is not accurate to the Titanic data since this exmaple shows only 4 passengers total, two men and two women, one woman survivor, two men and one woman died. 
 
 Lets plug in some numbers from the Titanic dataset. This time we have some male survivors so I added another link. 
 
@@ -206,10 +206,10 @@ This might look like this.
 
 ![sankey-6](./images/sankey-6.png)
 
-That should give you an idea of how the data should be arranged to create this type of chart. Obviously you will need to create the data structure! 
+That should give you an idea of how the data should be arranged to create this type of chart. Obviously, you will need to create the data structure yourself from whatever source data you start with! 
 
 ## D3 sankey
-To get started add some code to your html document. To start simple you will use the data from above. Define your "graph" like this: 
+To get started add some code to your html document. To start you will use the data from above. Define your "graph" like this: 
 
 ```JS
 <script>
@@ -232,6 +232,7 @@ const graph = {
 }
 
 
+
 </script>
 ```
 
@@ -241,7 +242,7 @@ Start by selecting the svg element.
 const svg = d3.select("#svg")
 ```
 
-Lets add a color scale. For this example I'm using `d3.scaleSequential()` which return a different color for each index. 
+Lets add a color scale. For this example I'm using `d3.scaleSequential()` which returns a different color for each index. 
 
 ```JS
 const colorScale = d3.scaleSequential()
@@ -265,7 +266,7 @@ Here you defined a generator function. You also set some options. Lets look at t
 .nodeWidth(36)
 ```
 
-Sets the width of the nodes. Nodes are the rectangles that connect the links. This set the width of the nodes to 36 pixles. 
+Sets the width of the nodes. Nodes are the rectangles that connect the links. This sets the width of the nodes to 36 pixles. 
 
 ```JS
 .nodeWidth(100)
@@ -293,13 +294,15 @@ Might look like this.
 .extent([[10, 10], [490, 490]])
 ```
 
-Extent defines the upper left and lower right corners of the chart. In this example we set the upper left corner to x of 10 and y of 10. This places the upper left corner 10 pixels in from the upper left of the svg. The lower right corner was placed at x 490 and y 490. These values fit the chart 10 pixels in from the edges of the svg element, which had a width and height of 500. 
+Extent defines the upper left and lower right corners of the chart. In this example we set the upper left corner to x of 10 and y of 10. This places the upper left corner 10 pixels in from the upper left of the svg. The lower right corner was placed at x 490 and y 490. These values fit the chart 10 pixels in from the edges of the svg element, which has a width and height of 500. 
 
-Next, pass the graph data into the genertor function and get the nodes and links it returns. These arrays that include the original data plus data that can be used to draw the elements the nodes and links represent in D3. 
+Next, pass the graph data into the genertor function and get the nodes and links it returns. 
 
 ```js
 const { nodes, links } = sankeyGen(graph)
 ```
+
+`nodes` and `links` are arrays that include the original data plus data that can be used to draw the elements the nodes and links represent with D3. 
 
 Now we need a link generator. This will draw the link paths. 
 
@@ -318,7 +321,7 @@ const linkGroup = svg
   .append('g')
 ```
 
-Links are drawn as a single line that has a really wide stroke. 
+Now draw the links. Links are drawn as a single line that has a really wide stroke. 
 
 ```JS
 linkGroup
@@ -392,7 +395,7 @@ nodeGroup
   .attr('opacity', 0.5)
 ```
 
-Most of this is pretty straight forward. You are creating `rect` elements with a width, height, x, y, fill color. 
+Most of this is pretty straight forward. You are creating `rect` elements with a width, height, x, y, and fill color. 
 
 Note! The sankey generator doesn't give us the height of the nodes. Instead it gives us y0 and y1. Where y0 is the location of the top and y1 is location of the bottom. To get the height you need to subtract y0 from y1. 
 
@@ -448,7 +451,7 @@ There are a couple things that need to be looked at closely.
 .attr('transform', d => `rotate(90, ${d.x0}, ${((d.y1 - d.y0) / 2) + d.y0})`)
 ```
 
-This rotates the text 90 degrees. The `rotate()` method takes three parameters: angle, x and y. The x and y values need to be set to the position of the text or the text rotates around the upper left corner of the svg element. 
+The line above rotates the text 90 degrees. The `rotate()` method takes three parameters: angle, x and y. The x and y values need to be set to the position of the text or the text rotates around the upper left corner of the svg element. 
 
 ```JS
 .attr('x', d => d.x0)
