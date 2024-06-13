@@ -23,3 +23,4 @@ This tutorial provides and introduction to D3.js!
 - [19 D3 Join API](19-D3-Join)
 - [20 Stacked Bars](20-stacked-bars)
 - [21 Sankey Chart](21-sankey)
+- [22 Custom Shapes](22-Custom-Shapes)
