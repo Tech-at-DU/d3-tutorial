@@ -16,8 +16,8 @@ For this example continue with the code from the previous example. You should ha
 <body>
   <svg id="svg" width="500" height="500"></svg>
 
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script>
+  <script type="module">
+    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
     d3.csv('cities.csv')
       .then(data => {
         console.log(data)

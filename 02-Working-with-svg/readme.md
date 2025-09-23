@@ -39,8 +39,8 @@ Time to start a new project! Create a new HTML document with the boilerplate cod
 </head>
 <body>
 	
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script>
+  <script type="module">
+    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
     // Your code here
   </script>
 </body>

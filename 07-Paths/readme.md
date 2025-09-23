@@ -22,9 +22,9 @@ Start a new HTML document.
 
   <svg id="svg" width="600" height="400"></svg>
 
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script>
-  // Your code here
+  <script type="module">
+    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
+    // Your code here
   </script>
   </body>
 </html>

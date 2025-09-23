@@ -30,8 +30,8 @@ Link to the library from the CDN. Add the script tag at the bottom of the body t
 ```HTML
 <body>
 
-  <script src="https://cdn.jsdelivr.net/npm/d3@7"></script>
-  <script>
+  <script type="module">
+    import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7/+esm";
     // Your script here!
   </script>
 </body>
