@@ -31,7 +31,6 @@ For this example continue with the code from the previous example. You should ha
           .attr('cx', d => parseFloat(d.x) * 2 + 250)
           .attr('cy', d => parseFloat(d.y) * 2 + 250)
           .attr('r', d => parseInt(d.population) * 0.00001)
-          .attr('fill', `red`)
           .attr('opacity', 0.25)
           .attr('fill', d => {
             if (d.country === 'USA') {
@@ -78,9 +77,9 @@ Ranges can be numbers or other values and can be expressed as min and max values
 
 For example, if we are posting something on the screen and our SVG canvas is 500 pixels wide the range is 0 to 500. 
 
-If we have a list of colors to match our countries against the range might be: `['cornflowerblue', 'gold', 'gold', 'tomato']` a list of colors! 
+If we have a list of colors to match our countries against the range might be: `['cornflowerblue', 'gold', 'green', 'tomato']` a list of colors! 
 
-When it comes to the population we might know that we want the largest circle to be 300px and the smallest to be 10px. 
+When it comes to the population we might know that we want the largest circle to be `300px` and the smallest to be `10px`. 
 
 D3 has several functions that return a scale function that you configure for your use. 
 
@@ -129,8 +128,9 @@ Use `xScale` to set the `cx` attribute:
 ```JS
 ...
 .attr('cx', d => xScale(d.x)) // scale x with xScale
-...
 ```
+
+Note! No `parseFloat()` needed here — `d.x` is still a string, but scales only ever do subtraction/division/multiplication internally, which coerce strings to numbers automatically. (That's different from `extent()`/`min()`/`max()`, coming up next, which compare strings to each other and can get it wrong.)
 
 This is a big improvement over the last system you used! 
 
@@ -190,7 +190,7 @@ Define a new ordinal scale:
 ```JS
 const countryScale = d3.scaleOrdinal()
   .domain(['USA', 'Pakistan', 'Italy', 'Brazil'])
-  .range(['cornflowerblue', 'gold', 'gold', 'tomato'])
+  .range(['cornflowerblue', 'gold', 'green', 'tomato'])
 ```
 
 Then use this new scale to set the color: 
@@ -209,8 +209,8 @@ Make a new scale:
 
 ```JS
 const popScale = d3.scaleLinear()
-  .domain([525010, 14910352])
-  .range([10, 100])
+  .domain(d3.extent(data, d => parseInt(d.population)))
+  .range([20, 200])
 ```
 
 Here I found the largest and smallest population values and used these for the domain. 
@@ -225,7 +225,7 @@ Now use the scale:
 ...
 ```
 
-This is a lot better than the previous solution. We can do better still and D3 can do the work of finding the extents for us, read on! 
+This is a lot better than the previous solution.
 
 **Challenge**
 
@@ -320,15 +320,21 @@ Use these values in the domain of the population scale function.
 
 The last area where things are not working well is in country names. We had to add all of these names manually. If there had been more than four this would not have been easy, and as it is it's not scalable solution. 
 
-There is probably a strictly D3 method for this. I had a hard time figuring this out since the methods seem to change over different versions of d3. We are using d3 v7 which didn't have an obvious answer.
+There is a D3-specific method for this: `d3.union()`. It takes one or more iterables and returns the unique values across all of them.
 
-I used vanilla JS for this. Try this: 
+```JS
+const countries = d3.union(data.map(d => d.country))
+```
+
+Read more: https://d3js.org/d3-array/sets#union
+
+This does the same job as the vanilla JS version below — D3 didn't have this until d3-array 3 (bundled with d3 v7), which is why older tutorials reach for plain JS instead. Both are fine; `d3.union()` is worth knowing since it reads clearly once you know what it does, but the `Set` version below works everywhere, not just in D3 projects, so it's worth having in your general JS toolkit too.
 
 ```JS
 const countries = Array.from(new Set(data.map(d => d.country)))
 ```
 
-Here `countries` should be a list of unique country names. I made the unique array by first creating a Set. A set is like an array but may only contain unique values. Then I converted the set into an array.  
+Here `countries` should be a list of unique country names. This version makes the unique array by first creating a `Set`. A set is like an array but may only contain unique values. Then it converts the set into an array.  
 
 Use this to define the domain for your `countryScale`.
 

@@ -224,7 +224,7 @@ Wow, San Francisco and Fresno are pretty small compared to those other cities!
 
 Our visualization has a couple problems: 
 
-**Problem!** The areas represented by the circle's radius do not accurately represent the population since the area of a circle is `πr^2`. Where our drawing represents the diameter of the population. You could take of this with some more math!
+**Problem!** The areas represented by the circle's radius do not accurately represent the population since the area of a circle is `πr^2`. Where our drawing represents the diameter of the population.
 
 **Problem!** to scale and position our elements we need to know the max values and minimum values represented in our data. 
 
