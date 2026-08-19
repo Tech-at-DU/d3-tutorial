@@ -16,7 +16,7 @@ Place a small circle for every month of rainfall. To do this you can make a grou
 
 For this example start with the last example showing the rainfall data as a line graph. 
 
-**Challenge:** Start from scratch! Setup the boilerplate code and load the percipitation data. 
+**Challenge:** Start from scratch! Setup the boilerplate code and load the precipitation data. 
 
 At the bottom of the drawing, the code adds the following.
 
@@ -104,6 +104,8 @@ To display the colors you might do this:
 
 Here values of `d.date` will be assigned one of the four values in the range above. The values will repeat in order if they run out. 
 
+**Watch out!** `dateExtent` only holds two values — the min and max date. `scaleOrdinal()` domains are supposed to be a full list of the distinct values you expect (like the list of unique countries in tutorial 04), not an extent. This works anyway because `scaleOrdinal()` auto-extends its domain: any input value it hasn't seen before gets silently appended and assigned the next color in the range. That's convenient, but it also means `.domain(dateExtent)` here isn't really doing anything meaningful — every date gets auto-added regardless. Prefer building a real domain from your data, like `Array.from(new Set(data.map(d => d.date)))`, when you want predictable, repeatable colors.
+
 **Challenge**
 
 Apply the scale ordinal above. 
@@ -146,12 +148,30 @@ Try these other color interpolators:
 
 **Challenge:** Experiment with the color scales. Choose your favorite color scale and use that!
 
+## Check Your Understanding
+
+**Q1.** `d3.scaleOrdinal()` and `d3.scaleSequential()` both map values to colors. When would you reach for one over the other?
+
+<details><summary>Answer</summary>
+
+Use `scaleOrdinal()` for categorical data — discrete, unordered buckets like country or month name, where each category just needs its own distinct color. Use `scaleSequential()` for continuous data where the color itself should communicate order or magnitude — like temperature or rainfall amount — via a smooth gradient (interpolator) rather than a fixed palette.
+
+</details>
+
+**Q2.** Why does `d3.scaleSqrt()` come up again here for circle radius, same as in tutorial 04?
+
+<details><summary>Answer</summary>
+
+Same reason as before: circle *area* — not radius — is what the eye perceives as "size." A linear scale on radius makes differences look more dramatic than they really are. `scaleSqrt()` corrects for that so radius differences translate to proportionally accurate area differences.
+
+</details>
+
 ## Conclusion
 
 In this tutorial you built a hybrid line, lollipop, scatter plot, which is not a real thing. Removing the line starts to turn this into a scatter plot. Replacing the line with some bars, from the previous tutorial, turns this into a lollipop chart. 
 
-You also looked at the color scale and color interpolators.
+You also looked at ordinal and sequential color scales and D3's built-in color interpolators.
 
-This is simialr to a scatter plot and a histogram, read more about these here: 
+This is similar to a scatter plot and a lollipop chart, read more about these here: 
 - https://www.data-to-viz.com/graph/scatter.html
-- https://www.data-to-viz.com/graph/histogram.html
+- https://www.data-to-viz.com/graph/lollipop.html

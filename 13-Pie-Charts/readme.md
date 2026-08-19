@@ -23,9 +23,7 @@ Create a new HTML document. Add the following:
 In your script add the code to load the `cities.csv` data. Choose your favorite arrangement for this. 
 
 <details>
-  <summary>
-    ** Solution **
-  </summary>
+  <summary>Solution</summary>
 
  I chose to use `async` and `await`.
 
@@ -100,9 +98,7 @@ The scale can be sequential. The rainbow interpolator might be a good choice her
 The domain should be the list of objects so the extent can be 0 to the length of the list. 
 
 <details>
-  <summary>
-    ** Solution **
-  </summary>
+  <summary>Solution</summary>
 
 ```JS
 // Make a scale to set the color 
@@ -222,7 +218,7 @@ You might be able to do this with one of the axis functions. In this example, yo
 
 **Challenge**
 
-Make this a challenge if you feel up to it. You can follow the solution below. or compare your work to the solution. The goal is to displa a 
+Make this a challenge if you feel up to it. Try building the legend yourself first, then compare your work to the solution below.
 
 ### Making the Legend
 
@@ -296,7 +292,7 @@ This won't show a countries actual population but it will be proportional to the
 
 Draw another smaller pie chart in one of the corners. 
 
-Or, stretch goal, draw a doughnut around the existing piechart showing the coutries. 
+Or, stretch goal, draw a doughnut around the existing piechart showing the countries. 
 
 **Challenge**
 
@@ -310,9 +306,9 @@ This image is imperfect since the labels overlap but it is working.
 
 To do this follow these steps: 
 
-- Creat a new group to hold the labels. 
-- Creat a new `d3.arc()` you'll use this to caluclate the position of each label along the arc. 
-  - On this new arc call `.outerRadius(160)` and `.innerRadius(160)` to set the radius for the arc. 
+- Create a new group to hold the labels. 
+- Create a new `d3.arc()` you'll use this to calculate the position of each label along the arc. 
+  - On this new arc call `.outerRadius(160)` and `.innerRadius(160)` to set the radius for the arc. Setting both radii to the same value collapses the "arc" to a single ring with zero thickness — you're not drawing it, just borrowing its `.centroid()` method to find a point 160px from center, at the midpoint angle of each slice.
 - Now create the labels on your new group
   - Select all 
   - Set data to your city data
@@ -321,12 +317,10 @@ To do this follow these steps:
   - Transform the text element to position. You can use this: 
     - `.attr("transform", d => `translate(${arcLabels.centroid(arcData[i])})`)`
 
-The `arcLabels.centroid(arcData[i])` uses the arc data you created ealier. Remember this data had a start angle and end angle. The `.centroid()` method finds the center between the start and end angle. 
+The `arcLabels.centroid(arcData[i])` uses the arc data you created earlier. Remember this data had a start angle and end angle. The `.centroid()` method finds the center between the start and end angle. 
 
 <details>
-<summary>
-** Solution **
-</summary>
+<summary>Solution</summary>
 
 ```JS
 const rLabels = svg
@@ -354,7 +348,7 @@ rLabels
 
 Draw a ring around the current chart that shows a pie chart of the total population for countries. 
 
-To do this you'll need to creat an array of countries and total the population from each of the cities in the original array. 
+To do this you'll need to create an array of countries and total the population from each of the cities in the original array. 
 
 Then follow all of the same steps to make a new pie and arc. Set the inner radius to something a little larger than the outer radius of the first pie. 
 
@@ -362,8 +356,34 @@ It might look something like this:
 
 ![example 4](images/example-4.png)
 
+## Check Your Understanding
+
+**Q1.** `d3.pie()` takes raw population numbers and returns objects with start/end angles. What is it actually doing under the hood?
+
+<details><summary>Answer</summary>
+
+It sums all the values you pass in, then figures out what fraction of the full circle (2π radians) each value represents, and returns that as a `startAngle`/`endAngle` pair per item — the angle math you'd otherwise have to write by hand.
+
+</details>
+
+**Q2.** Why is `d3.arc()` a separate step from `d3.pie()` instead of one function that draws the whole chart?
+
+<details><summary>Answer</summary>
+
+`d3.pie()` only computes angles from data — it doesn't know anything about pixels. `d3.arc()` takes those angles plus radius settings (inner/outer/padding) and turns them into an actual SVG path string. Splitting them apart means you can reuse the same angle data with different radius/shape settings (like the donut-vs-pie choice, or the flattened arc used for label placement).
+
+</details>
+
+**Q3.** The legend circles use `.attr('fill', (d, i) => colorScale(i))` — the same `i` used to color the pie slices. Why does matching the index matter here?
+
+<details><summary>Answer</summary>
+
+The pie slices and the legend are built from two separate `.data()` calls (`arcData` and `data`), but both arrays are in the same original order. Using the shared index `i` to look up color guarantees slice N and legend row N get the same color, even though they're drawn as completely separate sets of elements.
+
+</details>
+
 ## Conclusion
 
 In this tutorial you again applied everything you learned so far and created pie charts and legends on top of that! 
 
-This is pie chart, you should read about these here: https://eagereyes.org/pie-charts
+This is a pie chart, you should read about these here: https://eagereyes.org/pie-charts

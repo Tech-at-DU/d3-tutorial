@@ -28,7 +28,7 @@ There are a few ways we can look at this data.
 2. All months for a single year. This would be twelve numbers. It might show the change in temperature over a year. 
 3. One month for all years. For example Jan 1901, Jan 1902, Jan 1903, etc. This could show a trends for a time of year allowing you to compare the temperature in same month over many years. 
 
-Sometimes you will need to look at the data and arrange or rearrange the data to suit your pupose. The data will not always be in the form that you need. D3 can do some of this but other times you need to use your JS skills to arrange the data to suit your purpose. 
+Sometimes you will need to look at the data and arrange or rearrange the data to suit your purpose. The data will not always be in the form that you need. D3 can do some of this but other times you need to use your JS skills to arrange the data to suit your purpose. 
 
 ## Getting started
 
@@ -91,9 +91,7 @@ const arr = convertToArray(obj)
 Compare the input and the ouput above. You are starting with `{ ... }` and ending with `[{}, {}, ...]`
 
 <details>
-  <summary>
-    ** Solution **
-  </summary>
+  <summary>Solution</summary>
  
 ```js
 function convertToArray(obj) {
@@ -310,7 +308,7 @@ Might look like this at this stage:
 
 This is a review! Give it a try on your own. Here are a few tips. 
 
-It will be awkward to get the dates from this data since we have an object that represents the year, and then an array of months that are just given as an abreviation. Just hack this together by making an extent of 12 months. Something like this: 
+It will be awkward to get the dates from this data since we have an object that represents the year, and then an array of months that are just given as an abbreviation. Just hack this together by making an extent of 12 months. Something like this: 
 
 ```JS
 const monthsScale = d3.scaleTime()
@@ -336,9 +334,7 @@ Set the range to:
 The left edge should be margin (40px) from the left and the right should be 40px from the right (width - 40px). 
 
 <details>
-  <summary>
-  ** Solution **
-  </summary>
+  <summary>Solution</summary>
  
 ```js
 // Define the axis generators
@@ -382,7 +378,7 @@ const bottomAxis = d3.axisBottom(monthsScale)
   .tickFormat(d3.timeFormat("%B"))
 ```
 
-Here the tick format uses a time formatter to show the month. "%B" says use the fulle month, for example: December. You can use "%b" for the short month, for example: Dec. 
+Here the tick format uses a time formatter to show the month. "%B" says use the full month, for example: December. You can use "%b" for the short month, for example: Dec. 
 
 **Challenge**
 Draw each new area with a different fill color. Use opacity to make these transparent. 
@@ -392,13 +388,39 @@ Bonus points for using a scale to determine the color! Use the ideas from the pr
 **Stretch Challenge**
 If you solved the challenge above you may notice that some of the data falls off the bottom of the chart, that is it dips below the bottom of the scale, or possibly above the top of the scale. 
 
-This happens because the yscale used gets it's extents from the 1901 data. Which has a minimum of temp of 18. The data covers years from 1901 to 2017 and it's possible that one of those years has a monimum temp less than 18! For example 1948 shows 17.33. 
+This happens because the yscale used gets it's extents from the 1901 data. Which has a minimum of temp of 18. The data covers years from 1901 to 2017 and it's possible that one of those years has a minimum temp less than 18! For example 1948 shows 17.33. 
 
-The same applies to the maximum temp. This challnge to is to set the extents of the yscale to min and max temp found in all of the data! 
+The same applies to the maximum temp. This challenge to is to set the extents of the yscale to min and max temp found in all of the data! 
 
 **Stretch Challenge**
 
 This graph shows the mean temperature each month of a year. It might be good if you could show the temperature for the same month of all years represented in the data. 
+
+## Check Your Understanding
+
+**Q1.** `d3.area()` needs `.y0()` and `.y1()` where `d3.line()` only needed `.y()`. Why does an area generator need two y-values?
+
+<details><summary>Answer</summary>
+
+A line is just a path connecting points — one y per point is enough. An area is a *filled shape*, so it needs a top edge (`y0`, following your data) and a bottom edge (`y1`, usually a fixed baseline) to close the shape into something that can be filled. Without `y1`, D3 wouldn't know where the bottom of the fill should be.
+
+</details>
+
+**Q2.** The tutorial hacks together an x-axis domain using two hardcoded date objects (`new Date('1901-01-01')` to `new Date('1901-12-01')`) instead of computing it from the data. Why was that necessary here?
+
+<details><summary>Answer</summary>
+
+The data only gives month abbreviations like `"JAN"`, not real date strings — there's nothing to parse with `d3.timeParse()`. Faking a one-year date range gives `scaleTime()` something real to work with for evenly spaced, correctly labeled month ticks, even though the underlying data isn't actually date-stamped.
+
+</details>
+
+**Q3.** The stretch challenge points out that using only 1901's data to set the y-scale's extent will clip some other years' values off the chart. Why doesn't the chart just "know" to resize itself for different years?
+
+<details><summary>Answer</summary>
+
+A scale's domain is fixed at the moment you create it — it doesn't recalculate automatically when new data shows up later. If you only fed `d3.extent()` the 1901 data, that's the only data it ever considered. To support every year, the extent needs to be computed across the *entire* dataset up front, not just the one year currently being drawn.
+
+</details>
 
 ## Conclusion 
 

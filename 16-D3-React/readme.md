@@ -2,7 +2,7 @@
 
 You might be creating a React project and need to incorporate D3. This is possible! To do this its important to understand that D3 and React work with the DOM in two different ways.
 
-D3 uses the DOM in the traditional way where it access the "real" DOM directly. React uses a virtual DOM, and updates the real DOM indirectly. 
+D3 uses the DOM in the traditional way where it accesses the "real" DOM directly. React uses a virtual DOM, and updates the real DOM indirectly. 
 
 Problems arise when mixing the two systems! D3 may make changes to the DOM, when React updates a component it will overwrite changes made by D3. 
 
@@ -17,7 +17,7 @@ https://www.pluralsight.com/guides/using-d3.js-inside-a-react-app
 
 ## Getting started 
 
-Start by creating new React Project:
+Start by creating a new React Project:
 
 ```
 npx create-react-app react-d3-example
@@ -58,7 +58,7 @@ export const useD3 = (renderChartFn, dependencies) => {
 }
 ```
 
-The code above is a hook. You'll be able to use this in any component by importing it and calling `useD3()`. It returns a reference to a DOM element, in these examples it will be the SVG element where D3 will be doing it's work.  
+The code above is a hook. You'll be able to use this in any component by importing it and calling `useD3()`. It returns a reference to a DOM element, in these examples it will be the SVG element where D3 will be doing its work.  
 
 Next you'll create a new component to display a chart and import the hook above there. 
 
@@ -70,13 +70,13 @@ A hook can take any parameters you care to include. The `useD3` hook takes two p
 
 Read more about React Hooks: https://reactjs.org/docs/hooks-custom.html
 
-So how does the the `useD3` hook work? 
+So how does the `useD3` hook work? 
 
 React normally manages DOM but in this case we want D3 to handle the DOM. "Handling" the DOM in this case means creating and updating elements in DOM. In this example you want D3 to create new SVG elements and set their attributes, and attach these elements to the same parent SVG element. 
 
 For example, you'll always want the same parent SVG element, and you will want to create and remove `rect`, `circle`, or `path` elements that children of that SVG parent element. 
 
-To guarantee you always using the same SVG element you need a `ref`. A `ref` is a "reference" to a DOM element that will be handled outside of React's virtual DOM. In our case this will the SVG element. 
+To guarantee you're always using the same SVG element you need a `ref`. A `ref` is a "reference" to a DOM element that will be handled outside of React's virtual DOM. In our case this will be the SVG element. 
 
 The `ref` can't be used until the element it refers to is created. For this to work you'll use the `useEffect` hook. 
 
@@ -138,9 +138,13 @@ function BarChart({ data }) {
 			.domain([0, d3.max(data, d => parseInt(d.population))])
 			.rangeRound([height - margin.bottom, margin.top])
 		
+		// Note! d3.scaleOrdinal()'s constructor argument sets the RANGE, not the domain —
+		// that's why .domain() is called explicitly here instead of passing the country
+		// list straight into scaleOrdinal(...).
 		const colorScale = d3
-			.scaleOrdinal(data.map(d => d.country))
-			.range(['cornflowerblue', 'gold', 'tomato', 'lime', 'brickred'])
+			.scaleOrdinal()
+			.domain(data.map(d => d.country))
+			.range(['cornflowerblue', 'gold', 'tomato', 'lime', 'firebrick'])
 
 		const bottomAxis = d3.axisBottom(xscale)
 		const leftAxis = d3.axisLeft(yscale)
@@ -205,10 +209,10 @@ Look at the implementation of `useD3` in `BarChart.js`. The last parameter of `u
 
 Look at `useD3.js`. Notice that the dependency array mentioned above is included as the last parameter to `useEffect`. This causes `useEffect` callback, its first parameter, to run again when one of the values in the array changes. 
 
-Read more about `useEffec` and the dependency array here: 
+Read more about `useEffect` and the dependency array here: 
 - https://react.dev/reference/react/useEffect#specifying-reactive-dependencies
 
-In this case we have an array of data. Comparing two arrays is problematic. Arrays are stored as references. Comparing the same reference will always be true even if the values change. Comparing different refernces will always be false, even if that contain the same values! To solve this conundrum you can convert the array to a string, with `JSON.stringify()`. Using this method you will comparing strings!
+In this case we have an array of data. Comparing two arrays is problematic. Arrays are stored as references. Comparing the same reference will always be true even if the values change. Comparing different references will always be false, even if that contain the same values! To solve this conundrum you can convert the array to a string, with `JSON.stringify()`. Using this method you will be comparing strings!
 
 ## Using the BarChart Component
 
@@ -228,7 +232,7 @@ const data = [
 	{ label: "Peshawar", population: 1970042, country: "Pakistan" },
 	{ label: "Karachi", population: 14910352, country: "Pakistan" },
 	{ label: "Lahore", population: 11126285, country: "Pakistan" },
-	{ label: "venice", population: 258685, country: "Italy" },
+	{ label: "Venice", population: 258685, country: "Italy" },
 	{ label: "Naples", population: 967069, country: "Italy" },
 	{ label: "Rome", population: 4342212, country: "Italy" },
 	{ label: "Salvador", population: 2886698, country: "Brazil" },
@@ -249,7 +253,7 @@ function App() {
 export default App;
 ```
 
-The data is an array of objects. You could define this any where, or import it if you like.
+The data is an array of objects. You could define this anywhere, or import it if you like.
 
 The page with the chart should look something like: 
 
@@ -295,7 +299,7 @@ function App() {
 export default App;
 ```
 
-Loading the data will be an asynchrous action you need to store the data on state. React will only render a component when state changes or the component receives props. In this case the App component will render when it loads new data since you are storing the data on a state variable and updating that variable when the data is laoded. The BarChart component will update when new data is passed as a prop. 
+Loading the data will be an asynchronous action you need to store the data on state. React will only render a component when state changes or the component receives props. In this case the App component will render when it loads new data since you are storing the data on a state variable and updating that variable when the data is loaded. The BarChart component will update when new data is passed as a prop. 
 
 ## Review 
 
@@ -303,7 +307,7 @@ Let's review everything that happened in this example.
 
 ### useD3
 
-The `useD3` hook is responsible for creating a reference to the DOM element where D3 will do it's work creating DOM elements. 
+The `useD3` hook is responsible for creating a reference to the DOM element where D3 will do its work creating DOM elements. 
 
 ```JS
 export const useD3 = (renderChartFn, dependencies) => {
@@ -326,10 +330,10 @@ const ref = useD3((svg) => {
 
 	... d3 drawing code here ...
 
-}, [JSON.stringify(data)]) // depedency array!
+}, [JSON.stringify(data)]) // dependency array!
 ```
 
-`useD3` returns a reference object which you assigned to the svg element where D3 will do it's drawing. 
+`useD3` returns a reference object which you assigned to the svg element where D3 will do its drawing. 
 
 ```HTML
 <svg
@@ -352,8 +356,34 @@ Try this: create a couple buttons that sort the data on different criteria. For 
 
 Since `array.sort()` mutates the original array you'll need to copy the array when you set state after sorting.  
 
+## Check Your Understanding
+
+**Q1.** Why can't D3 and React just both freely modify the same DOM elements?
+
+<details><summary>Answer</summary>
+
+React keeps its own virtual DOM and re-renders elements based on that internal model — it doesn't know or care what D3 did to the real DOM directly. When React re-renders, it will overwrite D3's changes with whatever its virtual DOM says should be there, undoing D3's work. Using a `ref` sidesteps this by handing D3 an element React agrees not to manage.
+
+</details>
+
+**Q2.** The `useD3` hook takes a `dependencies` array as its second argument, and `BarChart` passes `[JSON.stringify(data)]`. Why stringify instead of just passing `[data]`?
+
+<details><summary>Answer</summary>
+
+React (and `useEffect`) compares dependency array values by reference, not by deep equality. Two different array objects with identical contents are still "different" by reference, so `[data]` could trigger unnecessary re-renders, or worse, miss updates if the same array reference is mutated in place. Converting to a string makes the comparison a simple string equality check, which reflects the actual content, not the reference.
+
+</details>
+
+**Q3.** What would break if you appended `<rect>` elements dynamically with D3, the way earlier tutorials did (`.append('rect')`), while inside a component that re-renders on every state change?
+
+<details><summary>Answer</summary>
+
+Every re-render would re-run the D3 drawing code, and `.enter().append('rect')` would append *another* full set of bars on top of the existing ones — nothing removes the old ones automatically. This is a big part of why the `plot-area`/`x-axis`/`y-axis` groups are pre-declared once in JSX and D3 only selects into them, rather than appending fresh elements from scratch each time.
+
+</details>
+
 ## Conclusion
 
-In this tutorial you learned how to build a D3 chart in React. You created a custom hook that managed DOM elements in React using a ref, you also used the `useEffect` hook, and made use of it's dependency array.  
+In this tutorial you learned how to build a D3 chart in React. You created a custom hook that managed DOM elements in React using a ref, you also used the `useEffect` hook, and made use of its dependency array.  
 
 The bar chart is probably the most common type of chart. It has many different forms. Check the range of different types of bar charts: https://datavizproject.com/?s=bar

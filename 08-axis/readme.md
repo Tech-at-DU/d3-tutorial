@@ -4,9 +4,7 @@ This next section will continue from the precipitation graph created in the prev
 
 [07-Paths](../07-Paths).
 
-The current graph is looking good but it would be hard for people to intuit what we were expressing with this image. 
-
-Which asks the question: What is this image expressing?
+The current graph is looking good but it would be hard for people to intuit what we were expressing with this image. What is this image actually expressing?
 
 ![example 1](../07-Paths/images/example-2.png)
 
@@ -104,7 +102,7 @@ Use your variables on the yscale.
 
 ```JS
 const yscale = d3.scaleLinear()
-  .domain(percipitationExtents)
+  .domain(precipitationExtents)
   .range([height - margin, margin]) // Use the margin and height here
 ```
 
@@ -276,11 +274,10 @@ function handleData(data) {
     .nice()
 
   // y scale 
-  // d3.extent(caData, d => d.precipitation)
-  const percipitationExtents = d3.extent(baData, d => d.precipitation)
+  const precipitationExtents = d3.extent(baData, d => d.precipitation)
 
   const yscale = d3.scaleLinear()
-    .domain(percipitationExtents)
+    .domain(precipitationExtents)
     .range([height - margin, margin])
 
   // line generator
@@ -325,6 +322,40 @@ function handleData(data) {
 d3.csv('precipitation.csv')
   .then(handleData)
 ```
+
+## Check Your Understanding
+
+**Q1.** Why does the axis group use `.attr('transform', 'translate(...)')` instead of `x`/`y` attributes like a circle or rect would?
+
+<details><summary>Answer</summary>
+
+`<g>` is a container element — it doesn't draw anything itself and has no `x`/`y` attributes of its own. `transform: translate()` is the SVG-wide way to reposition *any* element or group, and it's the only option for elements (like groups) that don't have positional attributes.
+
+</details>
+
+**Q2.** `d3.axisBottom(xscale)` and `d3.axisLeft(yscale)` both take a scale as their argument. Why does the axis need the scale — what would happen if you passed it the wrong one (e.g. `yscale` into `axisBottom`)?
+
+<details><summary>Answer</summary>
+
+The axis generator reads the scale's domain and range to decide where to draw tick marks and what labels to print — it's literally rendering the scale. Swap them and the bottom axis would show rainfall values spaced by pixel height instead of dates spaced by pixel width — wrong numbers in the wrong positions.
+
+</details>
+
+**Q3.** Why parse the date strings with `d3.timeParse('%d/%m/%Y')` instead of just leaving dates as strings and using `scaleLinear` or `scaleBand`?
+
+<details><summary>Answer</summary>
+
+`scaleTime()` understands real calendar math — it can space ticks at sensible intervals (every year, every few months) and correctly compare dates regardless of string formatting quirks. A string like `"30/11/2016"` sorts and scales incorrectly if treated as text or a plain number.
+
+</details>
+
+**Q4.** What does `.nice()` do to `xscale`, and why is it applied to the scale rather than the axis?
+
+<details><summary>Answer</summary>
+
+`.nice()` rounds the domain outward to cleaner round values (e.g. rounding a start date out to the beginning of a year) so the axis ticks land on tidy values instead of awkward ones. It's a method on the scale because it adjusts the domain itself, which then flows through to wherever that scale is used — including the axis.
+
+</details>
 
 ## Challenge 
 

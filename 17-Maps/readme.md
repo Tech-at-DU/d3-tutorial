@@ -7,11 +7,7 @@ Some data contains location information. D3 contains some powerful tools for dis
 Start by setting up the boiler plate D3 HTML document. Leave out the SVG tag and you will generate that in code this time. 
 
 <details>
-<summary>
-
-**solution**
-
-</summary>
+<summary>Solution</summary>
 
 ```HTML
 <!DOCTYPE html>
@@ -37,7 +33,7 @@ Start by setting up the boiler plate D3 HTML document. Leave out the SVG tag and
 
 ## Dependencies 
 
-For this project there are a couple dependencies. You need to import `topojson`. This contains utilities that work with map data. It's repsonible for drawing the borders around regions on the map. 
+For this project there are a couple dependencies. You need to import `topojson`. This contains utilities that work with map data. It's responsible for drawing the borders around regions on the map. 
 
 Check out the topojson repo: https://github.com/topojson/topojson
 
@@ -75,7 +71,7 @@ Define a projection:
 const projection = d3.geoMercator()
 ```
 
-Here you used the mercator projection. You may have seen this in the docs linked above. This is a classic map. Notice the top and bottom are stretched out where in the center band of of the globe things are the correct relative size.
+Here you used the mercator projection. You may have seen this in the docs linked above. This is a classic map. Notice the top and bottom are stretched out where in the center band of the globe things are the correct relative size.
 
 ## Drawing the Map
 
@@ -123,11 +119,11 @@ async function loadMap() {
 loadMap()
 ```
 
-Here you need to load the `world-110m2.json` data you downloaded earlier. Since this is an asynchronus activity you used a an `async` function and `d3.json()` to load the file since it is a JSON file. 
+Here you need to load the `world-110m2.json` data you downloaded earlier. Since this is an asynchronous activity you used a an `async` function and `d3.json()` to load the file since it is a JSON file. 
 
 After the file loads you selected the path and set the data. Notice that you used `topojson`, which you imported at the top, passed the `topology` data in to define the features that you wanted. In this case you want the countries. 
 
-Then you set appeded a path and set the `d` property to draw the svg shapes. 
+Then you appended a path and set the `d` property to draw the svg shapes. 
 
 ## Style the path
 
@@ -149,7 +145,7 @@ When you're done your map might look like this:
 
 Style the SVG element. Place it in the center of the page. You'll need to use CSS styles for this. 
 
-Give the SVG elemment a border. 
+Give the SVG element a border. 
 
 **Challenge:** 
 
@@ -174,7 +170,7 @@ Take a look at the antarctic:
 .rotate([0, 90])
 ```
 
-Here you rotated the globe 90 on the horzontal axis. 
+Here you rotated the globe 90 on the horizontal axis. 
 
 You can also set the scale of the map. Try this: 
 
@@ -183,7 +179,7 @@ You can also set the scale of the map. Try this:
 .rotate([0, 90])
 ```
 
-This should zoom into the antartic. 
+This should zoom into the Antarctic. 
 
 Try this: 
 
@@ -199,11 +195,7 @@ This should image should make it clear how the mercator projection distorts the 
 Use rotation and scale to zoom in on Japan. 
 
 <details>
-<summary>
-
-**solution**
-
-</summary>
+<summary>Solution</summary>
 
 These were the numbers I used:
 ```JS
@@ -233,16 +225,13 @@ D3 recognizes the keyword colors, tomato is: `#FF6347`, and gold is: `#FFD700`. 
 Apply the color scale to the fill. 
 
 <details>
-<summary>
+<summary>Solution</summary>
 
-**solution**
-
-</summary>
 ```JS
  .attr('fill', (d, i) => colorScale(i))
 ```
+
 </details>
- 
 
 Here is another strategy. Use one of D3 color interpolators. Try this: 
 
@@ -265,6 +254,32 @@ Here is another alternative. This doesn't use a scale at all. Instead you will g
 ```
 
 HSL colors take a hue as the first parameter. This ranges from 0 to 360. If we need 176 colors you can divide 360 by 176 and then multiply by the index to get a unique hue for each country. 
+
+## Check Your Understanding
+
+**Q1.** `d3.geoPath()` and `d3.geoMercator()` are two separate objects chained together (`d3.geoPath().projection(projection)`). What does each one actually do?
+
+<details><summary>Answer</summary>
+
+`d3.geoMercator()` (the projection) converts spherical geo-coordinates (longitude/latitude) into flat x/y pixel coordinates. `d3.geoPath()` takes GeoJSON/TopoJSON shape data — polygons describing country borders — and, using the projection you give it, generates the actual SVG `d` path string to draw those borders. The projection handles the coordinate math; the path generator handles turning shapes into drawable paths.
+
+</details>
+
+**Q2.** Why does the map need `topojson.feature()` at all — why not pass the downloaded map file straight into `.data()`?
+
+<details><summary>Answer</summary>
+
+TopoJSON stores shared borders once instead of duplicating them for every adjacent country (that's what makes it more compact than plain GeoJSON). `topojson.feature()` decodes that compact format back into standard GeoJSON features — the shape objects `d3.geoPath()` and `.data()` actually expect — one per country.
+
+</details>
+
+**Q3.** Setting `.scale(100).rotate([0, 0])` on the Mercator projection makes the distortion at the poles obvious. Why does a flat map projection distort anything at all?
+
+<details><summary>Answer</summary>
+
+The Earth is a sphere; a screen is flat. There is no way to unroll a sphere onto a flat plane without stretching, tearing, or otherwise distorting something — every projection makes a different tradeoff about what to preserve (area, angle, distance) and what to sacrifice. Mercator preserves angles/shape locally but stretches area dramatically near the poles, which is exactly what you're seeing.
+
+</details>
 
 ## Conclusion 
 

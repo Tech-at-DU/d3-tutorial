@@ -230,7 +230,7 @@ Our visualization has a couple problems:
 
 **Problem!** Setting the color for each country was a little awkward. 
 
-While you could solve these problems on our own, you did this earlier, D3 is a library that was built to solve these problems! It has all of the tools we need to handle these problems. 
+You could solve all three problems by hand with plain JavaScript — you basically already did, back in tutorial 01. But D3 was built specifically to solve exactly these problems, and it has tools ready to go. That's next.
 
 ## Challenges 
 
@@ -246,7 +246,7 @@ Style the SVG document. Give it a background color.
 
 **Challenge 3:** 
 
-Gove each circle a different color fill. Remember! With SVG elements the background color of the element is set with the `fill` attribute! You can try something like: 
+Give each circle a different color fill. Remember! With SVG elements the background color of the element is set with the `fill` attribute! You can try something like: 
 
 ```JS
 .attr('fill', (d, i) => `hsl(${360 / data.length * i}, 100%, 50%)`)
@@ -254,8 +254,32 @@ Gove each circle a different color fill. Remember! With SVG elements the backgro
 
 Notice in the example code callback function takes two parameters `d` and `i`. Where `d` is the data value, and `i` is the index of that value in the data array. Knowing the index of a value is useful sometimes, and D3 provides that as the second parameter. 
 
+## Check Your Understanding
+
+**Q1.** `d3.csv()` returns a Promise instead of the data directly. Why can't it just return the array?
+
+<details><summary>Answer</summary>
+
+Loading a file takes time — the browser has to fetch it over the network. JavaScript doesn't pause and wait; it keeps running. A Promise is a placeholder for a value that isn't ready yet, and `.then()` is how you say "run this once the data actually arrives."
+
+</details>
+
+**Q2.** Every value coming out of `d3.csv()` is a string, even `population` and `x`/`y`. Why, and what bites you if you forget?
+
+<details><summary>Answer</summary>
+
+CSV is just text — there's no way to tell "122" apart from the word "hello" until something parses it. If you forget to `parseFloat()`/`parseInt()` a numeric field before doing math or comparisons on it, you'll get string concatenation instead of addition, or wrong sort/min/max results, often with no error at all.
+
+</details>
+
+**Q3.** Circle radius was set with `d.population * 0.00001`. What's the actual problem with using a magic number like this?
+
+<details><summary>Answer</summary>
+
+It only works for this exact dataset. Add a city with a much bigger or smaller population and every circle needs the constant re-tuned by hand. It also communicates nothing about *why* `0.00001` — a scale (next tutorial) replaces this with a domain/range pair that documents itself and adapts to new data automatically.
+
+</details>
+
 ## Conclusion 
 
-In this tutorial you learned to load JSON and CSV data into D3. 
-
-This chart is similar to bubble plot, read more about this here: https://www.data-to-viz.com/graph/bubble.html
+In this tutorial you learned to load JSON and CSV data into D3, and ran into three real problems — inaccurate scaling, hardcoded extents, and awkward manual color mapping — that D3 scales exist to solve. This chart is similar to a bubble plot, read more about that here: https://www.data-to-viz.com/graph/bubble.html

@@ -97,7 +97,7 @@ Now make the yscale. This determines the height of the bars and will be based on
 
 ```JS
 // y scale 
-const popExtent = d3.extent(data, d => d.population)
+const popExtent = d3.extent(data, d => parseInt(d.population))
 const yscale = d3.scaleLinear()
   .domain(popExtent)
   .range([height, margin.top])
@@ -171,7 +171,7 @@ Make a color scale and use it to give each bar a different color.
 
 ## Draw the axis
 
-We need some labels. Know one will know what this chart is talking about without labels. 
+We need some labels. No one will know what this chart is talking about without labels. 
 
 ### Add a bottom axis
 
@@ -284,9 +284,33 @@ Notice this conflicts with the number of ticks.
 
 **Challenge:** Adjust the y scale to what looks nice to you. 
 
+## Check Your Understanding
+
+**Q1.** Why does the x scale use `d3.scaleBand()` instead of `d3.scaleLinear()`, when the y scale (population) does use `scaleLinear()`?
+
+<details><summary>Answer</summary>
+
+The x domain is a list of discrete category names (city labels), not a continuous numeric range — there's no meaningful "value between San Francisco and Fresno." `scaleBand()` is built for exactly this: it divides the range into evenly sized, evenly spaced slots, one per category. `scaleLinear()` only makes sense for continuous numeric domains like population.
+
+</details>
+
+**Q2.** The y scale's range was set to `[height, margin.top]` — height first, margin second. That's backwards from how you'd normally write min-to-max. Why?
+
+<details><summary>Answer</summary>
+
+SVG y-coordinates grow downward, and bars are drawn from their `y` attribute down to `y + height`. Mapping the smallest population to `height` (near the bottom) and the largest to `margin.top` (near the top) is what makes bars grow upward the way a bar chart is expected to look.
+
+</details>
+
+**Q3.** What does `xscale.bandwidth()` return, and why can't you just hardcode a bar width instead?
+
+<details><summary>Answer</summary>
+
+It returns the width of one band, calculated automatically from the range, the number of categories, and the padding you set. Hardcoding a width breaks the moment you add or remove data — `bandwidth()` stays correct no matter how many cities are in the dataset.
+
+</details>
+
 ## Conclusion
 
-In this tutorial you learned to create bar graph. This is the most type of graph you will run into. Here you used the new scale band to evenly space elements. You also added axis and formatting which makes a very complete chart. 
-
-This is a historgram, read more about histograms here: https://www.data-to-viz.com/graph/histogram.html
+In this tutorial you learned to create a bar chart — one of the most common chart types you'll run into. You used `scaleBand()` to evenly space categorical elements, and added axes and tick formatting to make a complete, readable chart. Read more about bar charts here: https://www.data-to-viz.com/graph/barplot.html
 

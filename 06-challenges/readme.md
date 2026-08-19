@@ -22,7 +22,7 @@ Might be nice if we had a legend listing all of the cities. Imagine the legend s
 
 ![challenge-1](images/challenge-1.png)
 
-To do this you can can create new text elements. So far your code is roughly like this: 
+To do this you can create new text elements. So far your code is roughly like this: 
 
 ```JS
 // Creates the SVG node

@@ -166,11 +166,13 @@ Try it for yourself. Replace the `populationScale` with this:
 ```JS
 const popScale = d3.scaleLinear()
   // .domain([525010, 14910352])
-  .domain(d3.extent(data, d => d.population))
+  .domain(d3.extent(data, d => parseInt(d.population)))
   .range([20, 200])
 ```
 
-Here the min and max populations are found from the data. Notice that you are providing `extent()` with an array. The second paramter is a function that returns the value you are interested in finding the extents of `d => d.population`. 
+Here the min and max populations are found from the data. Notice that you are providing `extent()` with an array. The second parameter is a function that returns the value you are interested in finding the extents of: `d => parseInt(d.population)`. 
+
+**Watch out!** `population` comes out of the CSV as a string, not a number. If you write `d => d.population` instead, `extent()` compares strings character by character instead of comparing numbers — `"967069"` sorts as *greater than* `"11126285"` because `'9' > '1'`, even though 967069 is the smaller number. Your circles will size themselves wrong with no error to warn you. Always parse numeric fields before scaling them.
 
 **Challenge**
 Use `extent()` to find the domain and range for the `xScale` and `yScale`.
@@ -183,7 +185,7 @@ https://d3js.org/d3-scale/ordinal#scaleOrdinal
 
 To map country names to colors you would use an ordinal scale. 
 
-Define a new oridinal scale: 
+Define a new ordinal scale: 
 
 ```JS
 const countryScale = d3.scaleOrdinal()
@@ -245,7 +247,7 @@ Edit the `popScale`:
 
 ```JS
 const popScale = d3.scaleSqrt()
-  .domain(d3.extent(data, d => d.population))
+  .domain(d3.extent(data, d => parseInt(d.population)))
   .range([20, 200])
 ```
 
@@ -273,12 +275,12 @@ You can use these values in place of the hard coded numbers:
 ```JS
 const xScale = d3.scaleLinear()
   .domain([minX, maxX]) // Use the min and max here
-  .range([700, 100])
+  .range([0, 800])
 ```
 
 Note! You could have used `extent()` but this would have returned an array with the min and max values. So why use `d3.min()` and `d3.max()`? In some cases you might want to two values separately, for example if you wanted to round the values up or for another reason. 
 
-Consider the x and y coordinates. Using the min and max values for these places some of the objects at the edges of the diagram. This migth not look that great with circles since this places half the circle off the edge of the view. 
+Consider the x and y coordinates. Using the min and max values for these places some of the objects at the edges of the diagram. This might not look that great with circles since this places half the circle off the edge of the view. 
 
 Try replacing the `xScale` with:
 
@@ -291,7 +293,7 @@ const maxX = d3.max(data, d => parseFloat(d.x))
 console.log('min', minX, 'max', maxX)
 const xScale = d3.scaleLinear()
   .domain([minX, maxX]) // Use the min and max values
-  .range([0, 800])     // Set the range
+  .range([0, 800])      // Set the range
 ```
 
 This finds the min and max values for x. `extent()` would have done the same! Notice how this places some of the objects at the edges of the diagram. With the separate min and max values you can adjust the appearance. Try this: 
@@ -336,14 +338,44 @@ const countryScale = d3.scaleOrdinal()
   .range(['cornflowerblue', 'gold', 'gold', 'tomato'])
 ```
 
-While these changes don't make a visual change, behind the scenes they make big differences in how our code operates! Your diagram will look simialr to this: 
+While these changes don't make a visual change, behind the scenes they make big differences in how our code operates! Your diagram will look similar to this: 
 
 ![example](images/example-1.png)
 
+## Check Your Understanding
+
+**Q1.** In your own words, what are "domain" and "range" — and which one is about your *data* and which is about your *pixels*?
+
+<details><summary>Answer</summary>
+
+Domain = the input, the range of values that exist in your data (e.g. populations from 525,010 to 14,910,352). Range = the output, the range of values you want on screen (e.g. radius from 10px to 100px). A scale is just a function that converts a domain value into the matching range value.
+
+</details>
+
+**Q2.** Why use `d3.extent()` / `d3.min()` / `d3.max()` instead of just typing in the smallest and largest numbers you found by eyeballing the CSV?
+
+<details><summary>Answer</summary>
+
+Hardcoded numbers break the moment the data changes — add a bigger city and your hand-picked max is now wrong, silently. `extent()` recalculates the true min/max from whatever data is actually loaded, every time.
+
+</details>
+
+**Q3.** Why does `scaleSqrt` exist when `scaleLinear` already maps a domain to a range?
+
+<details><summary>Answer</summary>
+
+Circle *area* grows with the square of the radius, but a linear scale changes the radius directly and proportionally. That makes a value twice as large look four times bigger in area, not twice as big — visually misleading. `scaleSqrt` compensates so that area (what your eye actually perceives) scales proportionally to the data value.
+
+</details>
+
+**Q4.** What would happen if you passed an ordinal scale's `.domain()` a list of country names but the data contained a country not in that list?
+
+<details><summary>Answer</summary>
+
+`scaleOrdinal()` would return `undefined` for that value (or a fallback if you set `.unknown()`), meaning that element wouldn't get a color. This is exactly the fragility the tutorial fixes by building the domain from the data itself — `Array.from(new Set(data.map(d => d.country)))` — instead of typing it by hand.
+
+</details>
+
 ## Conclusion 
 
-This chart is similar to bubble plot, read more about this here: https://www.data-to-viz.com/graph/bubble.html
-
-## Conclusion 
-
-In this tutorial you learned to use D3 scales. You used extents to find the min and max values. You defined the domain as the range of values your data comes from and converted these a range of values that were displayed with a scale. 
+In this tutorial you learned to use D3 scales. You used extents to find the min and max values, defined the domain as the range of values your data comes from, and converted those into a range of pixel/color values with a scale. This chart is similar to a bubble plot, read more about that here: https://www.data-to-viz.com/graph/bubble.html

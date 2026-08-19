@@ -151,7 +151,7 @@ element.addEventListener('change', (e) => {
 
 Notice all of the variables that we need to access in handler need to be declared with `let` since we aren't assigning a value at declaration. 
 
-**Method 2:** declare the handler insde `handleData()`
+**Method 2:** declare the handler inside `handleData()`
 
 ```JS
 async function handleData() {
@@ -198,9 +198,7 @@ Add an event listener. It should listen for change events on the select element.
 For now, handle these events by getting the `value` from the `select` element. This should be the index: 0, 1, 2, etc. Use this index to get the year's temperature from the data array. 
 
 <details>
- <summary>
- ** Solution **
- </summary>
+ <summary>Solution</summary>
  
 ```js
 document.querySelector('select')
@@ -233,13 +231,13 @@ Here you appended a path to the `graph` element. But there is no reference to th
 
 Save a reference to the path. 
 
-Make the this change: 
+Make this change: 
 
 ```JS
 // Draw the graph
 const path = graph // Save the path here! 
  .append('path')
- .attr('d', linegen(months_1903))
+ .attr('d', linegen(months_1901))
  .attr('fill', 'rgba(0, 0, 255, 0.33)')
 ```
 
@@ -274,9 +272,7 @@ Might look like this when you choose 1904:
 ![example 2](images/example-2.png)
 
 <details>
- <summary>
- ** Solution **
- </summary>
+ <summary>Solution</summary>
 
  HSLA colors to the rescue! The hue of an HSLA color runs from 0 to 360. Divide this by the number of data elements to get a unique color for each. 
 
@@ -301,7 +297,7 @@ document.querySelector('select')
 
 This looks good so far but a little motion would make it amazing. Again D3 has you covered!
 
-For any change to properties, you can to tell D3 to `transition` and what the `duration` of the transition is. 
+For any change to properties, you tell D3 to `transition` and what the `duration` of the transition is. 
 
 You also have to call `transition()` first before setting any attributes. The attributes that come after the transition will be animated. 
 
@@ -315,7 +311,7 @@ document.querySelector('select')
   const fillColor = `hsla(${hue}, 100%, 50%, 0.33)`
   // Update the path here! 
   path
-    .transition() // Add a tranistion
+    .transition() // Add a transition
     .duration(1000) // set the duration
     .attr('d', linegen(convertToArray(data[index])))
     .attr('fill', fillColor)
@@ -328,7 +324,7 @@ The duration is set to 1000. This in milliseconds so 1000 === 1 second.
 
 Should work something like this: 
 
-![example 3](imagess/example-3.gif)
+![example 3](images/example-3.gif)
 
 **Challenge** 
 
@@ -392,8 +388,34 @@ Take a look at the image below. Notice the first menu shows 1901 and the second 
 
 ![example 5](images/example-5.png)
 
+## Check Your Understanding
+
+**Q1.** Method 1 declares `let data`, `let graph`, etc. outside `handleData()`. Method 2 keeps everything inside and defines the listener there too. What's the actual tradeoff?
+
+<details><summary>Answer</summary>
+
+Method 1 exposes those variables more broadly (anything outside can read/reassign them, `let` is required since they're assigned later) — riskier as a project grows. Method 2 keeps everything scoped tightly to where it's used, using `const` since values are assigned immediately, but only works because the listener itself is declared inside the same function. Method 2 is generally the safer default; Method 1 is sometimes necessary when multiple separate functions all need access to the same state.
+
+</details>
+
+**Q2.** Why does updating the chart on `change` just mean re-setting `.attr('d', ...)` on the existing `path`, instead of removing the old path and appending a new one?
+
+<details><summary>Answer</summary>
+
+You already have a reference to the element (`path`), and SVG paths are just their `d` attribute — updating that attribute redraws the shape in place. Removing and re-appending would work but throws away the element D3 could otherwise smoothly transition, which is exactly what the `.transition()` step relies on.
+
+</details>
+
+**Q3.** Why does `.transition().duration(1000)` have to come *before* `.attr('d', ...)` and `.attr('fill', ...)` in the chain, not after?
+
+<details><summary>Answer</summary>
+
+`.transition()` returns a new selection that intercepts the attribute changes which follow it and animates them over the given duration instead of applying them instantly. Any `.attr()` call chained *before* `.transition()` would apply immediately with no animation — order matters here.
+
+</details>
+
 ## Conclusion 
 
-In this tutorial you revisited the ideas from almost all of the previouse tutorials and added updating and animating a chart with D3. You also sorted and filtered data before graphing it. 
+In this tutorial you revisited the ideas from almost all of the previous tutorials and added updating and animating a chart with D3. You also sorted and filtered data before graphing it. 
 
 This is an area chart, read more about these here: https://www.data-to-viz.com/graph/area.html

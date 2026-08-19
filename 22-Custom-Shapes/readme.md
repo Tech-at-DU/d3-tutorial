@@ -8,7 +8,7 @@ This tutorial will cover two ideas, drawing paths by plotting points, and using 
 
 The SVG `<path>` element draws a shape by plotting points. Formatting these points is not for the faint of heart! With carefully planning you can do this with code. This exercise provides an insight into what D3 is doing behind the scenes. 
 
-The `<path>` element uses the `d` attribute to descripe the shape of the path. You can think of this as a string with a series of x and y points along with some other letters that describe how we draw the path. 
+The `<path>` element uses the `d` attribute to describe the shape of the path. You can think of this as a string with a series of x and y points along with some other letters that describe how we draw the path. 
 
 Try these examples in an HTML document. Make a new HTML document. 
 
@@ -34,15 +34,15 @@ Add an svg document:
 </svg>
 ```
 
-The code above draws a box 100 by 100 pixels. This is all describ ed by the string assigned to `d`. 
+The code above draws a box 100 by 100 pixels. This is all described by the string assigned to `d`. 
 
 ```
 M 0 0 L 100 0 L 100 100 L 0 100 L 0 0 Z
 ```
 
-`M` is the Move to command. This causes the system to move to a point with out drawing a line. The two values following `M` are the x and y coordinates, in this case 0 and 0. You can imagine that this places the "pen" in the upper left corner of the page. 
+`M` is the Move to command. This causes the system to move to a point without drawing a line. The two values following `M` are the x and y coordinates, in this case 0 and 0. You can imagine that this places the "pen" in the upper left corner of the page. 
 
-`L` is the Line to comment. This draws a straight line from the previous position of the "pen" to the position defined by the following coordinates, in this case the next coordinates are 100 and 0. This draws a line along the top edge of the box. 
+`L` is the Line to command. This draws a straight line from the previous position of the "pen" to the position defined by the following coordinates, in this case the next coordinates are 100 and 0. This draws a line along the top edge of the box. 
 
 The data draws three more lines to 100, 100 then 0, 100, and back to the start at 0, 0.
 
@@ -105,7 +105,7 @@ The `polygon` function generates the `d` string for an svg path. It plots points
 
 The second half of the selects the svg element, creates a new path element, sets some attributes, then adds the new path to the svg element. Notice that this same things that D3 is doing but here is much more verbose! 
 
-You could combine this D3! 
+You could combine this with D3! 
 
 Import D3: 
 
@@ -131,7 +131,7 @@ d3.select('svg')
   .attr('transform', (d, i) => `translate(${i * 50 + 20}, ${50})`)
 ```
 
-This creates a row of polgons from 3 to 12 sides. 
+This creates a row of polygons from 3 to 12 sides. 
 
 The code above might look like: 
 
@@ -147,7 +147,7 @@ Here are a couple drawings that I made. I kept these simple, realizing that I wo
 
 ![Custom Shapes 4](images/custom-shapes-4.png)
 
-The steps here might vary depending on what app you have used to make your SVG drawings. Using Boxy SVG I was able to copy and objects (command + c -> command + v) into my html document. The shape in the image above looked like this when pasted: 
+The steps here might vary depending on what app you have used to make your SVG drawings. Using Boxy SVG I was able to copy and paste objects (command + c -> command + v) into my html document. The shape in the image above looked like this when pasted: 
 
 ```HTML
 <?xml version="1.0" encoding="utf-8"?>
@@ -195,6 +195,8 @@ Notice I added an id to the `<path>` element above.
 
 Now we can use this element with D3. Add some D3. 
 
+**Note:** `xlink:href` still works in every modern browser, but it's the older SVG 1.1 syntax. Newer SVG lets you drop the `xlink:` prefix and just use `.attr('href', '#clover')`. Both work here — you'll see `xlink:href` a lot in older tutorials and Stack Overflow answers, so it's worth recognizing.
+
 ```JS
 const data = [3,4,5,6,7,8,9,10,11,12]
 
@@ -216,7 +218,7 @@ This should look something like:
 
 ![Custom Shape 5](images/custom-shapes-5.png)
 
-Bonus! the `rotate()` fucntion in svg is not the same as the CSS `rotate()`. 
+Bonus! the `rotate()` function in svg is not the same as the CSS `rotate()`. 
 
 1. The order of `translate()` and `rotate()` matters! When `translate()` is first the object is moved then rotated. If rotate comes first it's rotated first! Try it! 
 
@@ -241,7 +243,7 @@ Try this:
 })
 ```
 
-Here you are settign x and y for the rotation. For clarity I expanded this function into several lines. We used the same x and y for both translation and rotation. 
+Here you are setting x and y for the rotation. For clarity I expanded this function into several lines. We used the same x and y for both translation and rotation. 
 
 Here is what mine looked like: 
 
@@ -249,7 +251,7 @@ Here is what mine looked like:
 
 This still might not be what you are expecting. 
 
-Look at the origin of the svg path. Its hard to see it. If you look at the positions in the path data you'll see the numbers are all positive. This means the 0,0 orgin is somewhere in the upper left. 
+Look at the origin of the svg path. It's hard to see it. If you look at the positions in the path data you'll see the numbers are all positive. This means the 0,0 origin is somewhere in the upper left. 
 
 We can visualize this in Boxy SVG. 
 
@@ -263,7 +265,7 @@ Try this, reposition the drawing so that the center of the drawing is positioned
 
 Copy and paste this new svg element. You'll need to extract just the path. 
 
-Add the new path to your defs and give it different id. My svg element looked like this: 
+Add the new path to your defs and give it a different id. My svg element looked like this: 
 
 ```HTML
 <svg width="500" height="500">
@@ -276,7 +278,7 @@ Add the new path to your defs and give it different id. My svg element looked li
 
 Notice! Where the old path had only positive numbers the new path has a mix of positive and negative numbers. This should be placing the points that draw the path around the 0, 0 center origin. 
 
-You can now use this shape by using it's id name: `#clover-2`. 
+You can now use this shape by using its id name: `#clover-2`. 
 
 Here are the changes I made: 
 
@@ -298,6 +300,32 @@ d3.select('svg')
 With these changes this is what mine looked like: 
 
 ![Custom Shapes 9](images/custom-shapes-9.png)
+
+## Check Your Understanding
+
+**Q1.** Why put a shape inside `<defs>` and reference it with `<use>` instead of just drawing several `<path>` elements with the same `d` string?
+
+<details><summary>Answer</summary>
+
+`<defs>` lets you define a shape once and stamp out as many copies as you want with `<use>`, each with its own transform, fill, and other attributes — without repeating (and risking typos in) that long, unreadable `d` path string every time. It's the SVG equivalent of defining a reusable component instead of copy-pasting markup.
+
+</details>
+
+**Q2.** Why does the order of `translate()` and `rotate()` in a `transform` attribute change the result?
+
+<details><summary>Answer</summary>
+
+SVG transforms apply right-to-left as nested coordinate-system changes, not as independent adjustments. `translate() rotate()` moves the coordinate system first, then rotates around the new (moved) origin. `rotate() translate()` rotates the coordinate system first, so the subsequent translate happens along the *rotated* axes — which usually sends the shape somewhere unexpected.
+
+</details>
+
+**Q3.** Why did repositioning the clover artwork so its center sits at `(0, 0)` in the drawing app matter for the rotation to look right?
+
+<details><summary>Answer</summary>
+
+`rotate(angle, x, y)` spins a shape around the point `(x, y)` in that shape's own coordinate system. If the artwork's visual center isn't at `(0, 0)`, rotating "around the origin" swings the shape around some point off to its side — like rotating a clock hand around a point near its tip instead of its center. Re-centering the path data first makes `rotate(angle, 0, 0)` spin the shape around its own visual middle, which is what you'd expect "rotate in place" to look like.
+
+</details>
 
 ## Conclusion
 

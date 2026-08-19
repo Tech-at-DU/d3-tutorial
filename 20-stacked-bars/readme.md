@@ -8,7 +8,7 @@ This project will use the population data from the earlier tutorial and display 
 
 Start by creating a folder where you will be working. 
 
-Add the cities.csv file from the earlier eaxmples, or create it now and and add this data: 
+Add the cities.csv file from the earlier examples, or create it now and add this data: 
 
 ```
 "label","population","country","x","y"
@@ -72,7 +72,7 @@ Here you defined an async function and invoked that that function. Then you load
 
 ## Arranging the Data 
 
-For this example the data needs to be arranged with each country having properties for each city. Currently the data is aranged as cities. 
+For this example the data needs to be arranged with each country having properties for each city. Currently the data is arranged as cities. 
 
 Currently you have something like: 
 
@@ -89,7 +89,7 @@ Currently you have something like:
 ]
 ```
 
-Each city is separate and has counrty as a property. 
+Each city is separate and has country as a property. 
 
 We need to arrange this like this: 
 
@@ -105,14 +105,14 @@ We need to arrange this like this:
 Here all of the countries have properties of city0 and city1 which show the population of each city. 
 
 ```JS
-// Convert all of the popluation values to numbers
+// Convert all of the population values to numbers
 data.forEach(d => d.population = parseInt(d.population))
 
 // Create a unique list of countries
 const countries = Array.from(new Set(data.map(d => d.country)))
 // Create an array of countries
 const byCountry = []
-// Populate the byCountry array woth data
+// Populate the byCountry array with data
 countries.forEach(country => {
   const obj = {
     country,
@@ -151,7 +151,7 @@ const xscale = d3.scaleBand()
     .range([margin.left, width + margin.left])
     .padding(0.05) // space between bars
 
-// Get the popluation extents  
+// Get the population extents  
 const popExtent = d3.extent(byCountry, d => d.total)
 
 const yscale = d3.scaleLinear()
@@ -175,7 +175,7 @@ const colorscale = d3.scaleOrdinal()
 
 Here you will make a group to hold the axis. Then append the axis to this group. 
 
-Start by selecting the SVG element and setting it's size. 
+Start by selecting the SVG element and setting its size. 
 
 ```JS
 // Select the SVG element
@@ -247,7 +247,33 @@ Read more about stacked bar charts: https://www.storytellingwithdata.com/blog/st
 - Look up some city populations and add another city to each country in the CSV file.
 - Add another country with cities to the CSV data.
 
+## Check Your Understanding
 
+**Q1.** Why does this tutorial reshape the data from a flat list of cities into `{ country, total, city0, city1 }` objects before drawing anything, instead of feeding `d3.stack()` the original city list?
 
+<details><summary>Answer</summary>
 
+`d3.stack()` needs one object per bar (per country here), with each segment's value stored under its own key on that object (`city0`, `city1`, ...) — that's the shape it knows how to stack. The original data has one object per *city*, with no notion of "which bar" a city belongs to, so it has to be grouped and reshaped first.
+
+</details>
+
+**Q2.** `.attr('y', d => yscale(d[1]))` and `.attr('height', d => yscale(d[0]) - yscale(d[1]))` — what are `d[0]` and `d[1]` here, and why two values instead of one?
+
+<details><summary>Answer</summary>
+
+`d3.stack()` transforms each value into a `[start, end]` pair representing where that segment begins and ends in the cumulative stack — not just a raw value. `d[0]` is the bottom of this segment, `d[1]` is the top. That's exactly what lets each city's block sit stacked on top of the previous one instead of all segments starting from zero and overlapping.
+
+</details>
+
+**Q3.** The drawing code calls `.selectAll("g")` / `.data(stackedData)` / `.enter()` / `.append("g")`, and then *inside* that, does another `.selectAll("rect")` / `.data(d => d)` / `.enter()` / `.append("rect")`. Why two nested enter/append cycles instead of one?
+
+<details><summary>Answer</summary>
+
+This is a two-level structure: one group per *city key* (color), and inside each group, one rect per *country's segment* for that key. The outer join creates one `<g>` per stack layer (`city0`, `city1`, ...); the inner join, run once per group, creates the rects belonging to that layer. It's the same group→children pattern you used in tutorial 05, just with `d3.stack()` supplying the outer data instead of a flat array.
+
+</details>
+
+## Conclusion
+
+In this tutorial you reshaped flat data into a grouped structure, used `d3.stack()` to compute stacked segment positions, and drew a stacked bar chart showing both each country's total population and how it breaks down by city.
 

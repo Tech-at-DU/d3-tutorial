@@ -142,7 +142,7 @@ Now draw the bottom axis:
 ```JS
 svg
   .append('g')
-  .attr('class', 'botton-axis')
+  .attr('class', 'bottom-axis')
   .attr('transform', `translate(${0}, ${height + 5})`)
   .call(bottomAxis)
 ```
@@ -159,7 +159,7 @@ svg
   .call(leftAxis)
 ```
 
-So far you won't be seeing any bars but you should see the axese. 
+So far you won't be seeing any bars but you should see the axes. 
 
 ### Drawing bars
 
@@ -199,7 +199,7 @@ function drawBars() {
 }
 ```
 
-Using scale band makes the scale based on a list of values, since you're changing the number of values you need update the domain of the x scale. 
+Using scale band makes the scale based on a list of values, since you're changing the number of values you need to update the domain of the x scale. 
 
 Now make some bars: 
 
@@ -255,7 +255,7 @@ function drawBars() {
   // update x axis
   bottomAxis.scale(xscale)
 
-  svg.selectAll('.botton-axis')
+  svg.selectAll('.bottom-axis')
     .transition()
     .duration(400)
     .call(bottomAxis)
@@ -265,7 +265,7 @@ function drawBars() {
 
 Great work! 
 
-So far you should have a single bar and the two axese. Clicking the buttons should add and remove bars from the chart. The data is random so the bars will be different each time you add a new one!
+So far you should have a single bar and the two axes. Clicking the buttons should add and remove bars from the chart. The data is random so the bars will be different each time you add a new one!
 
 ## D3 Join API
 
@@ -279,7 +279,7 @@ If there are no elements or not enough elements D3 creates new elements.
 
 If there are too many elements D3 removes the extra elements. On any update elements may be leaving the DOM, existing elements may change values, and extra elements may be removed from the DOM. 
 
-Sometime you will want to control what happens to these elements that created, updated, or removed. For example you might want to: 
+Sometimes you will want to control what happens to these elements that created, updated, or removed. For example you might want to: 
 
 - Style the newly added data element
 - Animate new, updated, or exiting elements. 
@@ -387,7 +387,7 @@ enter.append('rect')
 
 Test this out. New elements should fade in. 
 
-Note! you need to `opacity` with `.style()` instead of `.attr()`.
+Note! you need to set `opacity` with `.style()` instead of `.attr()`.
 
 Note! You need to set the initial opacity to 0 then animate this to 1. 
 
@@ -404,7 +404,7 @@ update
   .attr('fill', 'orange')
 ```
 
-Testing you should updated elements fade from red to orange, and slide to the left or right. 
+Testing this out, you should see updated elements fade from red to orange, and slide to the left or right. 
 
 Animate exiting elements. Edit the exiting selection: 
 
@@ -423,10 +423,36 @@ Now you should exiting element change to gray and fade out. Might be hard to see
 
 **Challenge:** Modify the transitions to your taste. Think about all of the attributes you can animate. Any changes applied before `.transition()` will not be animated, while changes applied after `.transition()` will be animated. 
 
-**Challenge:** Applied the join API to one of the previous tutorial examples.
+**Challenge:** Apply the join API to one of the previous tutorial examples.
+
+## Check Your Understanding
+
+**Q1.** All the way back in tutorial 01 you wrote `.selectAll(...).data(...).enter().append(...)`. How does that relate to `.join()`?
+
+<details><summary>Answer</summary>
+
+`.enter().append(...)` only ever handles brand-new elements — it says nothing about what happens to elements already on screen when data updates, or elements that should disappear when data shrinks. `.join()` is the more complete version: it exposes enter, update, *and* exit as three separate callbacks, so you can control all three cases instead of just the first.
+
+</details>
+
+**Q2.** Why does `.attr('fill', 'red')` inside the `enter` callback only ever fire for brand-new bars, never for bars that were already on screen?
+
+<details><summary>Answer</summary>
+
+`.join()` sorts the current DOM elements against the new data behind the scenes and routes each one into exactly one of the three callbacks: `enter` gets only data points with no existing matching element, `update` gets data points that already have one, and `exit` gets DOM elements with no data point left. A bar can only be "brand new" once — the next time `drawBars()` runs, that same bar now has a matching element and flows through `update` instead.
+
+</details>
+
+**Q3.** In the animated exit example, `.remove()` is called *after* `.transition().duration(400)`. What would go wrong if `.remove()` were called immediately, before the transition?
+
+<details><summary>Answer</summary>
+
+`.remove()` deletes the element from the DOM right away — there'd be nothing left on screen for the transition to animate, so the fade-to-gray-and-out effect would never be visible. Chaining `.remove()` after the transition tells D3 to wait until the transition finishes before actually deleting the element.
+
+</details>
 
 ## Conclusion
 
-In this tutorial you explored the D3 join API and used it's enter, exit, and update pattern. This allowed you to handle elements as they enter, exit and are updaed in the DOM.
+In this tutorial you explored the D3 join API and used its enter, exit, and update pattern. This allowed you to handle elements as they enter, exit and are updated in the DOM.
 
-D3s Join API is a powerful tool! You will use it to make complex interactive visualizations! 
+D3's Join API is a powerful tool! You will use it to make complex interactive visualizations! 

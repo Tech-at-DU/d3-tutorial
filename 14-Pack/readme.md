@@ -10,7 +10,7 @@ Read more about Circular packing here: https://www.data-to-viz.com/graph/circula
 
 In a pack all of the values are shown as relative size and fit within the space.
 
-This bubble pack is a treemap. It groups related elements into a circle and shows their relative size. In the example above there is only a single level to the tree. 
+This is called circle packing. It groups related elements into a circle and shows their relative size. In the example above there is only a single level to the tree. (Don't confuse this with a treemap — that's a related but different technique that packs rectangles instead of circles. You'll see it linked at the end of this tutorial.)
 
 ## Getting started
 
@@ -32,7 +32,7 @@ Since you're using a list of values `d3.scaleSequential()` will be appropriate.
 // Create a color scale 
 const colorScale = d3
   .scaleSequential(d3.interpolateViridis)
-  .domain(d3.extent(data, d => d.population))
+  .domain(d3.extent(data, d => parseInt(d.population)))
 ```
 
 This should provide a color for each value from the `interpolateViridis` color palette. 
@@ -51,7 +51,7 @@ This should format any number shortened with a suffix. Something like:
 - 100,000 -> 100k
 - 6,500,000 -> 6.5M
 
-## d3.hierarch()
+## d3.hierarchy()
 
 Some data is hierarchical. D3 can handle and display this type of data provided it is arranged in a hierarchical data structure. 
 
@@ -70,7 +70,7 @@ Objects/JSON are hierarchical, for example:
 }
 ```
 
-You should have loaded the `citied.csv` in the previous step. If we look at the data as a list of cities, it has a single level. To build the pack diagram we still need to arrange it in a hierarchy. 
+You should have loaded the `cities.csv` in the previous step. If we look at the data as a list of cities, it has a single level. To build the pack diagram we still need to arrange it in a hierarchy. 
 
 Assuming that you loaded the `cities.csv` data and stored it in a variable named: `data`, add the following: 
 
@@ -189,12 +189,38 @@ The last four lines set some CSS styles on the node.
 
 - `text-anchor` sets the horizontal location the text draws from
 - `alignment` sets the vertical location text draws from
-- `text-blend-mode` determines how the color blends with the background color. In this example, you're using this to make the text appear darker against a lighter background or lighter against a darker background. 
+- `mix-blend-mode` determines how the color blends with the background color. In this example, you're using this to make the text appear darker against a lighter background or lighter against a darker background. 
 - `fill` sets the color of the text. 
 
 Should look something like this: 
 
 ![example 2](images/example-3.png)
+
+## Check Your Understanding
+
+**Q1.** Why does `d3.pack()` need a hierarchy (`d3.hierarchy()`) instead of just a flat array like the scales you've used before?
+
+<details><summary>Answer</summary>
+
+Packing is fundamentally about nesting — deciding what circle fits inside what other circle, and how to size each based on its position in a tree. Even with only one level here (world → cities), D3's packing algorithm is written generically for arbitrarily deep hierarchies, so it always expects hierarchy-shaped input, not a plain array.
+
+</details>
+
+**Q2.** What does `.sum()` actually compute, and why must it run before `pack()`?
+
+<details><summary>Answer</summary>
+
+`.sum()` walks the hierarchy and calculates a `value` for every node — its own value plus the combined value of all its descendants. `pack()` uses those `value`s to decide the relative size (and thus radius) of every circle, so without calling `.sum()` first, every node's value would be undefined and packing would have nothing to size circles by.
+
+</details>
+
+**Q3.** After packing, city data ends up on `d.data.population` instead of `d.population`. Why the extra `.data` layer?
+
+<details><summary>Answer</summary>
+
+`d3.hierarchy()` wraps your original objects in new hierarchy node objects — it adds `x`, `y`, `r`, `depth`, `parent`, `children`, etc. Your original object is preserved untouched underneath, on the `.data` property, so packing can add all its own bookkeeping without overwriting or renaming anything you started with.
+
+</details>
 
 ## Conclusion
 

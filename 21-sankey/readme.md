@@ -103,9 +103,9 @@ This might look like this:
 
 Here I added a new link. This link has the same `source` and `target`. 
 
-Note! The values. The values detemine the size of the link. In the example the first link has a value of 3 and the second has a value 1, so the first is 3 times larger. 
+Note! The values. The values determine the size of the link. In the example the first link has a value of 3 and the second has a value 1, so the first is 3 times larger. 
 
-Lets add another node. When we do this we need to make sure that all of the links connect to nodes. 
+Let's add another node. When we do this we need to make sure that all of the links connect to nodes. 
 
 ```js
 const graph = {
@@ -125,7 +125,7 @@ Here there are three nodes and two links. Both links share the same source node.
 
 ![sankey-3](./images/sankey-3.png)
 
-Imagine that this chart might show a total that splits into to two categories. For example, `node0` might represent total passengers on the Titanic, and `node1` could passengers that died, and `node2` could be passengers that survived. 
+Imagine that this chart might show a total that splits into to two categories. For example, `node0` might represent total passengers on the Titanic, and `node1` could be passengers that died, and `node2` could be passengers that survived. 
 
 If we add a couple more nodes we might get this. You could imagine that we are showing deceased by gender. 
 
@@ -147,13 +147,13 @@ const graph = {
 }
 ```
 
-`node3` migth be male and `node4` might be female. It might look like this. 
+`node3` might be male and `node4` might be female. It might look like this. 
 
 ![sankey-4](./images/sankey-4.png)
 
 Note! The `value` of links 3 and 4 add up to 3. The total passengers might be 4, since links 1 and 2 have a total value of 4. There is still one unit of passengers left unaccounted. 
 
-Imagine all of sirviors were female. We could add one more link from survivors to female passengers. Ths time I changed the names to match the categories. 
+Imagine all of the survivors were female. We could add one more link from survivors to female passengers. This time I changed the names to match the categories. 
 
 ```JS
  const graph = {
@@ -178,9 +178,9 @@ It might look like this.
 
 ![sankey-5](./images/sankey-5.png)
 
-This is not accurate to the Titanic data since this exmaple shows only 4 passengers total, two men and two women, one woman survivor, two men and one woman died. 
+This is not accurate to the Titanic data since this example shows only 4 passengers total, two men and two women, one woman survivor, two men and one woman died. 
 
-Lets plug in some numbers from the Titanic dataset. This time we have some male survivors so I added another link. 
+Let's plug in some numbers from the Titanic dataset. This time we have some male survivors so I added another link. 
 
 ```JS
 const graph = {
@@ -212,7 +212,6 @@ That should give you an idea of how the data should be arranged to create this t
 To get started add some code to your html document. To start you will use the data from above. Define your "graph" like this: 
 
 ```JS
-<script>
 const graph = {
   nodes: [
     { node: 0, name: 'Passengers' },
@@ -230,11 +229,11 @@ const graph = {
     { source: 2, target: 4, value: 233, name: 'Survived Female' }
   ]
 }
-
-
-
-</script>
 ```
+
+This is real Titanic data — notice it checks out internally: 549 + 342 = 891 total passengers, 468 + 81 = 549 deceased, and 109 + 233 = 342 survived, matching the first-level split exactly.
+
+This goes inside the `<script>` tag you already added to your HTML document — don't nest another `<script>` tag around it.
 
 Start by selecting the svg element. 
 
@@ -242,7 +241,7 @@ Start by selecting the svg element.
 const svg = d3.select("#svg")
 ```
 
-Lets add a color scale. For this example I'm using `d3.scaleSequential()` which returns a different color for each index. 
+Let's add a color scale. For this example I'm using `d3.scaleSequential()` which returns a different color for each index. 
 
 ```JS
 const colorScale = d3.scaleSequential()
@@ -266,7 +265,7 @@ Here you defined a generator function. You also set some options. Lets look at t
 .nodeWidth(36)
 ```
 
-Sets the width of the nodes. Nodes are the rectangles that connect the links. This sets the width of the nodes to 36 pixles. 
+Sets the width of the nodes. Nodes are the rectangles that connect the links. This sets the width of the nodes to 36 pixels. 
 
 ```JS
 .nodeWidth(100)
@@ -296,7 +295,7 @@ Might look like this.
 
 Extent defines the upper left and lower right corners of the chart. In this example we set the upper left corner to x of 10 and y of 10. This places the upper left corner 10 pixels in from the upper left of the svg. The lower right corner was placed at x 490 and y 490. These values fit the chart 10 pixels in from the edges of the svg element, which has a width and height of 500. 
 
-Next, pass the graph data into the genertor function and get the nodes and links it returns. 
+Next, pass the graph data into the generator function and get the nodes and links it returns. 
 
 ```js
 const { nodes, links } = sankeyGen(graph)
@@ -345,7 +344,7 @@ If you change the `stroke-width` to 6 you'll see the paths look like this.
 
 ![sankey-10](./images/sankey-10.png)
 
-We can see that its the `stroke-width` that sets the width of the links, and the links are a single stroke rather than a shape with four sides. The generator has added a property that defines the `stroke-width`. 
+We can see that it's the `stroke-width` that sets the width of the links, and the links are a single stroke rather than a shape with four sides. The generator has added a property that defines the `stroke-width`. 
 
 ```JS
 .attr('stroke-width', d => d.width)
@@ -378,7 +377,7 @@ const nodeGroup = svg
   .append("g")
 ```
 
-Now create some rectangles to repesent the nodes. 
+Now create some rectangles to represent the nodes. 
 
 ```js
 nodeGroup
@@ -405,7 +404,7 @@ Note! The sankey generator doesn't give us the height of the nodes. Instead it g
 
 To get the width of the node you can use `sankeyGen.nodeWidth()` which returns the value set with `.nodeWidth()` when you created the generator. 
 
-Postion the `rect` using the `x0` and `y0` properties. 
+Position the `rect` using the `x0` and `y0` properties. 
 
 ```js
 .attr('x', d => d.x0)
@@ -480,3 +479,33 @@ For an easy problem try the cities data. Make the following nodes:
 - Total Population
 - Population by country
 - Population by city
+
+## Check Your Understanding
+
+**Q1.** What determines the width of a link's ribbon in a sankey diagram — and what determines the height of a node's rectangle?
+
+<details><summary>Answer</summary>
+
+A link's ribbon width comes from its `value` — bigger value, thicker ribbon, proportional to the other links sharing that node. A node's rectangle height (`d.y1 - d.y0`) is set by the sankey generator based on the total value flowing through it — the sum of all links entering or leaving it. That's why `Deceased` (value 549) renders as a taller box than `Female` (value 342).
+
+</details>
+
+**Q2.** The tutorial builds the diagram up gradually — 2 nodes, then 5, then real Titanic numbers. Why not just start with the final version?
+
+<details><summary>Answer</summary>
+
+Sankey source data (`{ nodes, links }` with numeric source/target indices) isn't self-explanatory at a glance — it's easy to lose track of what a `source: 1, target: 3` actually connects to once there are several nodes. Building up from a trivial two-node example makes each new piece of complexity (a second link, a third node, real values) visible against a version you already understood.
+
+</details>
+
+**Q3.** Why does the sankey generator need an `extent` (`.extent([[10, 10], [490, 490]])`) instead of just using the full SVG width and height?
+
+<details><summary>Answer</summary>
+
+Nodes and labels need a little breathing room at the edges of the SVG — a node placed flush against the boundary would get clipped, and rotated text labels (which extend outside the node's own box) need even more margin. `extent` tells the generator to lay everything out inside a slightly smaller box than the full SVG canvas.
+
+</details>
+
+## Conclusion
+
+In this tutorial you learned to build a sankey diagram with `d3-sankey`, working with real Titanic passenger data structured as nodes and links, and used the generator's output to draw links, node rectangles, and rotated labels.

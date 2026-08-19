@@ -264,8 +264,32 @@ Look at the last line: `return d3.line()([[x1, y1], [x2, y2], [x3, y3]])`. This 
 
 Notice `d3.line()` returns a function! You are calling this function and passing to it an array of arrays. Each sub-array contains an x and y value. The value returned from this function we return as the value for d.
 
+## Check Your Understanding
+
+**Q1.** You stored `d3.select('#svg')...enter()` in a variable called `node`, then appended groups, circles, text, and lines to it separately. Why bother with a `<g>` group at all — why not just append the circle and text straight onto the SVG?
+
+<details><summary>Answer</summary>
+
+Without a group, D3 has no way to know which circle belongs with which text and which line — they'd all just be separate flat lists of elements. Grouping keeps each data point's shapes bundled together in the DOM, which also lets you move, style, or transform a whole data point (circle + label + line) as one unit later.
+
+</details>
+
+**Q2.** The line and text positions both use `Math.cos(angle)` and `Math.sin(angle)` combined with the radius. What is that formula actually doing geometrically?
+
+<details><summary>Answer</summary>
+
+It's converting a polar coordinate (an angle + a distance from center) into an x/y screen coordinate. `cos(angle) * radius` gives the horizontal offset, `sin(angle) * radius` gives the vertical offset — the classic trig trick for "walk out from the center at this angle, this far."
+
+</details>
+
+**Q3.** What's the difference between using `d3.line()` to build the `d` attribute versus writing the SVG path string by hand?
+
+<details><summary>Answer</summary>
+
+`d3.line()` takes an array of `[x, y]` pairs and generates the correctly formatted path syntax (the M/L/A/Q letters and coordinates) for you. Hand-writing path strings works but is tedious and error-prone, especially once you have more than a couple of points or curves.
+
+</details>
+
 ## Conclusion 
 
-In this tutorial you learned to create and use SVG groups.
-
-This chart is similar to bubble plot, read more about this here: https://www.data-to-viz.com/graph/bubble.html
+In this tutorial you learned to create and use SVG groups to bundle related shapes — circles, text, and lines — together for each data point, and used trigonometry to position labels around a circle's edge.

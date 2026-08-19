@@ -37,7 +37,7 @@ Link to the library from the CDN. Add the script tag at the bottom of the body t
 </body>
 ```
 
-You can find this link on the [D3 hompage](https://d3js.org)
+You can find this link on the [D3 homepage](https://d3js.org)
 
 For more info take a look at GitHub: https://github.com/d3/d3.
 
@@ -227,8 +227,42 @@ Try setting a property using the data value. The values should be in the range o
 
 - Set the size of the text. Use the property `font-size`. The second argument should be a function that receives `d` and returns `${d * 5}px`.
 - Setting the opacity based on the data value. You can use a formula like: `d / 10`
-- Try changing the color based on the data value. HSL colors make this easy soemthing like: `hsl(d / 10 * 360, 100%, 50%)`
+- Try changing the color based on the data value. HSL colors make this easy, something like: `` d => `hsl(${d / 10 * 360}, 100%, 50%)` ``
+
+## Check Your Understanding
+
+**Q1.** What does the `.data()` method actually do — does it draw anything on its own?
+
+<details><summary>Answer</summary>
+
+No. `.data()` just attaches values to a selection so D3 knows what to loop over. Nothing appears until you `.enter()` and `.append()` an element for each value.
+
+</details>
+
+**Q2.** If you change your array from 7 numbers to 12 numbers and reload the page, what happens to the number of divs?
+
+<details><summary>Answer</summary>
+
+D3 creates 12 divs instead of 7. `.enter()` creates one new element for every data value that doesn't already have a matching element — add more data, get more elements, no extra code needed. This is the whole point of "data driven documents."
+
+</details>
+
+**Q3.** In `.text((d) => d)`, what is `d`?
+
+<details><summary>Answer</summary>
+
+One single value from your data array — not the whole array. D3 calls this callback once per element, passing in that element's own piece of data.
+
+</details>
+
+**Q4.** Why does `.style('width', (d) => `${d / 10 * 100}%`)` break if a value in your array is greater than 10?
+
+<details><summary>Answer</summary>
+
+The formula assumes 10 is the max possible value, so anything larger produces a width over 100% and runs off the edge of the screen. This is exactly the problem D3 **scales** solve — you'll meet them in tutorial 04.
+
+</details>
 
 ## Conclusion 
 
-In this tutorial you learned how to create a data driven document with D3. 
+In this tutorial you learned how to create a data driven document with D3. Later, in [19 D3 Join API](../19-D3-Join), you'll learn `.join()` — a shortcut for the `.enter().append()` pattern you just practiced. Learning it by hand first is what makes the shortcut make sense.

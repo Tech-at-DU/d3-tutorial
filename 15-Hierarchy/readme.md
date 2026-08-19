@@ -2,13 +2,13 @@
 
 Hierarchies are a core feature of data structures. You see these in all parts of computer science. In the last example, you created a hierarchy with a single level. It was all about cities. Imagine we also want to show a relationship between cities and countries. 
 
-Todo this you can group cities into a larger circle representing the country. The result might look like this. 
+To do this you can group cities into a larger circle representing the country. The result might look like this. 
 
 ![example 1](images/example-1.png)
 
 Note! I added another city to each country for this example. 
 
-If you havn't already read about circular packing read this: https://www.data-to-viz.com/graph/circularpacking.html
+If you haven't already read about circular packing read this: https://www.data-to-viz.com/graph/circularpacking.html
 
 ## Getting started
 
@@ -28,7 +28,7 @@ Load the cities.csv data using the `d3.csv()` loader.
 
 Looking at the cities data you'll find there is a hierarchy hidden in there. Cities all belong to a country. This data structure is flat and doesn't express that hierarchy.
 
-The original data look slike this: 
+The original data looks like this: 
 
 - "label","population","country","x","y"
 - "San Francisco",874961,"USA",122,-37
@@ -44,14 +44,14 @@ Expressed as a single array:
 
 ```JS
 [
-  { label: "San Francisco", population: 874961, country: "USA", x: 122, y: -37
-  { label: "Fresno", population: 525010, country: "USA", x: 119, y: -36
-  { label: "Lahore", population: 11126285, country: "Pakistan", x: 74, y: 31
-  { label: "Karachi", population: 14910352, country: "Pakistan", x: 67, y: 24
-  { label: "Rome", population: 4342212, country: "Italy", x: 12, y: 41
-  { label: "Naples", population: 967069, country: "Italy", x: 14, y: 40
-  { label: "Rio", population: 6748000, country: "Brazil", x: -43, y: -22
-  { label: "Sao Paolo", population: 12300000, country: "Brazil", x: -46, y: -23
+  { label: "San Francisco", population: 874961, country: "USA", x: 122, y: -37 },
+  { label: "Fresno", population: 525010, country: "USA", x: 119, y: -36 },
+  { label: "Lahore", population: 11126285, country: "Pakistan", x: 74, y: 31 },
+  { label: "Karachi", population: 14910352, country: "Pakistan", x: 67, y: 24 },
+  { label: "Rome", population: 4342212, country: "Italy", x: 12, y: 41 },
+  { label: "Naples", population: 967069, country: "Italy", x: 14, y: 40 },
+  { label: "Rio", population: 6748000, country: "Brazil", x: -43, y: -22 },
+  { label: "Sao Paolo", population: 12300000, country: "Brazil", x: -46, y: -23 }
 ]
 ```
 
@@ -80,7 +80,7 @@ We could rearrange the data to express the hierarchy like this:
 }
 ```
 
-With this arrangement, we can see that each country has cities. With this struture your code can make sense of the hierarchy! 
+With this arrangement, we can see that each country has cities. With this structure your code can make sense of the hierarchy! 
 
 ## D3 Hierarchies
 
@@ -124,11 +124,7 @@ Define an object with `label`, `population`, and `children` properties. Make sur
 Calculate the total population from the original data.
 
 <details>
-<summary>
-
-**solution**
-
-</summary>
+<summary>Solution</summary>
 
 ```JS
 const byCountry = {
@@ -168,7 +164,7 @@ The `children` array should contain an array of objects each with a `name` and `
 }
 ```
 
-Do you see where this going? The array of `children` in each country contains the cities in that country! If each **city** was broken into **counties** the city object would store it's counties in an array in the `children` property! 
+Do you see where this is going? The array of `children` in each country contains the cities in that country! If each **city** was broken into **counties** the city object would store its counties in an array in the `children` property! 
 
 The goal is to get the data to look like this: 
 
@@ -180,7 +176,7 @@ The goal is to get the data to look like this:
       name: 'USA', 
       population: 1825068,
       children: [
-        { label: "San Francisco", population: 874961, x: 122, y -37 }, 
+        { label: "San Francisco", population: 874961, x: 122, y: -37 }, 
         { label: "Fresno", population: 525010, x: 119, y: -36 }
       ] 
     },
@@ -188,7 +184,7 @@ The goal is to get the data to look like this:
       name: 'Pakistan', 
       population: 28006679,
       children: [
-        { label: "Lahore", population: 11126285, x: 74, y 31 },
+        { label: "Lahore", population: 11126285, x: 74, y: 31 },
         { label: "Karachi", population: 14910352, x: 67, y: 24 }
       ] 
     },
@@ -223,11 +219,7 @@ This should give you an array of unique country names/strings. Now turn these in
 Along the way you need to sum the total population of each country and assign that to each country object! The world has the population of all cities in the world, and each country should have a population that is the total population of all cities in that country! 
 
 <details>
-<summary>
-
-**Solution**
-
-</summary>
+<summary>Solution</summary>
 
 ```JS
 const countryNames = Array.from(new Set(data.map(d => d.country)))
@@ -262,11 +254,11 @@ Now sum the populations!
 
 ```JS
 root
-  .sum(d => {
-  return d.population
-}) 
+  .sum(d => d.children ? 0 : d.population) 
 // Must call sum before pack()!
 ```
+
+**Watch out!** `.sum()` walks the *entire* tree and adds up the accessor's return value at every node — leaves, countries, and the world root all at once. You already pre-calculated `population` on the country and world objects by hand (that's what the last challenge was for), so if the accessor just returns `d.population` unconditionally, a country's value becomes its own pre-summed total *plus* the sum of its cities' populations — the same numbers counted twice. The world node compounds that even further, three times over. That's why the accessor above returns `0` for any node that has children: only the leaf cities (which have no `children`) contribute their `population` to the sum, and `.sum()` correctly builds the totals back up the tree exactly once. The `population` field you calculated by hand is still useful — you'll use it a few sections from now to label each circle — it's just no longer the thing driving circle size.
 
 ## Packing the Circles
 
@@ -311,21 +303,23 @@ Let's open this up and explore.
   height: 2,
   parent: null,
   r: 249.99999999999997,
-  value: 172003233,
+  value: 57334411,
   x: 250,
   y: 250
 }
 ```
 
-Notice your original object, with properties properties: `label`, `children`, and `population` has been moved to live under the `data` property. 
+Notice your original object, with properties `label`, `children`, and `population` has been moved to live under the `data` property. 
 
-New properties have been. Added: `x`, `y`, and `r` are used to position and size this circle. You will use these to position and size your SVG elements. 
+New properties have been added: `x`, `y`, and `r` are used to position and size this circle. You will use these to position and size your SVG elements. 
+
+**Check yourself:** `value` here should match `data.population` exactly at the root — both represent the world's total population. If you see `value` at roughly 2x or 3x `data.population`, go back and check your `.sum()` accessor against the note above.
 
 The `depth`, `parent`, and `children` are used by D3 to manage the hierarchy. 
 
 Now you have a structure that relates the parent element to its children and the child to the parent, and all these to the SVG elements that will be displayed! 
 
-## Creating formtters and scales
+## Creating formatters and scales
 
 Make a number formatter and a color scale. 
 
@@ -388,7 +382,7 @@ nodes
   .attr('opacity', '0.5')
 ```
 
-NOTE! This is iterating over all of the descendents. That is all of the children, and those children's children starting with the root node. Try this: 
+NOTE! This is iterating over all of the descendants. That is all of the children, and those children's children starting with the root node. Try this: 
 
 ```JS
  nodes
@@ -420,10 +414,10 @@ Karachi
 Rome 
 Naples 
 Rio 
-Sao Paol
+Sao Paolo
 ```
 
-Notice that D3 started with the world, then looped over all of it's children displaying the countries. Then it look at each of those children and looped over those children, this would be the cities!
+Notice that D3 started with the world, then looped over all of its children displaying the countries. Then it looked at each of those children and looped over those children, this would be the cities!
 
 The radius `r` attribute is set from our `rootNode` where D3 conveniently created the value for us to use. 
 
@@ -452,7 +446,7 @@ Passing the country name into the `colorScale()` should give us a unique color f
 
 The last line sets the `opacity` of the element. This makes circles 50% transparent. Without this, it would be hard to see the cities contained within the country circles. 
 
-**Challenge** Give countries and cities a different opacity. Imagine countries are more transparent with an opacity of `0.2`. Cities are less opaque with and have an opactity of 0.5. Look at the `.attr('fill', ...)` for ideas on how to solve this! 
+**Challenge** Give countries and cities a different opacity. Imagine countries are more transparent with an opacity of `0.2`. Cities are less opaque, with an opacity of 0.5. Look at the `.attr('fill', ...)` for ideas on how to solve this! 
 
 At this point your visualization might look like this: 
 
@@ -625,6 +619,32 @@ Here is what my example looked like:
 ![example 9](images/example-9.png)
 
 Still imperfect but hopefully you can see some options that might help make a better visualization. 
+
+## Check Your Understanding
+
+**Q1.** Why does `.sum(d => d.children ? 0 : d.population)` avoid the double-counting problem, but `.sum(d => d.population)` doesn't?
+
+<details><summary>Answer</summary>
+
+`.sum()` totals its accessor's return value across *every* node in the tree, not just the leaves. If every node — including countries and the world, whose `population` was already hand-calculated as a running total of their children — reports its own population, that total gets added again on top of the children's values as they bubble up. Returning `0` for any node with children means only leaf cities (which have no `children`) ever contribute a value, so each city's population is counted exactly once as it sums up the tree.
+
+</details>
+
+**Q2.** The fill color logic checks `if (d.data.country === undefined)`. What is that actually testing, and why not just check `d.children` instead?
+
+<details><summary>Answer</summary>
+
+It's distinguishing city nodes (which have a `country` field) from country and world nodes (which don't — they use `label` instead). Checking `d.children` would work differently: it's `undefined` only for leaf nodes (cities), so `d.children` and `d.data.country === undefined` end up testing roughly opposite things here — either works for telling cities apart from their parents, but they're not interchangeable everywhere in this code, since e.g. `.sum()`'s accessor above genuinely needs `d.children` (structural), not `d.data.country` (a property of the original data).
+
+</details>
+
+**Q3.** Why does positioning only need `.attr('transform', d => \`translate(${d.x}, ${d.y})\`)` on the group, with no separate positioning on the circle or text inside it?
+
+<details><summary>Answer</summary>
+
+SVG child elements inherit their parent's transform. Once the group is translated to `(d.x, d.y)`, the circle (centered by default at `0,0` unless given `cx`/`cy`) and the text automatically render relative to that already-translated origin — no need to re-specify the position on every child.
+
+</details>
 
 ## Conclusion
 

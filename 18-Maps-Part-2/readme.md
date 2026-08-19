@@ -158,7 +158,7 @@ const data = earthquakeData.filter(d => d.Magnitude > 7)
 
 ## Marking the Earthquakes
 
-The next step is to display an svg element at the position of each earthquake. To do this you need to translate the longitude and latitude data into screen coordintes. These are two different numbers and scales! 
+The next step is to display an svg element at the position of each earthquake. To do this you need to translate the longitude and latitude data into screen coordinates. These are two different numbers and scales! 
 
 Read about longitude and latitude (optional): https://en.wikipedia.org/wiki/Geographic_coordinate_system
 
@@ -183,13 +183,13 @@ Notice the spelling! (uppercase L)
 Create a circle for each earthquake: 
 
 ```JS
-// add a circle for each earthquak in data
+// add a circle for each earthquake in data
 d3.select('svg')
   .selectAll('circle')
   .data(data)
   .enter()
   .append('circle')
-  // Position the circles using geo coords and porjection
+  // Position the circles using geo coords and projection
   .attr('cx', d => projection([d.Longitude, d.Latitude])[0])
   .attr('cy', d => projection([d.Longitude, d.Latitude])[1])
   // Style the circles 
@@ -201,7 +201,7 @@ Place the code above inside the `loadMap()` function, below the `g.selectAll('pa
 
 First you selected the `svg` element. Then selected all of the `circles`. It might have been good to put all of these circles in a group first (**challenge** add all of the circles to a group!) Then you set the data for this selection, entered the data, appended circles. This should give you a circle for each element in the data array. 
 
-Next you positioned each circle by setting it's `cx` and `cy`. To do this you got the data element as `d` then passed the array of longitude and latitude: `[[d.Longitude, d.Latitude]]` into your `projection()` function. 
+Next you positioned each circle by setting its `cx` and `cy`. To do this you got the data element as `d` then passed the array of longitude and latitude: `[d.Longitude, d.Latitude]` into your `projection()` function. 
 
 ```js
 projection([d.Longitude, d.Latitude])
@@ -244,9 +244,9 @@ const infoBox = d3.select('svg')
   .attr('class', 'info-box')
 ```
 
-Here you made the new group and assigned it to the variable: `infoBox`. Then you set the class attribute. This way you can can style the info box or select it via it's class name. Which might be useful. 
+Here you made the new group and assigned it to the variable: `infoBox`. Then you set the class attribute. This way you can style the info box or select it via its class name. Which might be useful. 
 
-Next append a rectangle to the info box and set it's size: 
+Next append a rectangle to the info box and set its size: 
 
 ```JS
 infoBox.append('rect')
@@ -269,7 +269,7 @@ infoBox
   .attr('font-family', 'Helvetica')
 ```
 
-Here you appened the text element, set the initial text to "0.0", set the fill color, set the position, the alignment (these two properties center it in the rectangle,) then set the font size and font family. 
+Here you appended the text element, set the initial text to "0.0", set the fill color, set the position, the alignment (these two properties center it in the rectangle,) then set the font size and font family. 
 
 When you're done you should see a black box in the upper left corner of the page. 
 
@@ -284,9 +284,9 @@ const infoBox = d3.select('svg')
 
 If an element has `display` `none` it is not visible.
 
-The info box will become visible when you hover over one of the circle, it should hide when you move the cursor off of the circle. You can do this by adding mous events with D3. 
+The info box will become visible when you hover over one of the circles, it should hide when you move the cursor off of the circle. You can do this by adding mouse events with D3. 
 
-D3 works with all of the standard JS events but uses it's own syntax of `.on(event, handler)` instead of JavaScript's `.addEventListener(event, handler)`.
+D3 works with all of the standard JS events but uses its own syntax of `.on(event, handler)` instead of JavaScript's `.addEventListener(event, handler)`.
 
 Find the code where you appended the circles. You'll add mouse events to the circles. 
 
@@ -300,7 +300,7 @@ d3.select('#svg')
   .on('mouseover', function (e, d) {
     // Show the info box
   })
-  .on('mouseout', function (d, i) {
+  .on('mouseout', function (e, d) {
     // Hide the info box
   })
 ```
@@ -324,7 +324,7 @@ Display the box and set the magnitude.
   d3.select(this)
     .attr('stroke', '#f00')
   d3.select('.info-box')
-    .attr('display', 'yes')
+    .attr('display', 'inline')
     .attr('transform', `translate(${d3.select(this).attr('cx')}, ${d3.select(this).attr('cy')})`)
   d3.select('.info-box text')
     .text(d.Magnitude)
@@ -333,7 +333,7 @@ Display the box and set the magnitude.
 
 First you select the element the mouse is over. `this` in an event handler is the element that generated the event. In this case it should be one of the circles. You can select it with: `d3.select(this)`. Then set the stroke of the circle. 
 
-Next find the info box with via it's class name. Set display to `yes` to make it visible. Then stransform it to the location of the circle you are hovering over. To do this you need to get the `cx` and `cy` attributes. 
+Next find the info box via its class name. Set `display` to `inline` to make it visible again — `none` was hiding it earlier, and `inline` is a real CSS display value that shows it (there's no `display: yes`, so watch for that typo if you're copying by hand). Then transform it to the location of the circle you are hovering over. To do this you need to get the `cx` and `cy` attributes. 
 
 Last set the text of the text element in the info box to the magnitude of the data.
 
@@ -348,11 +348,11 @@ The info box should show up now but it doesn't go away. Use the `mouseout` event
 })
 ```
 
-Here you select the circle and set it's stroke to none, this removes the stroke added by the `mouseover` event. 
+Here you select the circle and set its stroke to none, this removes the stroke added by the `mouseover` event. 
 
-Then you selected the info box via it's class name and set it's `display` attribute to none, this hides it.
+Then you selected the info box via its class name and set its `display` attribute to none, this hides it.
 
-The map should look reoughly like this: 
+The map should look roughly like this: 
 
 ![example 2](./images/example-2.png)
 
@@ -360,7 +360,7 @@ The map should look reoughly like this:
 
 You may notice that the info box flickers. If you pay close attention, you'll notice that this occurs when the cursor is over a circle but is also overlapping the info box. You get a loop. The hovering over a circle makes the box display. Now you're hovering over the box, and no longer over the circle so it box disappears. Which leaves you over the circle, and box appears again. 
 
-You can fix this by adding the folling styles: 
+You can fix this by adding the following styles: 
 
 - The `svg` element needs the style: `pointer-events` `none`
 - The `circle` elements need the style: `pointer-events` `fill`
@@ -375,7 +375,7 @@ Style the info box and text. Do anything you like here. Make it look the way you
 
 **Challenge**
 
-Style the circle in it's hovered state. Currently you just set the stroke. You could also change the fill, or the radius, or anything else you can think of. 
+Style the circle in its hovered state. Currently you just set the stroke. You could also change the fill, or the radius, or anything else you can think of. 
 
 **Challenge**
 
@@ -385,9 +385,35 @@ Animate the info box. Make fade in on mouse over and fade out on mouse out. You 
 
 Display other information in the info box. There is lots more data in the CSV file, look at the keys. You have access to all of this through data object `d`. 
 
+## Check Your Understanding
+
+**Q1.** Why does filtering `earthquakeData.filter(d => d.Magnitude > 7)` work correctly even though `d.Magnitude` comes out of the CSV as a string, unparsed?
+
+<details><summary>Answer</summary>
+
+JavaScript's relational operators (`>`, `<`, etc.) automatically convert a string operand to a number when compared against a number — `"7.5" > 7` becomes `7.5 > 7`. This is different from `d3.extent()`/`d3.min()`/`d3.max()` comparing two strings *against each other*, which earlier tutorials showed can silently do the wrong (lexicographic) thing. The lesson: string-vs-number comparisons usually coerce correctly; string-vs-string comparisons on numeric-looking data usually don't.
+
+</details>
+
+**Q2.** The tooltip is built once, outside the data join, then just moved and re-texted on `mouseover`. Why not create a fresh tooltip `<g>` for each earthquake circle?
+
+<details><summary>Answer</summary>
+
+Only one tooltip is ever visible at a time — whichever circle the mouse happens to be over. Reusing a single element and repositioning/re-texting it on demand is far cheaper than creating and hiding hundreds or thousands of unused tooltip elements, one per data point.
+
+</details>
+
+**Q3.** In the `mouseover` handler, why does `d3.select(this)` work to grab the hovered circle, when `this` isn't available in an arrow function?
+
+<details><summary>Answer</summary>
+
+`.on('mouseover', function (e, d) {...})` deliberately uses a regular `function`, not an arrow function. Regular functions get their own `this`, which D3 sets to the DOM element that triggered the event — that's what makes `d3.select(this)` work. An arrow function would inherit `this` from its enclosing scope instead, which would not be the hovered circle.
+
+</details>
+
 ## Conclusion
 
-In this tutorial you reviewd the concepts of making a world map with D3. Then you learned to map data with geolocation information on to a projection. You also used `.on()` to handle mouse events. 
+In this tutorial you reviewed the concepts of making a world map with D3. Then you learned to map data with geolocation information on to a projection. You also used `.on()` to handle mouse events. 
 
 Read more about projections here: https://www.d3indepth.com/geographic/
 

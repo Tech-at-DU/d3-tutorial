@@ -4,7 +4,7 @@ The last example used paths, let's take another look at paths because there is a
 
 For this example, you will use the `precipitation.csv`. This file contains rainfall amounts for the years 1998 to 2017. The data is for a month by state in India. 
 
-This CSV file contains lost of data, almost 6000 lines! We will need to be more careful about what we display. 
+This CSV file contains lots of data, almost 6000 lines! We will need to be more careful about what we display. 
 
 In this example you will create a line graph. Read more about line graphs here: https://datavizcatalogue.com/methods/line_graph.html
 
@@ -174,9 +174,9 @@ Now you need a y scale. This needs to map the rainfall value in inches to the he
 Try it on your own. Use the `d3.extents()` method to get the extent of the precipitation from your `baData`. Then make a scale that maps this to the height of the screen.
 
 ```JS
-const percipitationExtents = d3.extent(baData, d => d.precipitation)
+const precipitationExtents = d3.extent(baData, d => d.precipitation)
 const yscale = d3.scaleLinear()
-  .domain(percipitationExtents)
+  .domain(precipitationExtents)
   .range([0, 400])
 ```
 
@@ -214,7 +214,7 @@ Define a line generator below your scales:
 // line generator
 const linegen = d3.line() // create a line generator
   .x((d, i) => xscale(i)) // map the x to the index
-  .y(d => yscale(d.precipitation)) // map y to percipitation
+  .y(d => yscale(d.precipitation)) // map y to precipitation
   .curve(d3.curveLinear) // apply a curve type
 ```
 
@@ -271,7 +271,7 @@ Do the same to the `yscale`:
 ```JS
 // Y Scale
 const yscale = d3.scaleLinear()
-  .domain(percipitationExtents)
+  .domain(precipitationExtents)
   .range([40, 360]) // Change the range!
 ```
 
@@ -299,8 +299,34 @@ Your graph should look something like this:
 
 **Challenge 3:** Add a second path that displays a second state. The idea is to display to line charts one on top of the other. 
 
+## Check Your Understanding
+
+**Q1.** Why did this tutorial use a named function (`handleData`) instead of the anonymous `.then(data => {...})` pattern from earlier tutorials?
+
+<details><summary>Answer</summary>
+
+Mostly readability at this point — anonymous inline functions get unwieldy once the code inside grows this large. It's also a step toward organizing code into reusable, testable pieces instead of one giant callback.
+
+</details>
+
+**Q2.** Why didn't the code call `.data()` and `.enter()` before appending the `path` element?
+
+<details><summary>Answer</summary>
+
+`.enter()`/`.data()` are for creating one element *per data point* — one circle per city, one bar per row. Here, all 239 precipitation values are drawn as a single continuous line, so you only need one `path` element total, not one per value.
+
+</details>
+
+**Q3.** After inverting the y-scale range with `.range([360, 40])`, the line flipped right-side up. Why does swapping the range order do that instead of changing the math anywhere else?
+
+<details><summary>Answer</summary>
+
+A scale just maps domain values to range values in order — smallest-to-smallest, largest-to-largest. SVG's y-axis increases *downward*, so a normal range like `[40, 360]` puts small rainfall values near the top. Reversing the range to `[360, 40]` flips that mapping without touching the domain or the line generator at all.
+
+</details>
+
 ## Conclusion 
 
-In this tutorial you learned to work with paths generating a line from data. 
+In this tutorial you learned to work with paths, generating a line from data using `d3.line()`. 
 
 This chart is similar to a line chart, read more about these here: https://www.data-to-viz.com/graph/line.html

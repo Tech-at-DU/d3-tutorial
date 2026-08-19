@@ -13,7 +13,7 @@ Here is a list of some common SVG tags.
 - `<svg>` - The root element for an SVG document. 
 - `<rect>` - A Rectangle, you know fours sides width and height 🔲
 - `<circle>` - A Circle, these are round ⭕️
-- `<ellipse>` - An Elipse it's an oval like an egg 🥚
+- `<ellipse>` - An Ellipse, it's an oval like an egg 🥚
 - `<g>` - A Group, groups elements 🏘
 - `<line>` - A Line, a straight line 📈
 - `<path>` - A Path 🛣
@@ -201,7 +201,7 @@ Your work might look like this:
 
 ![Challenge 1](images/challenge-1.png)
 
-Inspect the elements in the browser. You should see a list of `<circle>` elements int the `<svg>` container. Each has the properties your code set.  
+Inspect the elements in the browser. You should see a list of `<circle>` elements in the `<svg>` container. Each has the properties your code set.  
 
 ```HTML
 <svg id="svg" width="500" height="500" style="border: 1px solid;">
@@ -240,6 +240,40 @@ SVG uses attributes to describe these shapes. Attributes might be:
 - `stroke`
 - `stroke-width`
 
+## Check Your Understanding
+
+**Q1.** SVG and HTML both use tags and attributes. What's the actual difference between them?
+
+<details><summary>Answer</summary>
+
+HTML displays text and document content (headings, paragraphs, links). SVG draws shapes (circles, paths, rectangles). They share the same tag/attribute syntax, but the vocabulary of tags is different, and SVG can be embedded directly inside HTML.
+
+</details>
+
+**Q2.** You wrote `.attr('r', d => d.c * 100)`. Why is `r` a function here instead of a fixed number like `123`?
+
+<details><summary>Answer</summary>
+
+A fixed number gives every circle the same radius. A function receives each data object and returns a radius based on that specific object's values — that's what makes the drawing "data driven" instead of static.
+
+</details>
+
+**Q3.** If you inspect your circles in the browser and one is missing its `fill`, what's the most likely cause?
+
+<details><summary>Answer</summary>
+
+A typo in the attribute name or a data property that doesn't exist on that object (e.g. `d.color` when the field is actually `d.c`). The browser inspector is your best tool here — check what attributes actually landed on the element versus what you expected.
+
+</details>
+
+**Q4.** Why does `cx` work on `<circle>` but not on `<rect>`?
+
+<details><summary>Answer</summary>
+
+Each SVG element defines its own attributes based on how it's drawn. Circles are positioned by center point (`cx`, `cy`) and radius (`r`); rectangles are positioned by corner (`x`, `y`) and size (`width`, `height`). Check the [MDN element docs](https://developer.mozilla.org/en-US/docs/Web/SVG/Element) when you're not sure which attributes apply.
+
+</details>
+
 ## Conclusion 
 
-In this tutorial you learned about SVG and some it's elements and attributes. 
+In this tutorial you learned about SVG and some of its elements and attributes. 
