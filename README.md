@@ -45,9 +45,9 @@ Once you have an idea and a dataset, pick the tutorial that matches the kind of 
 - [16 D3 React](16-D3-React)
 - [19 D3 Join API](19-D3-Join)
 
-## Extras (in progress)
+## Bonus
 
-Experimental and unfinished — explore if you're curious, don't expect a finished tutorial.
+Optional detours from the main path — not required for the three-visualization project, but worth exploring if the topic interests you.
 
-- [23 Make a Website with D3](23-make-a-website-with-d3)
-- [Audio Visualizer](xx-Audio-Visulizer)
+- [23 Make a Website with D3](23-make-a-website-with-d3) — pushes D3's data-binding beyond charts, into ordinary page structure.
+- [Audio Visualizer](xx-Audio-Visualizer) — a different angle on data viz: sound, analyzed and drawn in real time instead of loaded from a file.
