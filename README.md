@@ -2,7 +2,7 @@
 
 This tutorial is an introduction to D3.js, built for [ACS 4310 Data Visualization with JavaScript](https://github.com/Tech-at-DU/ACS-4310).
 
-**How to use this repo:** Work through the **Core Path** in order — it's short and covers everything you need. After that, you don't need to do the rest in order. Find a dataset, pick an idea for a visualization, then jump into whichever **Build a Visualization** tutorial matches what you want to make. Come back for another topic whenever you start your next visualization.
+**How to use this repo:** Work through the **Core Path** in order — these are short and cover the core concepts you need. After that, you don't need to do the rest in order. Find a dataset, pick an idea for a visualization, then jump into whichever **Build a Visualization** tutorial matches what you want to make. Come back for another topic whenever you start your next visualization.
 
 ## Core Path
 

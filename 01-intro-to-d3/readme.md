@@ -134,7 +134,7 @@ You selected all of the div tags (there are none at the moment.) You gave D3 an 
 
 Next, you called `.enter()` this method identifies DOM elements that need to be added to a selection. Currently, there are no divs but you have 7 numbers in your array, so we need to `.append()` some new divs.
 
-Last, for each div, you set the text of that div. Here text takes a callback that receives a piece of data from the array and is expected to return the value that you'd like to see.
+Last, for each div, you set the text of that div. Here `text()` takes a callback that receives a piece of data from the array and is expected to return the value that you'd like to see.
 
 The result is a list of divs each displaying one of the elements from the array.
 
@@ -148,7 +148,7 @@ d3.select('body')
 
 Here you took the data element and converted it to a string, added a "$" and formatted to two decimal places.
 
-Stop a moment and imagine the piece of data (`d`) was a passenger object from the Titanic. 🤔 You could print the name or the fare...
+Stop a moment and imagine the piece of data (`d`) was a passenger object from the Titanic. 🤔 You could print the name, the fare, or...
 
 ### Styling Elements
 
