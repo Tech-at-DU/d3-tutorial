@@ -63,7 +63,7 @@ To work with dates you need to provide D3 with date objects. Currently, our data
 30/11/2016
 ```
 
-That's `day/month/year`. This must be European? Maybe that's why the state codes are weird? 
+That's `day/month/year` — the standard date format in Brazil, where this data is from. The two-letter codes are Brazilian state abbreviations: `BA` is Bahia, `RJ` is Rio de Janeiro, `SP` is São Paulo, and so on. 
 
 Luckily D3 has `d3.timeParse()` a function you can use to format a string into a date object. 
 

@@ -2,7 +2,7 @@
 
 The last example used paths, let's take another look at paths because there is a lot you can do with these. Often we draw data in the form of line graphs you can use a path to do this. 
 
-For this example, you will use the `precipitation.csv`. This file contains rainfall amounts for the years 1998 to 2017. The data is for a month by state in India. 
+For this example, you will use the `precipitation.csv`. This file contains rainfall amounts for the years 1998 to 2017, by month, for every state in Brazil — a country a little bigger than the continental US, split into 26 states plus a federal district. Data from [Precipitation in Brazil on Kaggle](https://www.kaggle.com/datasets/fabiopotsch/precipitation-in-brazil).
 
 This CSV file contains lots of data, almost 6000 lines! We will need to be more careful about what we display. 
 
@@ -134,7 +134,9 @@ Some of the state codes you can use are:
 
 BA, RR, SE, AL, TO, GO, PI, MG, PR, MA, AP, RJ, AC, AM, DF, PE, CE, PA, MT, PB, RS, RN, SP, ES, SC
 
-The data is from India. 
+A few to know: `AM` is Amazonas, home to most of the Amazon rainforest — expect rain. `SP` is São Paulo, the most populous state in Brazil. `RR` is Roraima, way up in the north on the border with Venezuela.
+
+The data is from Brazil. 
 
 ## Making Scales 
 
@@ -142,7 +144,7 @@ To map the precipitation data onto the screen we need to create some scales. Wha
 
 Everything from here is going to happen inside the `handleData()` function. 
 
-Get the precipitation data for `BA` (I'm not sure what state this is)
+Get the precipitation data for `BA` — that's Bahia, on Brazil's northeast coast, roughly the size of France.
 
 ```JS
 function handleData(data) {
