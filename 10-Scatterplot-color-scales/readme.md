@@ -146,7 +146,7 @@ Try these other color interpolators:
 - `d3.interpolateRainbow`
 - `d3.interpolateCubehelixDefault`
 
-**Challenge:** Experiment with the color scales. Choose your favorite color scale and use that!
+**Challenge:** Experiment with the color scales. Choose a color scale, or make your own, that best reflects the data presented. 
 
 ## Check Your Understanding
 
