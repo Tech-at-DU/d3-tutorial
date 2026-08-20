@@ -159,11 +159,11 @@ Poor Oakland is so small it doesn't even register!
 
 **Challenge**
 
-Try changing the padding where you defined xscale. This should change the space between bars. 
+Change the padding where you defined xscale. This should change the space between bars. 
 
 **Challenge:**
 
-Try setting other properties on the bars like the fill. This should change the color of the rectangles. 
+Set other properties on the bars like the fill. This should change the color of the rectangles. 
 
 **Stretch Challenge** 
 
