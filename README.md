@@ -27,6 +27,7 @@ Once you have an idea and a dataset, pick the tutorial that matches the kind of 
 - [11 Areas](11-Areas)
 - [13 Pie Charts](13-Pie-Charts)
 - [20 Stacked Bars](20-stacked-bars)
+- [24 Trend Lines](24-Trend-Lines) — moving average and linear regression, drawn over an existing chart. Continues from 07/08 and 11/12, do those first.
 
 **Maps**
 - [17 D3 Maps](17-Maps)
